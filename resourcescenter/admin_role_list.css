@@ -1,0 +1,310 @@
+/* === Base Styles === */
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+    color: #2c3e50;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding-top: 80px;
+}
+
+/* === Main Container === */
+.main-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.page-title {
+    margin-top: 80px;
+    padding: 20px 5%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Changed from space-between to center */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-title h1 {
+    color: #174080;
+    font-size: 2rem;
+    margin: 0;
+    font-weight: 600;
+    position: relative;
+    padding-left: 18px;
+    text-align: center;
+}
+
+.page-title h1:before {
+    content: "";
+    position: absolute;
+    left: -18px; /* adjust position since it's centered now */
+    top: 50%;
+    transform: translateY(-50%);
+    height: 70%;
+    width: 4px;
+    background: linear-gradient(to bottom, #174080, #4a89dc);
+    border-radius: 2px;
+}
+
+  
+  /* Breadcrumb Navigation */
+  .breadcrumb {
+    padding: 0 5%;
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    justify-content: center;
+  }
+  
+  #breadcrumb-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+  }
+  
+  #breadcrumb-list li {
+    display: flex;
+    align-items: center;
+  }
+  
+  #breadcrumb-list a {
+    color: #174080;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    padding: 5px 8px;
+    border-radius: 4px;
+  }
+  
+  #breadcrumb-list a:hover {
+    background-color: rgba(23, 64, 128, 0.1);
+    text-decoration: underline;
+  }
+  
+  #breadcrumb-list span {
+    color: #7a7a7a;
+    font-size: 0.9rem;
+    margin: 0 5px;
+  }
+
+/* === Page Description === */
+.page-description {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    padding: 0 5%;
+    color: #444;
+    line-height: 1.7;
+    text-align: center;
+}
+
+/* === Search Input === */
+#roleSearchInput {
+    padding: 14px 20px;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    display: block;
+    border: 1px solid #e1e6f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(23, 64, 128, 0.05);
+    transition: all 0.3s ease;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%237a7a7a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>');
+    background-repeat: no-repeat;
+    background-position: 20px center;
+    background-size: 18px;
+    padding-left: 50px;
+}
+
+#roleSearchInput:focus {
+    outline: none;
+    border-color: #4a89dc;
+    box-shadow: 0 0 0 3px rgba(74, 137, 220, 0.2);
+}
+
+/* === Role List === */
+.role-list {
+    padding: 0 5%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* === Role Item === */
+.role-item {
+    border: 1px solid #e1e6f0;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(23, 64, 128, 0.05);
+    width: 100%;
+}
+
+.role-item:hover {
+    background-color: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(23, 64, 128, 0.1);
+    border-color: #a8c6f5;
+}
+
+.role-item h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #174080;
+    font-weight: 600;
+    position: relative;
+    padding-left: 15px;
+}
+
+.role-item h3:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 70%;
+    width: 4px;
+    background: linear-gradient(to bottom, #174080, #4a89dc);
+    border-radius: 2px;
+}
+
+.role-item p {
+    margin: 8px 0 0;
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding-left: 15px;
+}
+
+/* === Breadcrumb Navigation === */
+.breadcrumb {
+    padding: 0 5%;
+    max-width: 1200px;
+    margin: 0 auto 20px;
+}
+
+#breadcrumb-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#breadcrumb-list li {
+    display: flex;
+    align-items: center;
+}
+
+#breadcrumb-list a {
+    color: #174080;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    padding: 5px 8px;
+    border-radius: 4px;
+}
+
+#breadcrumb-list a:hover {
+    background-color: rgba(23, 64, 128, 0.1);
+    text-decoration: underline;
+}
+
+#breadcrumb-list span {
+    color: #7a7a7a;
+    font-size: 0.9rem;
+    margin: 0 5px;
+}
+.favorite-button {
+    transform: translateY(10px);
+    background: #ffffff;
+    border: 2px solid #174080;
+    color: #174080;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(0);
+  }
+  
+  .favorite-button:hover {
+    background: #4a89dc;
+    color: #fff;
+  }
+  
+  .favorite-button.favorited {
+    background: #4a89dc;
+    color: white;
+    border-color: #4a89dc;
+  }
+/* === Responsive Design === */
+@media (max-width: 768px) {
+    body {
+        padding-top: 60px;
+    }
+
+    .page-description {
+        padding: 0 6%;
+        text-align: left;
+    }
+
+    .role-list {
+        padding: 0 6%;
+    }
+
+    #roleSearchInput {
+        width: 100%;
+        padding-left: 45px;
+        font-size: 0.95rem;
+    }
+
+    .role-item h3 {
+        font-size: 1.1rem;
+    }
+
+    .role-item p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-container {
+        padding: 0 15px;
+    }
+
+    .page-description {
+        font-size: 1rem;
+    }
+
+    .role-item {
+        padding: 15px;
+    }
+
+    .role-item h3 {
+        font-size: 1rem;
+    }
+
+    .role-item p {
+        font-size: 0.85rem;
+    }
+}

@@ -1,0 +1,47 @@
+==== ADD RESOURCES HIT ====
+Admin check: yes
+Data: section_id=14, role_id=357, title=new
+Neither file nor link provided
+==== ADD RESOURCES HIT ====
+Admin check: yes
+Data: section_id=14, role_id=357, title=new
+Neither file, link, nor description provided
+==== ADD RESOURCES HIT ====
+Admin check: yes
+Data: section_id=14, role_id=357, title=new
+Neither file, link, nor description provided
+==== ADD RESOURCES HIT ====
+Admin check: yes
+Data: section_id=14, role_id=357, title=new
+==== ADD RESOURCES HIT ====
+Admin check: yes
+Data: section_id=14, role_id=357, title=new
+Text-only resource inserted
+==== ADD RESOURCES HIT ====
+Admin check: yes
+Data: section_id=15, role_id=357, title=another file
+Text-only resource inserted
+==== ADD RESOURCES HIT ====
+Admin check: yes
+Data: section_id=12, role_id=432, title=new
+Text-only resource inserted
+==== ADD RESOURCES HIT ====
+Admin check: yes
+Data: section_id=17, role_id=432, title=another new
+Text-only resource inserted
+==== ADD RESOURCES HIT ====
+Admin check: yes
+Data: section_id=18, role_id=399, title=This is a resources
+File uploaded and inserted
+==== ADD RESOURCES HIT ====
+Admin check: yes
+Data: section_id=12, role_id=432, title=Hello
+Text-only resource inserted
+==== ADD RESOURCES HIT ====
+Admin check: yes
+Data: section_id=20, role_id=437, title=New Test
+File uploaded and inserted
+==== ADD RESOURCES HIT ====
+Admin check: yes
+Data: section_id=22, role_id=432, title=New
+Text-only resource inserted

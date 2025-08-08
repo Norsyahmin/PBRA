@@ -1,0 +1,255 @@
+/* Base Styles */
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #d4e5ff 0%, #ffffff 100%);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.page-title {
+    margin-top: 80px;
+    text-align: center;
+    padding: 10px 10px 0px; /* tighter spacing */
+    color: #174080;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb {
+    transform: translateY(-10px);
+    padding: 0 5%;
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    justify-self: center;
+  }
+  
+  #breadcrumb-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-self: center;
+  }
+  
+  #breadcrumb-list li {
+    display: flex;
+    align-items: center;
+  }
+  
+  #breadcrumb-list a {
+    color: #174080;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    padding: 5px 8px;
+    border-radius: 4px;
+  }
+  
+  #breadcrumb-list a:hover {
+    background-color: rgba(23, 64, 128, 0.1);
+    text-decoration: underline;
+  }
+  
+  #breadcrumb-list span {
+    color: #7a7a7a;
+    font-size: 0.9rem;
+    margin: 0 5px;
+  }
+
+
+  .feature-description {
+    max-width: 900px;
+    margin: 0 auto 30px;
+    padding: 0 20px;
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.7;
+    background: transparent; /* 🔥 Remove background color */
+    border: 2px solid black;            /* 🔥 Remove left border */
+    box-shadow: none;        /* 🔥 Remove shadow */
+}
+
+/* Department Header */
+.department-section {
+    max-width: 90%;
+    margin: 0 auto 25px;
+    background: white;
+    border: 1px solid #e1e6f0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(23, 64, 128, 0.08);
+}
+
+.department-header {
+    background: linear-gradient(135deg, #174080, #2a5ba0);
+    color: white;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.department-header i {
+    transition: transform 0.3s ease;
+}
+
+.department-header.collapsed i {
+    transform: rotate(-90deg);
+}
+
+/* Role List */
+.role-list {
+    display: none;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background-color: #f9fbff;
+}
+
+.role-list li {
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #e1e6f0;
+}
+
+.role-list a {
+    text-decoration: none;
+    display: block;
+    color: #174080;
+    transition: background 0.3s;
+}
+
+.role-list a:hover {
+    background-color: #e8f0ff;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.folder-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    color: #174080;
+}
+
+.text h1 {
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 600;
+}
+.favorite-button {
+    transform: translateY(-20px);
+    background: #ffffff;
+    border: 2px solid #174080;
+    color: #174080;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.favorite-button:hover {
+    background: #4a89dc;
+    color: #fff;
+}
+
+.favorite-button.favorited {
+    background: #4a89dc;
+    color: white;
+    border-color: #4a89dc;
+}
+@media (max-width: 768px) {
+    /* Page Title */
+    .page-title {
+        font-size: 1.3rem;
+        padding: 10px 5%;
+        margin-top: 100px;
+        text-align: center;
+    }
+
+    /* Favorite Button */
+    .favorite-button {
+        transform: translateY(-10px);
+        font-size: 12px;
+        padding: 5px 10px;
+        margin-top: 8px;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+        padding: 0 8px;
+        margin-bottom: 15px;
+    }
+
+    #breadcrumb-list {
+        gap: 3px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    #breadcrumb-list li,
+    #breadcrumb-list a,
+    #breadcrumb-list span {
+        font-size: 0.75rem;
+        padding: 3px 5px;
+    }
+
+    #breadcrumb-list a {
+        border-radius: 3px;
+    }
+
+    #breadcrumb-list span {
+        margin: 0 3px;
+    }
+
+    /* Feature Description */
+    .feature-description {
+        font-size: 0.9rem;
+        padding: 10px 10px;
+        text-align: center;
+    }
+
+    /* Department Header */
+    .department-header {
+        font-size: 0.95rem;
+        padding: 12px 14px;
+    }
+
+    /* Role Container */
+    .container {
+        padding: 10px 14px;
+    }
+
+    .folder-icon {
+        font-size: 1.2rem;
+        margin-right: 10px;
+    }
+
+    .text h1 {
+        font-size: 0.9rem;
+    }
+
+    /* Role List */
+    .role-list a {
+        padding: 10px 14px;
+    }
+}
