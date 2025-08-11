@@ -120,3 +120,83 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+document.write('<script src="js/form_logic.js"></script>');
+
+// Added script for pre-filling roles on page load based on session data
+document.addEventListener("DOMContentLoaded", () => {
+  const departmentSelect = document.getElementById("department");
+  const roleSelect = document.getElementById("role_select");
+
+  // Function to update roles based on department
+  function updateRoles(departmentId) {
+    if (!departmentId || !window.rolesData) return;
+
+    // Clear current options
+    roleSelect.innerHTML = '<option value="">Select Role</option>';
+
+    // Filter and sort roles for the selected department
+    const departmentRoles = window.rolesData
+      .filter((role) => role.department_id == departmentId)
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    // Add filtered roles
+    departmentRoles.forEach((role) => {
+      roleSelect.add(new Option(role.name, role.id));
+    });
+  }
+
+  // Handle department change
+  departmentSelect.addEventListener("change", function () {
+    updateRoles(this.value);
+  });
+
+  // Initial load if department is pre-selected
+  if (departmentSelect.value) {
+    updateRoles(departmentSelect.value);
+  }
+
+  // Ensure custom_office display is correct on load if 'other' was selected
+  const officeSelect = document.getElementById("office_select");
+  const customOfficeInput = document.getElementById("custom_office");
+  if (officeSelect.value === "other") {
+    customOfficeInput.style.display = "block";
+    customOfficeInput.required = true;
+  } else {
+    customOfficeInput.style.display = "none";
+    customOfficeInput.required = false;
+  }
+});
+
+document.getElementById('department').addEventListener('change', function() {
+            const departmentId = this.value;
+            const officeSelect = document.getElementById('office_select');
+            const roleSelect = document.getElementById('role_select');
+
+            // Clear and update role options
+            roleSelect.innerHTML = '<option value="">Select Role</option>';
+
+            // Only proceed if we have a department selected
+            if (departmentId) {
+                // Filter roles for selected department
+                const departmentRoles = rolesData.filter(role => role.department_id == departmentId);
+
+                // Sort roles alphabetically by name
+                departmentRoles.sort((a, b) => a.name.localeCompare(b.name));
+
+                // Add filtered roles to select
+                departmentRoles.forEach(role => {
+                    const option = new Option(role.name, role.id);
+                    roleSelect.add(option);
+                });
+
+                // Update office code
+                const officeCode = 'OSP' + departmentId;
+                let option = Array.from(officeSelect.options).find(opt => opt.value === officeCode);
+                if (!option) {
+                    option = new Option(officeCode, officeCode);
+                    officeSelect.add(option);
+                }
+                officeSelect.value = officeCode;
+            }
+        });

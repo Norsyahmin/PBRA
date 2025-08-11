@@ -198,62 +198,89 @@ button[type="submit"]:hover {
     margin-top: 10px;
 }
 
-/* Responsive Design */
+/* Confirmation Page Specific Styles */
+.confirmation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    /* Ensures rounded corners for table */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.confirmation-table th,
+.confirmation-table td {
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.confirmation-table th {
+    background-color: #f5faff;
+    color: #174080;
+    font-weight: 600;
+}
+
+.confirmation-table tr:last-child td {
+    border-bottom: none;
+}
+
+.confirmation-table tr:nth-child(even) {
+    background-color: #fbfdff;
+}
+
+.confirmation-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.confirmation-buttons button {
+    flex: 1;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+}
+
+.confirmation-buttons .edit-btn {
+    background: linear-gradient(135deg, #6c757d 0%, #8d949c 100%);
+    /* Greyish color */
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
+}
+
+.confirmation-buttons .edit-btn:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #767d84 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+}
+
+/* Responsive Design for Confirmation Page */
 @media (max-width: 768px) {
-    form {
-        padding: 25px 30px;
+
+    .confirmation-table th,
+    .confirmation-table td {
+        padding: 10px;
+        font-size: 0.95rem;
     }
 
-    h2 {
-        font-size: 1.8rem;
-    }
-
-    .password-buttons {
+    .confirmation-buttons {
         flex-direction: column;
-        /* Stack buttons vertically on small screens */
-        gap: 5px;
-    }
-
-    .password-buttons button {
-        width: 100%;
-        /* Make buttons full width when stacked */
-    }
-
-    .password-container {
-        flex-direction: column;
-        /* Stack input and buttons */
-        align-items: stretch;
+        gap: 15px;
     }
 }
 
 @media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
 
-    form {
-        padding: 20px 25px;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-    }
-
-    label,
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="date"],
-    select,
-    textarea,
-    button {
+    .confirmation-table th,
+    .confirmation-table td {
+        padding: 8px;
         font-size: 0.9rem;
-        padding: 10px 12px;
     }
 
-    button[type="submit"] {
-        padding: 12px 15px;
+    .confirmation-buttons button {
         font-size: 1rem;
+        padding: 12px 15px;
     }
 }
