@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="refresh" content="3;url=../login/login.php">
   <title>Welcome Page</title>
-  <link rel="stylesheet" href="../Welcome/style.cssstyle.css">
+  <link rel="stylesheet" href="../Welcome/style.css">
 </head>
 
 <body>

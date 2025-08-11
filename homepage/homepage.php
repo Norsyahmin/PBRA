@@ -6,6 +6,7 @@ if (!isset($_SESSION['id'])) {
 }
 
 include '../mypbra_connect.php';
+include_once '../includes/language_setup.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -63,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $stmt->close();
 
+        // Redirect to prevent form resubmission on refresh
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }
@@ -77,12 +79,12 @@ if (!$result) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= htmlspecialchars($current_language); ?>"> <!-- Set HTML lang attribute -->
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title><?= get_text('homepage_title', 'Homepage'); ?></title> <!-- Localized title -->
     <link rel="stylesheet" href="homepage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -94,92 +96,90 @@ if (!$result) {
 
     <div class="content-body">
 
-    <?php include '../includes/announcement.php'; ?>
+        <?php include '../includes/announcement.php'; ?>
 
 
-    <div class="favorites-container">
-    <div class="favorite-tabs" id="favoriteTabs">
-        <span class="favorite-title">Favorite:</span>
-        <!-- Favorites will be inserted here by JavaScript -->
-    </div>
-</div>
+        <div class="favorites-container">
+            <div class="favorite-tabs" id="favoriteTabs">
+                <span class="favorite-title"><?= get_text('favorites_title', 'Favorite:'); ?></span>
+                <!-- Favorites will be inserted here by JavaScript -->
+            </div>
+        </div>
 
 
         <div class="feature-container">
             <div class="role-container" onclick="window.location.href='../roles/roles.php';">
                 <div class="text-role">
-                    <h2><strong>ROLE</strong></h2>
-                    <p>This section lets you easily keep track of all your roles, including when they start, end, and
-                        the latest tasks completed.</p>
+                    <h2><strong><?= get_text('role_section_title', 'ROLE'); ?></strong></h2>
+                    <p><?= get_text('role_section_description', 'This section lets you easily keep track of all your roles, including when they start, end, and the latest tasks completed.'); ?></p>
                 </div>
             </div>
 
             <div class="events-container" onclick="window.location.href='../eventss/event.php';">
                 <div class="text">
-                    <h2><strong>EVENTS</strong></h2>
-                    <p>This section shows your personalised calendar and schedule.</p>
+                    <h2><strong><?= get_text('events_section_title', 'EVENTS'); ?></strong></h2>
+                    <p><?= get_text('events_section_description', 'This section shows your personalised calendar and schedule.'); ?></p>
                 </div>
             </div>
 
             <div class="pbstaff-container" onclick="window.location.href='../staff/staffsch.php';">
                 <div class="text">
-                    <h2><strong>PB STAFF</strong></h2>
-                    <p>Get to know who is in charge of each department and all of its staff.</p>
+                    <h2><strong><?= get_text('pb_staff_section_title', 'PB STAFF'); ?></strong></h2>
+                    <p><?= get_text('pb_staff_section_description', 'Get to know who is in charge of each department and all of its staff.'); ?></p>
                 </div>
             </div>
         </div>
 
         <div class="setting-section">
-        <div class="feedback" onclick="window.location.href='../feedback/feedback.php';">
-  <i class="fas fa-comment"></i> Feedback
-</div>
-<div class="report" onclick="window.location.href='../report/report.php';">
-  <i class="fas fa-clipboard"></i> Report
-</div>
-<div class="user-support" onclick="window.location.href='../usersupport/usersupport.php';">
-  <i class="fas fa-question-circle"></i> User Support
-</div>
-
+            <div class="feedback" onclick="window.location.href='../feedback/feedback.php';">
+                <i class="fas fa-comment"></i> <?= get_text('feedback', 'Feedback'); ?>
+            </div>
+            <div class="report" onclick="window.location.href='../report/report.php';">
+                <i class="fas fa-clipboard"></i> <?= get_text('report', 'Report'); ?>
+            </div>
+            <div class="user-support" onclick="window.location.href='../usersupport/usersupport.php';">
+                <i class="fas fa-question-circle"></i> <?= get_text('user_support', 'User Support'); ?>
+            </div>
         </div>
 
     </div>
 
 
     <footer>
-        <p>&copy; 2025 Politeknik Brunei Role Appointment (PbRA). All rights reserved.</p>
+        <p><?= get_text('footer_text', '&copy; 2025 Politeknik Brunei Role Appointment (PbRA). All rights reserved.'); ?></p>
     </footer>
 
     <script>
-    function formatText(command) {
-        document.execCommand(command, false, null);
-    }
+        function formatText(command) {
+            document.execCommand(command, false, null);
+        }
 
-    function prepareSubmission() {
-        const richContent = document.getElementById('richContent').innerHTML;
-        document.getElementById('hiddenContent').value = richContent;
-    }
+        function prepareSubmission() {
+            const richContent = document.getElementById('richContent').innerHTML;
+            document.getElementById('hiddenContent').value = richContent;
+        }
 
-    function openModal() {
-        document.getElementById('announcementModal').style.display = 'block';
-    }
+        function openModal() {
+            document.getElementById('announcementModal').style.display = 'block';
+        }
 
-    function closeModal() {
-        document.getElementById('announcementModal').style.display = 'none';
-    }
+        function closeModal() {
+            document.getElementById('announcementModal').style.display = 'none';
+        }
 
-    function previewImage(event) {
-        const reader = new FileReader();
-        reader.onload = function () {
-            const output = document.getElementById('imagePreview');
-            output.src = reader.result;
-            output.style.display = 'block';
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('openFormBtn')?.addEventListener('click', openModal);
-    });
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('openFormBtn')?.addEventListener('click', openModal);
+        });
 
         //FAVORITE
         function toggleFavorite() {
@@ -190,7 +190,7 @@ if (!$result) {
             xhr.open("POST", "toggle_favorite.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-            xhr.onload = function () {
+            xhr.onload = function() {
                 if (xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
                     if (response.success) {
@@ -204,7 +204,7 @@ if (!$result) {
                             btn.classList.remove("favorited");
                         }
                     } else {
-                        alert("Failed to update favorite.");
+                        alert("<?= get_text('alert_failed_update_favorite', 'Failed to update favorite.'); ?>");
                     }
                 }
             };
@@ -214,11 +214,15 @@ if (!$result) {
 
         // Breadcrumbs
         let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
-        let currentPageName = "Homepage";
+        // Using get_text for currentPageName
+        let currentPageName = "<?= get_text('homepage_breadcrumb_name', 'Homepage'); ?>";
         let currentPageUrl = window.location.pathname;
 
         if (!breadcrumbs.some(breadcrumb => breadcrumb.url === currentPageUrl)) {
-            breadcrumbs.push({ name: currentPageName, url: currentPageUrl });
+            breadcrumbs.push({
+                name: currentPageName,
+                url: currentPageUrl
+            });
             sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
         }
 
@@ -243,27 +247,26 @@ if (!$result) {
 
         // Modal Controls
         // Update your modal control functions
-        
-// FAVORITE from localStorage
-document.addEventListener('DOMContentLoaded', function() {
-    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    const favContainer = document.getElementById('favoriteTabs');
 
-    if (favorites.length === 0) {
-        const noFav = document.createElement('span');
-        noFav.textContent = "No favorites yet.";
-        favContainer.appendChild(noFav);
-    } else {
-        favorites.forEach(fav => {
-            const link = document.createElement('a');
-            link.href = fav.pageUrl;
-            link.className = 'favorite-tab';
-            link.textContent = fav.pageName;
-            favContainer.appendChild(link);
+        // FAVORITE from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            const favContainer = document.getElementById('favoriteTabs');
+
+            if (favorites.length === 0) {
+                const noFav = document.createElement('span');
+                noFav.textContent = "<?= get_text('no_favorites_yet', 'No favorites yet.'); ?>";
+                favContainer.appendChild(noFav);
+            } else {
+                favorites.forEach(fav => {
+                    const link = document.createElement('a');
+                    link.href = fav.pageUrl;
+                    link.className = 'favorite-tab';
+                    link.textContent = fav.pageName;
+                    favContainer.appendChild(link);
+                });
+            }
         });
-    }
-});
-
     </script>
 
 </body>
