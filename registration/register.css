@@ -39,32 +39,7 @@ h2 {
     max-width: 600px;
     /* Match form max-width */
     box-sizing: border-box;
-}
-
-.success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-/* Form Container */
-form {
-    background: linear-gradient(to right, #ffffff 0%, #f8faff 100%);
-    border: 1px solid #e1e6f0;
-    border-radius: 8px;
-    padding: 30px 40px;
-    box-shadow: 0 6px 20px rgba(23, 64, 128, 0.12);
-    width: 100%;
-    max-width: 600px;
-    box-sizing: border-box;
-}
-
+  
 /* Form Groups */
 .form-group {
     margin-bottom: 20px;
@@ -130,14 +105,6 @@ textarea {
 .password-container input[type="text"] {
     flex-grow: 1;
     /* Allows the input to take up available space */
-}
-
-.password-buttons {
-    display: flex;
-    gap: 8px;
-    flex-shrink: 0;
-    /* Prevents buttons from shrinking */
-}
 
 /* Buttons */
 button {
@@ -164,96 +131,3 @@ button[type="submit"] {
     /* Larger font for submit button */
     margin-top: 15px;
     box-shadow: 0 4px 10px rgba(23, 64, 128, 0.2);
-}
-
-button[type="submit"]:hover {
-    background: linear-gradient(135deg, #103060 0%, #204a85 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(23, 64, 128, 0.3);
-}
-
-/* Password Buttons - Make them similar to the submit button */
-.password-buttons button {
-    background: linear-gradient(135deg, #174080 0%, #2a5ba0 100%);
-    /* Same gradient */
-    color: white;
-    /* White text */
-    /* Border is now handled by the general 'button' rule (none) */
-    box-shadow: 0 2px 5px rgba(23, 64, 128, 0.15);
-    /* Slightly smaller shadow than submit */
-}
-
-.password-buttons button:hover {
-    background: linear-gradient(135deg, #103060 0%, #204a85 100%);
-    /* Same hover gradient */
-    transform: translateY(-1px);
-    /* Slightly less pronounced hover effect than submit */
-    box-shadow: 0 4px 8px rgba(23, 64, 128, 0.25);
-    /* Slightly less pronounced hover shadow */
-}
-
-/* Custom Office Input (initially hidden) */
-#custom_office {
-    display: none;
-    margin-top: 10px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    form {
-        padding: 25px 30px;
-    }
-
-    h2 {
-        font-size: 1.8rem;
-    }
-
-    .password-buttons {
-        flex-direction: column;
-        /* Stack buttons vertically on small screens */
-        gap: 5px;
-    }
-
-    .password-buttons button {
-        width: 100%;
-        /* Make buttons full width when stacked */
-    }
-
-    .password-container {
-        flex-direction: column;
-        /* Stack input and buttons */
-        align-items: stretch;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-
-    form {
-        padding: 20px 25px;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-    }
-
-    label,
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="date"],
-    select,
-    textarea,
-    button {
-        font-size: 0.9rem;
-        padding: 10px 12px;
-    }
-
-    button[type="submit"] {
-        padding: 12px 15px;
-        font-size: 1rem;
-    }
-}
