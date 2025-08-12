@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 if (!isset($_SESSION['id'])) {
     header("Location: ../login.php");
@@ -27,20 +26,19 @@ $roles_query = "SELECT id, name, department_id FROM roles ORDER BY name";
 $roles_result = $conn->query($roles_query);
 $roles = $roles_result->fetch_all(MYSQLI_ASSOC);
 
+// --- Handle POST request (Submission to Confirmation) ---
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $full_name = $conn->real_escape_string($_POST['full_name']);
     $email = $conn->real_escape_string($_POST['email']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
     $department_id = $conn->real_escape_string($_POST['department']);
-    // Determine the office value based on whether 'other' was selected
-    $office = $_POST['office_select_hidden'] === 'other' ? // Changed name due to JS handling
+    $office = $_POST['office'] === 'other' ?
         $conn->real_escape_string($_POST['custom_office']) :
-        $conn->real_escape_string($_POST['office']); // Original name restored by JS if not 'other'
+        $conn->real_escape_string($_POST['office']);
     $user_type = $conn->real_escape_string($_POST['user_type']);
     $start_date = $_POST['start_date'];
     $role_id = $conn->real_escape_string($_POST['role']);
-    // Add new fields
     $work_experience = $conn->real_escape_string($_POST['work_experience']);
     $education = $conn->real_escape_string($_POST['education']);
 
@@ -53,30 +51,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($check_email->num_rows > 0) {
             $error_message = "Email already exists!";
         } else {
-            // Hash password
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            // Store form data in session
+            $_SESSION['register_form_data'] = [
+                'full_name' => $full_name,
+                'email' => $email,
+                'password' => $password, // Will be hashed later
+                'department' => $department_id,
+                'role' => $role_id,
+                'office' => $_POST['office'],
+                'custom_office' => $_POST['custom_office'] ?? '',
+                'user_type' => $user_type,
+                'start_date' => $start_date,
+                'work_experience' => $work_experience,
+                'education' => $education
+            ];
 
-            // Insert new user
-            $query = "INSERT INTO users (full_name, email, password, office, user_type, start_date, work_experience, education)
-                     VALUES ('$full_name', '$email', '$hashed_password', '$office', '$user_type', '$start_date', '$work_experience', '$education')";
+            // Store lookups for department and role names
+            $_SESSION['departments_lookup'] = $departments;
+            $_SESSION['roles_lookup'] = $roles;
 
-            if ($conn->query($query)) {
-                $user_id = $conn->insert_id;
-
-                // Insert into userroles table
-                $userroles_query = "INSERT INTO userroles (user_id, role_id, appointed_at)
-                                  VALUES ($user_id, $role_id, NOW())";
-
-                if ($conn->query($userroles_query)) {
-                    $success_message = "User registered successfully with assigned role!";
-                } else {
-                    $error_message = "Error assigning role: " . $conn->error;
-                }
-            } else {
-                $error_message = "Error registering user: " . $conn->error;
-            }
+            // Redirect to confirmation page
+            header("Location: register_confirm.php");
+            exit();
         }
     }
+}
+
+// --- Pre-fill form if data exists in session (e.g., coming back from confirmation page) ---
+$form_data = $_SESSION['register_form_data'] ?? [];
+unset($_SESSION['register_form_data']); // Clear form data after retrieving it
+
+// Display any success/error messages from previous steps (e.g., from register_process.php)
+if (isset($_SESSION['register_success'])) {
+    $success_message = $_SESSION['register_success'];
+    unset($_SESSION['register_success']);
+}
+if (isset($_SESSION['register_error'])) {
+    $error_message = $_SESSION['register_error'];
+    unset($_SESSION['register_error']);
+}
+
+// Helper function to safely get a value from $form_data for input fields
+function get_field_value($field_name, $default = '')
+{
+    global $form_data;
+    return htmlspecialchars($form_data[$field_name] ?? $default);
 }
 ?>
 
@@ -99,21 +118,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="error"><?php echo $error_message; ?></div>
     <?php endif; ?>
 
-    <form method="POST" action="">
+    <form method="POST" action="register_confirm.php">
         <div class="form-group">
             <label for="full_name">Full Name:</label>
-            <input type="text" name="full_name" required>
+            <input type="text" name="full_name" value="<?= get_field_value('full_name'); ?>" required>
         </div>
 
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" name="email" required>
+            <input type="email" name="email" value="<?= get_field_value('email'); ?>" required>
         </div>
 
         <div class="form-group">
             <label for="password">Password:</label>
             <div class="password-container">
-                <input type="password" name="password" id="password" required>
+                <input type="password" name="password" id="password" value="<?= get_field_value('password'); ?>" required>
                 <div class="password-buttons">
                     <button type="button" class="generate-btn" onclick="generatePassword()">Generate</button>
                     <button type="button" onclick="toggleBothPasswords()">Show</button>
@@ -125,7 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="form-group">
             <label for="confirm_password">Confirm Password:</label>
             <div class="password-container">
-                <input type="password" name="confirm_password" id="confirm_password" required>
+                <input type="password" name="confirm_password" id="confirm_password" value="<?= get_field_value('confirm_password'); ?>" required>
             </div>
         </div>
 
@@ -134,7 +153,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <select name="department" id="department" required>
                 <option value="">Select Department</option>
                 <?php foreach ($departments as $department): ?>
-                    <option value="<?php echo $department['id']; ?>"><?php echo $department['name']; ?></option>
+                    <option value="<?php echo $department['id']; ?>" <?= (get_field_value('department') == $department['id']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($department['name']); ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -150,42 +171,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="office">Office:</label>
             <select name="office" id="office_select" required>
                 <option value="">Select Office</option>
-                <?php foreach ($offices as $office): ?>
-                    <option value="<?php echo $office['office']; ?>"><?php echo $office['office']; ?></option>
+                <?php foreach ($offices as $office_option): ?>
+                    <option value="<?php echo htmlspecialchars($office_option['office']); ?>" <?= (get_field_value('office') == $office_option['office']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($office_option['office']); ?>
+                    </option>
                 <?php endforeach; ?>
-                <option value="other">Other</option>
+                <option value="other" <?= (get_field_value('office') === 'other') ? 'selected' : ''; ?>>Other</option>
             </select>
-            <input type="text" name="custom_office" id="custom_office" placeholder="Enter office name">
+            <input type="text" name="custom_office" id="custom_office" placeholder="Enter office name" value="<?= get_field_value('custom_office'); ?>" style="<?= (get_field_value('office') === 'other') ? 'display: block;' : 'display: none;'; ?>">
         </div>
 
         <div class="form-group">
             <label for="user_type">User Type:</label>
             <select name="user_type" required>
-                <option value="regular">Regular</option>
-                <option value="admin">Admin</option>
+                <option value="regular" <?= (get_field_value('user_type') == 'regular') ? 'selected' : ''; ?>>Regular</option>
+                <option value="admin" <?= (get_field_value('user_type') == 'admin') ? 'selected' : ''; ?>>Admin</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="start_date">Start Date:</label>
-            <input type="date" name="start_date" required>
+            <input type="date" name="start_date" value="<?= get_field_value('start_date'); ?>" required>
         </div>
 
         <div class="form-group">
             <label for="work_experience">Work Experience:</label>
-            <textarea name="work_experience" placeholder="Enter work experience details (Company, Position, Duration)"></textarea>
+            <textarea name="work_experience" placeholder="Enter work experience details (Company, Position, Duration)"><?= get_field_value('work_experience'); ?></textarea>
         </div>
 
         <div class="form-group">
             <label for="education">Education:</label>
-            <textarea name="education" placeholder="Enter education details (Institution, Degree, Year)"></textarea>
+            <textarea name="education" placeholder="Enter education details (Institution, Degree, Year)"><?= get_field_value('education'); ?></textarea>
         </div>
 
-        <button type="submit">Register User</button>
+        <button type="submit">Proceed to Confirmation</button>
     </form>
-
     <script>
-        // Store roles data - This needs to be available globally for form_logic.js
         const rolesData = <?php echo json_encode($roles); ?>;
     </script>
     <script src="register.js"></script>
