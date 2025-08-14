@@ -1,273 +1,284 @@
 /* === NAVBAR === */
 .navbar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #174080;
-    color: white;
-    padding: 10px 20px;
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* === LEFT SIDE === */
-  .nav-left {
-    display: flex;
-    align-items: center;
-    flex: 1;
-  }
-  
-  /* === RIGHT SIDE === */
-  .nav-right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-    flex: 1;
-  }
-  
-  /* === SEARCH BAR === */
-  .search-bar {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    max-width: 60%;
-    flex: 2;
-  }
-  
-  .search-bar input {
-    border: none;
-    padding: 10px 15px;
-    font-size: 1rem;
-    outline: none;
-    width: 300px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-  }
-  
-  /* === SEARCH RESULTS === */
-  .search-results {
-    position: absolute;
-    top: 110%;
-    left: 0;
-    background-color: white;
-    z-index: 9999;
-    width: 300px;
-    border: 1px solid #ccc;
-    max-height: 300px;
-    overflow-y: auto;
-    display: none;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 5px;
-  }
-  
-  .search-results.show {
-    display: block;
-  }
-  
-  .result-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    cursor: pointer;
-    color: black;
-  }
-  
-  .result-item:hover {
-    background-color: #f5f5f5;
-  }
-  
-  .result-item a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    width: 100%;
-  }
-  
-  .result-item a:hover {
-    background-color: #f0f0f0;
-    color: #174080;
-  }
-  
-  .result-item i {
-    margin-right: 8px;
-    color: #174080;
-  }
-  
-  .no-result {
-    color: black;
-    padding: 10px;
-    font-size: 14px;
-  }
-  
-  /* === NOTIFICATIONS === */
-  .notification-container {
-    position: fixed; /* ← fixed instead of absolute */
-    top: 72px; /* right under navbar */
-    right: 0; /* stick to the right edge */
-    width: 500px; /* adjust width as you like */
-    height: calc(100% - 60px); /* full height minus navbar height */
-    background: white;
-    border-left: 1px solid #ddd; /* only left border like sidebar */
-    border-top: none;
-    border-bottom: none;
-    border-right: none;
-    box-shadow: -2px 0 10px rgba(0,0,0,0.2); /* shadow from left */
-    z-index: 9999;
-    display: none;
-    overflow-y: auto;
-    border-radius: 0; /* make it square like sidebar */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #174080;
+  color: white;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* === LEFT SIDE === */
+.nav-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+/* === RIGHT SIDE === */
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex: 1;
+}
+
+/* === SEARCH BAR === */
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 60%;
+  flex: 2;
+}
+
+.search-bar input {
+  border: none;
+  padding: 10px 15px;
+  font-size: 1rem;
+  outline: none;
+  width: 300px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+}
+
+/* === SEARCH RESULTS === */
+.search-results {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background-color: white;
+  z-index: 9999;
+  width: 300px;
+  border: 1px solid #ccc;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+}
+
+.search-results.show {
+  display: block;
+}
+
+.result-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  color: black;
+}
+
+.result-item:hover {
+  background-color: #f5f5f5;
+}
+
+.result-item a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  width: 100%;
+}
+
+.result-item a:hover {
+  background-color: #f0f0f0;
+  color: #174080;
+}
+
+.result-item i {
+  margin-right: 8px;
+  color: #174080;
+}
+
+.no-result {
+  color: black;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* === NOTIFICATIONS === */
+.notification-container {
+  position: fixed;
+  /* ← fixed instead of absolute */
+  top: 72px;
+  /* right under navbar */
+  right: 0;
+  /* stick to the right edge */
+  width: 500px;
+  /* adjust width as you like */
+  height: calc(100% - 60px);
+  /* full height minus navbar height */
+  background: white;
+  border-left: 1px solid #ddd;
+  /* only left border like sidebar */
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  /* shadow from left */
+  z-index: 9999;
+  display: none;
+  overflow-y: auto;
+  border-radius: 0;
+  /* make it square like sidebar */
 }
 
 
 .notification-btn {
-    position: relative;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: white;
-    cursor: pointer;
+  position: relative;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
 }
 
 .notification-dot {
-    position: absolute;
-    top: 3px;
-    right: 3px;
-    background: red;
-    color: white;
-    font-size: 12px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    text-align: center;
-    display: none;
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  text-align: center;
+  display: none;
 }
 
 .notification-header {
-    background: #174080;
-    color: white;
-    padding: 10px;
-    font-weight: bold;
-    text-align: center;
+  background: #174080;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .notification-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    overflow-y: auto;
-    color: black;
-    max-height: unset;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  color: black;
+  max-height: unset;
 }
 
 .notification-list li {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
 }
 
 .notification-list li:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
-  /* === USER INFO === */
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .user-info img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .user-info span {
-    font-size: 1rem;
-    color: white;
-  }
-  
-  /* === MAIL ICON === */
-  .mail-button {
-    background: none;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 28px;
-  }
-  
-  /* === MENU BUTTON === */
-  .menu-btn button {
-    background: none;
-    color: white;
-    font-size: 1.5rem;
-    border: none;
-    cursor: pointer;
-  }
-  
-  /* === SIDEBAR === */
-  .sidebar {
-    position: fixed;
-    top: 55px;
-    left: -250px;
-    width: 250px;
-    height: 100%;
-    background-color: #174080;
-    color: white;
-    overflow-y: auto;
-    transition: left 0.3s ease;
-    z-index: 999;
-  }
-  
-  .sidebar.active {
-    left: 0;
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-  }
-  
-  .sidebar ul li {
-    padding: 15px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .sidebar ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 1rem;
-    width: 100%;
-    display: block;
-    padding: 5px 0;
-  }
-  
-  .sidebar ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-  }
-  /* === RESPONSIVENESS UPDATE === */
+/* === USER INFO === */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-info img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-info span {
+  font-size: 1rem;
+  color: white;
+}
+
+/* === MAIL ICON === */
+.mail-button {
+  background: none;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 28px;
+}
+
+/* === MENU BUTTON === */
+.menu-btn button {
+  background: none;
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  position: fixed;
+  top: 55px;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #174080;
+  color: white;
+  overflow-y: auto;
+  transition: left 0.3s ease;
+  z-index: 999;
+}
+
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.sidebar ul li {
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  width: 100%;
+  display: block;
+  padding: 5px 0;
+}
+
+.sidebar ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* === RESPONSIVENESS UPDATE === */
 /* === RESPONSIVENESS UPDATE === */
 
 /* Phones (up to 767px) */
 /* Fix Navbar for small screens */
 @media (max-width: 767px) {
   .navbar {
-    flex-direction: row; /* stay in a single line */
+    flex-direction: row;
+    /* stay in a single line */
     align-items: center;
     padding: 10px;
-    flex-wrap: wrap; /* allow wrapping if very small */
+    flex-wrap: wrap;
+    /* allow wrapping if very small */
   }
 
   .nav-left,
@@ -291,7 +302,8 @@
   }
 
   .user-info span {
-    display: none; /* hide name, keep profile picture */
+    display: none;
+    /* hide name, keep profile picture */
   }
 
   .user-info img {

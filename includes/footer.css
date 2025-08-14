@@ -1,0 +1,13 @@
+.pbra-footer {
+    background: linear-gradient(135deg, #174080 0%, #2a5ba0 100%);
+    color: white;
+    text-align: center;
+    padding: 25px;
+    margin-top: 50px;
+    box-shadow: 0 -4px 12px rgba(23, 64, 128, 0.1);
+}
+
+.pbra-footer p {
+    margin: 0;
+    letter-spacing: 0.5px;
+}
