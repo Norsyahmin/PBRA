@@ -1,286 +1,223 @@
-/* Base Styles */
 body {
-    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     margin: 0;
     padding: 0;
     background: linear-gradient(135deg, #d4e5ff 0%, #ffffff 100%);
     color: #333;
-    line-height: 1.6;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    /* Add some padding for smaller screens */
-    box-sizing: border-box;
-    /* Include padding in element's total width and height */
+}
+
+.container {
+    background: linear-gradient(120deg, #ffffff 60%, #f8faff 100%);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(23, 64, 128, 0.10);
+    padding: 40px 32px 32px 32px;
+    max-width: 540px;
+    margin: 100px auto 40px auto;
+    /* Changed margin-top from 60px to 100px */
+    border: 1px solid #e1e6f0;
+    position: relative;
+}
+
+.container:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(to bottom, #174080, #4a89dc);
+    border-radius: 16px 0 0 16px;
 }
 
 h2 {
-    color: #174080;
     text-align: center;
-    margin-bottom: 30px;
-    font-size: 2.2rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    color: #174080;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
 }
 
-/* Message Styles */
+.subtitle {
+    text-align: center;
+    color: #4a89dc;
+    margin-bottom: 24px;
+    font-size: 1.08rem;
+}
+
 .success,
 .error {
-    padding: 15px 25px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    font-weight: bold;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
-    /* Match form max-width */
-    box-sizing: border-box;
+    margin-bottom: 18px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px 0;
 }
 
 .success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    color: #1a7f3c;
+    background: #eafaf1;
+    border: 1px solid #b6e2c6;
 }
 
 .error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+    color: #b91c1c;
+    background: #fbeaea;
+    border: 1px solid #f5b6b6;
 }
 
-/* Form Container */
-form {
-    background: linear-gradient(to right, #ffffff 0%, #f8faff 100%);
-    border: 1px solid #e1e6f0;
-    border-radius: 8px;
-    padding: 30px 40px;
-    box-shadow: 0 6px 20px rgba(23, 64, 128, 0.12);
-    width: 100%;
-    max-width: 600px;
-    box-sizing: border-box;
-}
-
-/* Form Groups */
-.form-group {
-    margin-bottom: 20px;
-}
-
-/* Labels */
 label {
     display: block;
-    margin-bottom: 8px;
-    color: #174080;
+    margin-top: 18px;
     font-weight: 600;
-    font-size: 1rem;
+    color: #174080;
+    letter-spacing: 0.5px;
 }
 
-/* Inputs, Selects, Textareas */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="date"],
+input,
 select,
 textarea {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 10px 12px;
+    margin-top: 7px;
+    border-radius: 8px;
+    border: 1px solid #b3c6e6;
     font-size: 1rem;
-    color: #333;
-    box-sizing: border-box;
-    /* Crucial for width calculation */
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-    background-color: #fff;
+    background: #f8faff;
+    transition: border 0.2s;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="date"]:focus,
+input:focus,
 select:focus,
 textarea:focus {
-    border-color: #4a89dc;
-    box-shadow: 0 0 0 3px rgba(74, 137, 220, 0.25);
+    border: 1.5px solid #4a89dc;
     outline: none;
+    background: #fff;
 }
 
-textarea {
-    resize: vertical;
-    /* Allow vertical resizing */
-    min-height: 90px;
-}
-
-/* Password Input Container */
-.password-container {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    position: relative;
-    /* For adjusting children positioning if needed */
-}
-
-.password-container input[type="password"],
-.password-container input[type="text"] {
-    flex-grow: 1;
-    /* Allows the input to take up available space */
-}
-
-.password-buttons {
+.btn-row {
+    margin-top: 7px;
     display: flex;
     gap: 8px;
-    flex-shrink: 0;
-    /* Prevents buttons from shrinking */
 }
 
-/* Buttons */
-button {
-    padding: 10px 18px;
+.btn-row button {
+    background: linear-gradient(135deg, #174080 0%, #4a89dc 100%);
+    color: #fff;
     border: none;
-    /* Now all buttons are borderless by default */
-    border-radius: 25px;
+    border-radius: 20px;
+    padding: 7px 18px;
+    font-size: 0.98rem;
     cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    /* Prevent text wrap */
+    transition: background 0.2s, transform 0.2s;
+    font-weight: 500;
+    box-shadow: 0 2px 5px rgba(23, 64, 128, 0.08);
 }
 
-/* Specific button styles */
-button[type="submit"] {
-    background: linear-gradient(135deg, #174080 0%, #2a5ba0 100%);
-    color: white;
-    width: 100%;
-    padding: 15px 20px;
-    /* Larger padding for submit button */
-    font-size: 1.1rem;
-    /* Larger font for submit button */
-    margin-top: 15px;
-    box-shadow: 0 4px 10px rgba(23, 64, 128, 0.2);
-}
-
-button[type="submit"]:hover {
-    background: linear-gradient(135deg, #103060 0%, #204a85 100%);
+.btn-row button:hover {
+    background: linear-gradient(135deg, #4a89dc 0%, #174080 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(23, 64, 128, 0.3);
 }
 
-/* Password Buttons - Make them similar to the submit button */
-.password-buttons button {
-    background: linear-gradient(135deg, #174080 0%, #2a5ba0 100%);
-    /* Same gradient */
-    color: white;
-    /* White text */
-    /* Border is now handled by the general 'button' rule (none) */
-    box-shadow: 0 2px 5px rgba(23, 64, 128, 0.15);
-    /* Slightly smaller shadow than submit */
-}
-
-.password-buttons button:hover {
-    background: linear-gradient(135deg, #103060 0%, #204a85 100%);
-    /* Same hover gradient */
-    transform: translateY(-1px);
-    /* Slightly less pronounced hover effect than submit */
-    box-shadow: 0 4px 8px rgba(23, 64, 128, 0.25);
-    /* Slightly less pronounced hover shadow */
-}
-
-/* Custom Office Input (initially hidden) */
-#custom_office {
-    display: none;
-    margin-top: 10px;
-}
-
-/* Confirmation Page Specific Styles */
-.confirmation-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    /* Ensures rounded corners for table */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.confirmation-table th,
-.confirmation-table td {
-    text-align: left;
-    padding: 12px 15px;
-    border-bottom: 1px solid #eee;
-}
-
-.confirmation-table th {
-    background-color: #f5faff;
-    color: #174080;
-    font-weight: 600;
-}
-
-.confirmation-table tr:last-child td {
-    border-bottom: none;
-}
-
-.confirmation-table tr:nth-child(even) {
-    background-color: #fbfdff;
-}
-
-.confirmation-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
+.submit-btn {
     margin-top: 30px;
-}
-
-.confirmation-buttons button {
-    flex: 1;
-    padding: 15px 20px;
+    width: 100%;
+    background: linear-gradient(135deg, #174080 0%, #4a89dc 100%);
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 13px 0;
     font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(23, 64, 128, 0.10);
+    transition: background 0.2s, transform 0.2s;
 }
 
-.confirmation-buttons .edit-btn {
-    background: linear-gradient(135deg, #6c757d 0%, #8d949c 100%);
-    /* Greyish color */
-    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
-}
-
-.confirmation-buttons .edit-btn:hover {
-    background: linear-gradient(135deg, #5a6268 0%, #767d84 100%);
+.submit-btn:hover {
+    background: linear-gradient(135deg, #4a89dc 0%, #174080 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
 }
 
-/* Responsive Design for Confirmation Page */
-@media (max-width: 768px) {
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: rgba(23, 64, 128, 0.18);
+}
 
-    .confirmation-table th,
-    .confirmation-table td {
-        padding: 10px;
-        font-size: 0.95rem;
+.modal-content {
+    background: #fff;
+    margin: 7% auto;
+    padding: 32px 24px;
+    border-radius: 16px;
+    width: 95%;
+    max-width: 480px;
+    box-shadow: 0 4px 24px rgba(23, 64, 128, 0.15);
+    border: 1px solid #e1e6f0;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    color: #174080;
+    text-align: center;
+}
+
+.modal-content .summary-row {
+    margin-bottom: 14px;
+    font-size: 1.01rem;
+}
+
+.modal-content .summary-label {
+    font-weight: bold;
+    color: #174080;
+}
+
+.modal-actions {
+    text-align: right;
+    margin-top: 28px;
+}
+
+.modal-actions button {
+    background: linear-gradient(135deg, #174080 0%, #4a89dc 100%);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 9px 22px;
+    margin-left: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.modal-actions button:hover {
+    background: linear-gradient(135deg, #4a89dc 0%, #174080 100%);
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .container {
+        padding: 24px 8px 18px 8px;
     }
 
-    .confirmation-buttons {
-        flex-direction: column;
-        gap: 15px;
+    .modal-content {
+        padding: 18px 8px;
     }
 }
 
 @media (max-width: 480px) {
-
-    .confirmation-table th,
-    .confirmation-table td {
-        padding: 8px;
-        font-size: 0.9rem;
+    .container {
+        padding: 10px 2vw 10px 2vw;
     }
 
-    .confirmation-buttons button {
-        font-size: 1rem;
-        padding: 12px 15px;
+    .modal-content {
+        padding: 10px 2vw;
     }
 }
