@@ -5,3 +5,4 @@ pbradatabases(with data).sql
 pbradatabases(no data).sql
 README.md
 mailer.php
+vendor/
