@@ -2,4 +2,6 @@ mypbra_connect.php
 .htaccess
 Important.txt
 pbradatabases(with data).sql
+pbradatabases(no data).sql
 README.md
+mailer.php
