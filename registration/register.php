@@ -7,6 +7,8 @@ if (!isset($_SESSION['id'])) {
 require_once '../mypbra_connect.php';
 // Include the verification email function
 require_once '../account/send_verification_email.php';
+// Include registration notification functions
+require_once 'registration_notification.php';
 
 include '../includes/navbar.php';
 $success_message = '';
@@ -88,14 +90,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['final_submit'])) {
                 $stmt2->execute();
                 $stmt2->close();
 
-                // Send verification email using our function with recovery email
-                if (send_verification_email($user_id, $email, $recovery_email, $conn)) {
-                    $success_message = "Registration successful! A verification email has been sent to your recovery email ($recovery_email). The account must be verified before login.";
+                // Send email to user with their credentials and verification link
+                if (send_user_registration_notification(
+                    $user_id,
+                    $full_name,
+                    $email,
+                    $password,
+                    $recovery_email,
+                    $department_id,
+                    $role_id,
+                    $office,
+                    $user_type,
+                    $conn
+                )) {
+                    $success_message = "Registration successful! An email with account details and verification instructions has been sent to the recovery email ($recovery_email).";
                 } else {
-                    $success_message = "Registration successful! However, we couldn't send the verification email. Please ask the user to request a verification email.";
+                    $success_message = "Registration successful! However, we couldn't send the notification email. Please ask the user to contact the administrator.";
                     // Log this error
-                    error_log("Failed to send verification email to $recovery_email for user ID $user_id");
+                    error_log("Failed to send notification email to $recovery_email for user ID $user_id");
                 }
+
+                // No need to call send_verification_email separately since the verification link is included in the notification email
             } else {
                 $error_message = "Error: " . $stmt->error;
             }

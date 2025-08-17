@@ -26,7 +26,7 @@ function send_verification_email($user_id, $email, $recovery_email, $conn)
 
         $mail->isHTML(true);
         $mail->clearAddresses();
-        $mail->setFrom('noreply@pb.edu.bn', 'Politeknik Brunei Role Appointment System');
+        $mail->setFrom('noreply@pb.edu.bn', 'PBRA System');
         $mail->addAddress($recovery_email); // Send to recovery email
         $mail->Subject = "Verify Your PbRA Account";
         $mail->Body = "Thank you for registering with PbRA. Please verify your account by clicking on the link below:<br><br>"
