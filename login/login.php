@@ -210,7 +210,7 @@ if (isset($_GET['success'])) {
                 </a>
 
                 <!-- Resend Verification Email Link -->
-                <a href="../account/resend_verification.php" style="color: #007bff; text-decoration: underline; font-size: 0.95em;">
+                <a href="../account_activation/resend_verification.php" style="color: #007bff; text-decoration: underline; font-size: 0.95em;">
                     <?= get_text('resend_verification_link', 'Need to verify your account?'); ?>
                 </a>
             </div>

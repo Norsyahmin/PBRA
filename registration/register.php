@@ -6,7 +6,7 @@ if (!isset($_SESSION['id'])) {
 }
 require_once '../mypbra_connect.php';
 // Include the verification email function
-require_once '../account/send_verification_email.php';
+require_once '../account_activation/send_verification_email.php';
 // Include registration notification functions
 require_once 'registration_notification.php';
 

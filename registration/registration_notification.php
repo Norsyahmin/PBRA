@@ -27,7 +27,7 @@ function send_user_registration_notification($user_id, $full_name, $email, $pass
         $ins_stmt->close();
 
         // Create verification link
-        $verification_link = "http://" . $_SERVER['HTTP_HOST'] . "/account/verify_account.php?token=" . $token;
+        $verification_link = "http://" . $_SERVER['HTTP_HOST'] . "/account_activation/verify_account.php?token=" . $token;
 
         // Get department and role names
         $dept_query = "SELECT name FROM departments WHERE id = ?";
