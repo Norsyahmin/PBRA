@@ -5,6 +5,10 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 require_once '../mypbra_connect.php';
+// Include the verification email function
+require_once '../account_activation/send_verification_email.php';
+// Include registration notification functions
+require_once 'registration_notification.php';
 
 include '../includes/navbar.php';
 $success_message = '';
@@ -29,6 +33,7 @@ $roles = $roles_result->fetch_all(MYSQLI_ASSOC);
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['final_submit'])) {
     $full_name = $conn->real_escape_string($_POST['full_name']);
     $email = $conn->real_escape_string($_POST['email']);
+    $recovery_email = $conn->real_escape_string($_POST['recovery_email']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
     $department_id = $conn->real_escape_string($_POST['department']);
@@ -43,10 +48,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['final_submit'])) {
 
     // Validation
     if (
-        empty($full_name) || empty($email) || empty($password) || empty($confirm_password) ||
+        empty($full_name) || empty($email) || empty($recovery_email) || empty($password) || empty($confirm_password) ||
         empty($department_id) || empty($role_id) || empty($office) || empty($user_type) || empty($start_date)
     ) {
         $error_message = "Please fill in all required fields.";
+    } elseif (!filter_var($recovery_email, FILTER_VALIDATE_EMAIL)) {
+        $error_message = "Please enter a valid recovery email address.";
     } elseif ($password !== $confirm_password) {
         $error_message = "Passwords do not match!";
     } else {
@@ -55,13 +62,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['final_submit'])) {
         if ($check_email->num_rows > 0) {
             $error_message = "Email already exists!";
         } else {
+            // Hash password
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $conn->prepare("INSERT INTO users (full_name, email, password, office, user_type, start_date, work_experience, education)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+
+            // Insert user with is_verified=0
+            $stmt = $conn->prepare("INSERT INTO users (full_name, email, recovery_email, password, office, user_type, start_date, work_experience, education, is_verified)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
             $stmt->bind_param(
-                "ssssssss",
+                "sssssssss",
                 $full_name,
                 $email,
+                $recovery_email,
                 $hashed_password,
                 $office,
                 $user_type,
@@ -69,15 +80,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['final_submit'])) {
                 $work_experience,
                 $education
             );
+
             if ($stmt->execute()) {
                 $user_id = $conn->insert_id;
+
                 // Assign role to user
                 $stmt2 = $conn->prepare("INSERT INTO userroles (user_id, role_id) VALUES (?, ?)");
                 $stmt2->bind_param("ii", $user_id, $role_id);
                 $stmt2->execute();
                 $stmt2->close();
 
-                $success_message = "Registration successful!";
+                // Send email to user with their credentials and verification link
+                if (send_user_registration_notification(
+                    $user_id,
+                    $full_name,
+                    $email,
+                    $password,
+                    $recovery_email,
+                    $department_id,
+                    $role_id,
+                    $office,
+                    $user_type,
+                    $conn
+                )) {
+                    $success_message = "Registration successful! An email with account details and verification instructions has been sent to the recovery email ($recovery_email).";
+                } else {
+                    $success_message = "Registration successful! However, we couldn't send the notification email. Please ask the user to contact the administrator.";
+                    // Log this error
+                    error_log("Failed to send notification email to $recovery_email for user ID $user_id");
+                }
+
+                // No need to call send_verification_email separately since the verification link is included in the notification email
             } else {
                 $error_message = "Error: " . $stmt->error;
             }
@@ -116,6 +149,9 @@ function get_field_value($field_name, $default = '')
 
             <label>Email:</label>
             <input type="email" name="email" value="<?= get_field_value('email'); ?>" required>
+
+            <label>Recovery Email:</label>
+            <input type="email" name="recovery_email" value="<?= get_field_value('recovery_email'); ?>" required>
 
             <label>Password:</label>
             <div class="btn-row">

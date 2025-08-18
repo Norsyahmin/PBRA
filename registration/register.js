@@ -2,7 +2,7 @@ function filterRoles() {
     const deptId = document.getElementById('department').value;
     const roleSelect = document.getElementById('role_select');
     roleSelect.innerHTML = '<option value="">Select Role</option>';
-    rolesData.forEach(function(role) {
+    rolesData.forEach(function (role) {
         if (role.department_id == deptId) {
             let selected = (role.id == selectedRole) ? 'selected' : '';
             roleSelect.innerHTML += `<option value="${role.id}" ${selected}>${role.name}</option>`;
@@ -11,7 +11,7 @@ function filterRoles() {
 }
 
 // On page load, filter roles if department is pre-selected
-window.onload = function() {
+window.onload = function () {
     filterRoles();
     toggleCustomOffice();
 };
@@ -67,6 +67,7 @@ function showSummary() {
     var summary = '';
     summary += '<div class="summary-row"><span class="summary-label">Full Name:</span> ' + form.full_name.value + '</div>';
     summary += '<div class="summary-row"><span class="summary-label">Email:</span> ' + form.email.value + '</div>';
+    summary += '<div class="summary-row"><span class="summary-label">Recovery Email:</span> ' + form.recovery_email.value + '</div>';
     summary += '<div class="summary-row"><span class="summary-label">Department:</span> ' + form.department.options[form.department.selectedIndex].text + '</div>';
     summary += '<div class="summary-row"><span class="summary-label">Role:</span> ' + form.role_select.options[form.role_select.selectedIndex].text + '</div>';
     var officeText = form.office_select.options[form.office_select.selectedIndex].text;
@@ -91,7 +92,7 @@ function submitForm() {
 }
 
 // Close modal if clicked outside
-window.onclick = function(event) {
+window.onclick = function (event) {
     var modal = document.getElementById('summaryModal');
     if (event.target == modal) {
         modal.style.display = "none";
