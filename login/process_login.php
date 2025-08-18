@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../mypbra_connect.php'; // Ensure this path is correct!
+require_once '../mailer.php'; // For sending OTP email
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
@@ -21,9 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Prepare and execute SQL query with or without is_verified column
     if ($columnExists) {
-        $stmt = $conn->prepare("SELECT id, email, password, full_name, profile_pic, is_verified FROM users WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, email, password, full_name, profile_pic, is_verified, user_type, recovery_email FROM users WHERE email = ?");
     } else {
-        $stmt = $conn->prepare("SELECT id, email, password, full_name, profile_pic FROM users WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, email, password, full_name, profile_pic, user_type, recovery_email FROM users WHERE email = ?");
     }
 
     if (!$stmt) {
@@ -47,14 +48,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Store user info in session
                 $_SESSION['id'] = $user['id'];
                 $_SESSION['email'] = $user['email'];
-                $_SESSION['full_name'] = $user['full_name']; // Store full name
-
-                // Check if profile picture exists, otherwise use default
+                $_SESSION['full_name'] = $user['full_name'];
                 $_SESSION['profile_pic'] = !empty($user['profile_pic']) ? $user['profile_pic'] : 'profile/images/default-profile.jpg';
+                $_SESSION['user_type'] = $user['user_type'];
 
-                $stmt->close();
-                header("Location: ../homepage/homepage.php"); // Redirect to homepage.php
-                exit();
+                if ($user['user_type'] === 'admin') {
+                    // Generate OTP
+                    $otp = rand(100000, 999999);
+                    $_SESSION['otp'] = $otp;
+                    $_SESSION['otp_expiry'] = time() + 300; // 5 minutes
+
+                    // Send OTP to admin's recovery email
+                    $mail = require '../mailer.php';
+                    $mail->clearAddresses();
+                    $mail->setFrom('noreply@pb.edu.bn', 'Politeknik Brunei Role Appointment System');
+                    $mail->addAddress($user['recovery_email']);
+                    $mail->Subject = "Your PbRA Admin Login OTP";
+                    $mail->Body = "Your OTP for admin login is: <b>$otp</b><br>This code will expire in 5 minutes.";
+                    $mail->AltBody = "Your OTP for admin login is: $otp\nThis code will expire in 5 minutes.";
+                    try {
+                        $mail->send();
+                        $stmt->close();
+                        header("Location: ../login/verify_otp.php");
+                        exit();
+                    } catch (Exception $e) {
+                        $_SESSION['login_error'] = "Failed to send OTP email. Please contact IT support.";
+                        $stmt->close();
+                        header("Location: ../login/login.php");
+                        exit();
+                    }
+                } else {
+                    // Regular user: direct to homepage
+                    $stmt->close();
+                    header("Location: ../homepage/homepage.php");
+                    exit();
+                }
             } else {
                 // User is not verified
                 $_SESSION['login_error'] = "Please verify your email address before logging in. Check your inbox for the verification link.";
