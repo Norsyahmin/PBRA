@@ -1,36 +1,40 @@
-/* Base Styles */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #0056b3;
+    /* A nice shade of blue for branding */
+    --secondary-color: #007bff;
+    /* A lighter blue */
+    --text-color: #333;
+    --light-text-color: #666;
+    --border-color: #ddd;
+    --background-color: #f8f9fa;
+    --card-background: #ffffff;
+    --button-hover-color: #004085;
+    --error-color: #dc3545;
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    margin: 0;
-    padding: 40px 20px;
     background: linear-gradient(135deg, #b7d4ff 0%, #ffffff 100%);
-    color: #333;
-    line-height: 1.6;
-    min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    text-align: center;
-}
-
-/* Logo Styles */
-img {
-    width: auto;
-    height: 100px;
-    /* Fixed height maintains aspect ratio */
-    margin-bottom: 30px;
-    object-fit: contain;
-    /* Prevents stretching */
-    transition: all 0.3s ease;
-}
-
-img:hover {
-    transform: scale(1.05);
+    align-items: center;
+    min-height: 100vh;
+    color: var(--text-color);
+    line-height: 1.6;
 }
 
 /* Heading Styles */
-h1 {
+h2 {
     color: #174080;
     font-size: 2.2rem;
     margin: 0 0 50px 0;
@@ -39,151 +43,177 @@ h1 {
     letter-spacing: 0.5px;
 }
 
-h1 span {
+h2 span {
     display: block;
     font-size: 1.8rem;
     margin-top: 10px;
     color: #2a5ba0;
 }
 
-/* Container Styles */
-.container {
-    width: 100%;
-    max-width: 80%;
-    /* Wider container */
-    padding: 0 20px;
-}
 
-.login-form {
-    background: linear-gradient(to right, #ffffff 0%, #f8faff 100%);
-    border: 1px solid #e1e6f0;
+
+.login-container {
+    background-color: var(--card-background);
     border-radius: 12px;
-    padding: 50px 40px;
-    box-shadow: 0 8px 20px rgba(23, 64, 128, 0.1);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.login-form:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 6px;
-    height: 100%;
-    background: linear-gradient(to bottom, #174080, #4a89dc);
-}
-
-/* Form Elements */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 35px;
-    /* Increased spacing */
-    width: 97%;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    /* Space between label and input */
-}
-
-label {
-    text-align: left;
-    color: #174080;
-    font-weight: 600;
-    font-size: 1rem;
-    padding-left: 15px;
-    position: relative;
-}
-
-label:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 6px;
-    background: #2e45ff;
-    border-radius: 50%;
-}
-
-input[type="email"],
-input[type="password"] {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 40px;
     width: 100%;
-    padding: 16px 20px;
-    border: 1px solid #e1e6f0;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: white;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    max-width: 450px;
+    text-align: center;
+    transform: translateY(0);
+    /* For subtle animation */
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
 }
 
-input[type="email"]:focus,
-input[type="password"]:focus {
-    border-color: #a8c6f5;
-    box-shadow: 0 0 0 3px rgba(23, 64, 128, 0.1);
+.login-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.login-header {
+    margin-bottom: 30px;
+}
+
+.college-logo {
+    object-fit: cover;
+
+}
+
+.login-header h2 {
+    font-size: 2.2em;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.login-header p {
+    font-size: 1em;
+    color: var(--light-text-color);
+}
+
+.login-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.login-form label {
+    display: block;
+    font-size: 0.95em;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1em;
+    color: var(--text-color);
+    background-color: #fdfdfd;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-form input[type="email"]:focus,
+.login-form input[type="password"]:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
     outline: none;
 }
 
-input::placeholder {
-    color: #aaa;
-    font-size: 0.95rem;
+.login-form input::placeholder {
+    color: #a0a0a0;
 }
 
-/* Button Styles */
-button[type="submit"] {
-    background: linear-gradient(135deg, #174080 0%, #2a5ba0 100%);
+.form-options {
+    display: flex;
+    justify-content: flex-start;
+    /* Changed from flex-end to flex-start */
+    margin-bottom: 25px;
+    font-size: 0.9em;
+    width: 100%;
+    /* Ensure it spans full width for proper alignment */
+}
+
+.forgot-password {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.login-button {
+    width: 100%;
+    padding: 15px 20px;
+    background-color: var(--primary-color);
     color: white;
-    padding: 18px;
     border: none;
     border-radius: 8px;
-    font-size: 1.1rem;
+    font-size: 1.1em;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 20px;
-    box-shadow: 0 4px 10px rgba(23, 64, 128, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
     letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0, 95, 178, 0.2);
 }
 
-button[type="submit"]:hover {
-    background: linear-gradient(135deg, #2a5ba0 0%, #174080 100%);
+.login-button:hover {
+    background-color: var(--button-hover-color);
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(23, 64, 128, 0.3);
+    box-shadow: 0 6px 15px rgba(0, 95, 178, 0.3);
 }
 
-/* Error Message Styles */
-.error-message {
-    background: linear-gradient(135deg, rgba(217, 83, 79, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
-    color: #d9534f;
-    padding: 15px;
+.login-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 95, 178, 0.1);
+}
+
+.login-links {
+    margin-top: 25px;
+    font-size: 0.9em;
+    color: var(--light-text-color);
+    line-height: 1.8;
+}
+
+.login-links a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.login-links a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.login-footer {
+    margin-top: 30px;
+    font-size: 0.85em;
+    color: var(--light-text-color);
+}
+
+/* Messages for PHP output */
+.message {
+    padding: 10px 15px;
     border-radius: 8px;
-    border-left: 4px solid #d9534f;
-    font-size: 0.95rem;
-    text-align: left;
-    margin: -10px 0 15px 0;
-    /* Adjusted margin to fit within form context */
-    animation: fadeIn 0.4s ease-out;
-    display: flex;
-    /* Added for icon alignment */
-    align-items: center;
-    /* Added for icon alignment */
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    text-align: center;
 }
 
-.error-message i {
-    margin-right: 8px;
-    /* Space between icon and text */
+.message.error {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
 }
 
-
-/* Success Message Styles (Reiterated from inline for clarity if it were in the CSS file) */
-.success-message {
+.message.success {
     background-color: #d4edda;
     color: #155724;
     border-color: #c3e6cb;
@@ -195,73 +225,27 @@ button[type="submit"]:hover {
     font-size: 0.9em;
     border-left: 4px solid #28a745;
     /* Green border for success */
-    animation: fadeIn 0.4s ease-out;
-    /* Added for consistency */
 }
 
-.success-message i {
-    margin-right: 8px;
-}
-
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.message.info {
+    background-color: rgba(23, 162, 184, 0.1);
+    color: var(--info-color);
+    border: 1px solid var(--info-color);
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-    body {
-        padding: 30px 20px;
+@media (max-width: 500px) {
+    .login-container {
+        margin: 20px;
+        padding: 30px 25px;
     }
 
-    h1 {
-        font-size: 2rem;
-        margin-bottom: 40px;
+    .login-header h2 {
+        font-size: 1.8em;
     }
 
-    .login-form {
-        padding: 40px 30px;
-    }
-
-    form {
-        gap: 30px;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 20px 15px;
-    }
-
-    img {
-        height: 80px;
-        margin-bottom: 25px;
-    }
-
-    h1 {
-        font-size: 1.8rem;
-        margin-bottom: 30px;
-    }
-
-    .login-form {
-        padding: 30px 20px;
-        border-radius: 10px;
-    }
-
-    input[type="email"],
-    input[type="password"] {
-        padding: 14px 18px;
-    }
-
-    button[type="submit"] {
-        padding: 16px;
+    .login-button {
+        padding: 12px 15px;
+        font-size: 1em;
     }
 }

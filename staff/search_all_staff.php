@@ -36,6 +36,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Search All Staff</title>
@@ -54,50 +55,52 @@ $conn->close();
         }
     </style>
 </head>
+
 <body>
-<?php include '../includes/navbar.php'; ?>
+    <?php include '../navbar/navbar.php'; ?>
 
-<div class="page-title">
-    <h1>🔍 Search All Staff</h1>
-</div>
+    <div class="page-title">
+        <h1>🔍 Search All Staff</h1>
+    </div>
 
-<div class="search-bar-container">
-    <input type="text" id="staffSearchInput" placeholder="Search name, email, role, or department...">
-</div>
+    <div class="search-bar-container">
+        <input type="text" id="staffSearchInput" placeholder="Search name, email, role, or department...">
+    </div>
 
-<div class="staff-container">
-    <?php foreach ($users as $user): ?>
-        <?php
-        $profilePicPath = $user['profile_pic'];
-        if (!str_starts_with($profilePicPath, "../")) {
-            $profilePicPath = "../" . $profilePicPath;
-        }
-        if (!file_exists($profilePicPath) || empty($user['profile_pic'])) {
-            $profilePicPath = "../profile/images/default-profile.jpg";
-        }
-        ?>
-        <div class="staff-card searchable-staff" onclick="location.href='../profile/profile.php?id=<?php echo htmlspecialchars($user['id']); ?>'">
-            <img src="<?php echo htmlspecialchars($profilePicPath); ?>" alt="Profile Picture">
-            <h2><?php echo htmlspecialchars($user['full_name']); ?></h2>
-            <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role_with_department']); ?></p>
-            <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-            <p><strong>Office:</strong> <?php echo htmlspecialchars($user['office'] ?? 'Not Set'); ?></p>
-        </div>
-    <?php endforeach; ?>
-</div>
+    <div class="staff-container">
+        <?php foreach ($users as $user): ?>
+            <?php
+            $profilePicPath = $user['profile_pic'];
+            if (!str_starts_with($profilePicPath, "../")) {
+                $profilePicPath = "../" . $profilePicPath;
+            }
+            if (!file_exists($profilePicPath) || empty($user['profile_pic'])) {
+                $profilePicPath = "../profile/images/default-profile.jpg";
+            }
+            ?>
+            <div class="staff-card searchable-staff" onclick="location.href='../profile/profile.php?id=<?php echo htmlspecialchars($user['id']); ?>'">
+                <img src="<?php echo htmlspecialchars($profilePicPath); ?>" alt="Profile Picture">
+                <h2><?php echo htmlspecialchars($user['full_name']); ?></h2>
+                <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role_with_department']); ?></p>
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+                <p><strong>Office:</strong> <?php echo htmlspecialchars($user['office'] ?? 'Not Set'); ?></p>
+            </div>
+        <?php endforeach; ?>
+    </div>
 
-<script>
-    const searchInput = document.getElementById('staffSearchInput');
-    const staffCards = document.querySelectorAll('.searchable-staff');
+    <script>
+        const searchInput = document.getElementById('staffSearchInput');
+        const staffCards = document.querySelectorAll('.searchable-staff');
 
-    searchInput.addEventListener('keyup', function () {
-        const filter = searchInput.value.toLowerCase();
-        staffCards.forEach(function (card) {
-            const text = card.innerText.toLowerCase();
-            card.style.display = text.includes(filter) ? "" : "none";
+        searchInput.addEventListener('keyup', function() {
+            const filter = searchInput.value.toLowerCase();
+            staffCards.forEach(function(card) {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(filter) ? "" : "none";
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
+
 </html>

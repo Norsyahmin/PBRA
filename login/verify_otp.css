@@ -1,0 +1,103 @@
+/* Import the main login styles to ensure consistency */
+@import url('login.css');
+
+/* Specific overrides for the OTP page */
+
+body {
+    /* Keep the background consistent or subtly different if desired */
+    background: linear-gradient(135deg, #e3f0ff 0%, #cbe2ff 100%);
+    display: flex;
+    /* Ensure body is a flex container */
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    min-height: 100vh;
+    /* Ensure it takes full viewport height */
+    margin: 0;
+    /* Remove default body margin */
+    padding: 0;
+    /* Remove default body padding */
+}
+
+/* Adjustments for the login-header specifically on the OTP page if needed */
+.login-header {
+    margin-bottom: 25px;
+    /* Slightly less margin than login page if desired */
+}
+
+.login-header h2 {
+    font-size: 2em;
+    /* Slightly smaller or same as login */
+    margin-bottom: 5px;
+    /* Adjust spacing */
+}
+
+.login-header p {
+    font-size: 0.95em;
+    /* Adjust font size for the subtext */
+    color: var(--light-text-color);
+}
+
+/* Adjustments for the form groups on the OTP page */
+.login-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+    /* Keep labels left-aligned */
+}
+
+.login-form input[type="text"] {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1em;
+    color: var(--text-color);
+    background-color: #fdfdfd;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-form input[type="text"]:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.login-form input::placeholder {
+    color: #a0a0a0;
+}
+
+
+/* Adjust error message to be consistent with login page */
+.error-message {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    text-align: left;
+    /* Align text to left within message box */
+    display: flex;
+    align-items: center;
+}
+
+.error-message i {
+    margin-right: 8px;
+}
+
+/* Adjustments for buttons (already handled by .login-button) */
+.login-button {
+    margin-top: 15px;
+    /* Add some space above the button */
+}
+
+
+/* Optional: Responsive adjustments if needed for OTP page specifically */
+@media (max-width: 500px) {
+    .login-container {
+        margin: 20px;
+        padding: 30px 25px;
+    }
+}

@@ -92,6 +92,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -99,14 +100,15 @@ $conn->close();
     <link rel="stylesheet" href="staff.css">
 
 </head>
+
 <body>
-    <?php include '../includes/navbar.php'; ?>
+    <?php include '../navbar/navbar.php'; ?>
 
     <div class="page-title">
-    <h1><?php echo htmlspecialchars(strtoupper($departmentName)); ?></h1>
-    <button type="button" id="favoriteButton" class="favorite-button" onclick="toggleFavorite()">
-    Add to Favorite
-</button>
+        <h1><?php echo htmlspecialchars(strtoupper($departmentName)); ?></h1>
+        <button type="button" id="favoriteButton" class="favorite-button" onclick="toggleFavorite()">
+            Add to Favorite
+        </button>
     </div>
 
     <div class="breadcrumb">
@@ -116,181 +118,185 @@ $conn->close();
 
     <div class="staff-container">
 
-<!-- 🥇 Head of Department -->
-<?php if (!empty($hodUsers)): ?>
-    <h2 class="role-header">Head of Department</h2>
-    <?php foreach ($hodUsers as $user): ?>
-        <?php
-        $profilePicPath = $user['profile_pic'];
-        if (!str_starts_with($profilePicPath, "../")) {
-            $profilePicPath = "../" . $profilePicPath;
-        }
-        if (!file_exists($profilePicPath) || empty($user['profile_pic'])) {
-            $profilePicPath = "../profile/images/default-profile.jpg";
-        }
-        ?>
-        <div class="staff-card" onclick="location.href='../profile/profile.php?id=<?php echo htmlspecialchars($user['id']); ?>'">
-            <img src="<?php echo htmlspecialchars($profilePicPath); ?>" alt="Profile Picture">
-            <h2><?php echo htmlspecialchars($user['full_name']); ?></h2>
-            <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role_with_department']); ?></p>
-            <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-            <p><strong>Office:</strong> <?php echo htmlspecialchars($user['office'] ?? 'Not Set'); ?></p>
-        </div>
-    <?php endforeach; ?>
-<?php endif; ?>
+        <!-- 🥇 Head of Department -->
+        <?php if (!empty($hodUsers)): ?>
+            <h2 class="role-header">Head of Department</h2>
+            <?php foreach ($hodUsers as $user): ?>
+                <?php
+                $profilePicPath = $user['profile_pic'];
+                if (!str_starts_with($profilePicPath, "../")) {
+                    $profilePicPath = "../" . $profilePicPath;
+                }
+                if (!file_exists($profilePicPath) || empty($user['profile_pic'])) {
+                    $profilePicPath = "../profile/images/default-profile.jpg";
+                }
+                ?>
+                <div class="staff-card" onclick="location.href='../profile/profile.php?id=<?php echo htmlspecialchars($user['id']); ?>'">
+                    <img src="<?php echo htmlspecialchars($profilePicPath); ?>" alt="Profile Picture">
+                    <h2><?php echo htmlspecialchars($user['full_name']); ?></h2>
+                    <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role_with_department']); ?></p>
+                    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+                    <p><strong>Office:</strong> <?php echo htmlspecialchars($user['office'] ?? 'Not Set'); ?></p>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
-<!-- 🥈 Assistant of Head of School Academic -->
-<?php if (!empty($ahosAcademicUsers)): ?>
-    <h2 class="role-header">Assistant of Head of School Academic</h2>
-    <?php foreach ($ahosAcademicUsers as $user): ?>
-        <?php
-        $profilePicPath = $user['profile_pic'];
-        if (!str_starts_with($profilePicPath, "../")) {
-            $profilePicPath = "../" . $profilePicPath;
-        }
-        if (!file_exists($profilePicPath) || empty($user['profile_pic'])) {
-            $profilePicPath = "../profile/images/default-profile.jpg";
-        }
-        ?>
-        <div class="staff-card" onclick="location.href='../profile/profile.php?id=<?php echo htmlspecialchars($user['id']); ?>'">
-            <img src="<?php echo htmlspecialchars($profilePicPath); ?>" alt="Profile Picture">
-            <h2><?php echo htmlspecialchars($user['full_name']); ?></h2>
-            <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role_with_department']); ?></p>
-            <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-            <p><strong>Office:</strong> <?php echo htmlspecialchars($user['office'] ?? 'Not Set'); ?></p>
-        </div>
-    <?php endforeach; ?>
-<?php endif; ?>
+        <!-- 🥈 Assistant of Head of School Academic -->
+        <?php if (!empty($ahosAcademicUsers)): ?>
+            <h2 class="role-header">Assistant of Head of School Academic</h2>
+            <?php foreach ($ahosAcademicUsers as $user): ?>
+                <?php
+                $profilePicPath = $user['profile_pic'];
+                if (!str_starts_with($profilePicPath, "../")) {
+                    $profilePicPath = "../" . $profilePicPath;
+                }
+                if (!file_exists($profilePicPath) || empty($user['profile_pic'])) {
+                    $profilePicPath = "../profile/images/default-profile.jpg";
+                }
+                ?>
+                <div class="staff-card" onclick="location.href='../profile/profile.php?id=<?php echo htmlspecialchars($user['id']); ?>'">
+                    <img src="<?php echo htmlspecialchars($profilePicPath); ?>" alt="Profile Picture">
+                    <h2><?php echo htmlspecialchars($user['full_name']); ?></h2>
+                    <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role_with_department']); ?></p>
+                    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+                    <p><strong>Office:</strong> <?php echo htmlspecialchars($user['office'] ?? 'Not Set'); ?></p>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
-<!-- 🥉 Assistant of Head of School Administration -->
-<?php if (!empty($ahosAdminUsers)): ?>
-    <h2 class="role-header">Assistant of Head of School Administration</h2>
-    <?php foreach ($ahosAdminUsers as $user): ?>
-        <?php
-        $profilePicPath = $user['profile_pic'];
-        if (!str_starts_with($profilePicPath, "../")) {
-            $profilePicPath = "../" . $profilePicPath;
-        }
-        if (!file_exists($profilePicPath) || empty($user['profile_pic'])) {
-            $profilePicPath = "../profile/images/default-profile.jpg";
-        }
-        ?>
-        <div class="staff-card" onclick="location.href='../profile/profile.php?id=<?php echo htmlspecialchars($user['id']); ?>'">
-            <img src="<?php echo htmlspecialchars($profilePicPath); ?>" alt="Profile Picture">
-            <h2><?php echo htmlspecialchars($user['full_name']); ?></h2>
-            <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role_with_department']); ?></p>
-            <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-            <p><strong>Office:</strong> <?php echo htmlspecialchars($user['office'] ?? 'Not Set'); ?></p>
-        </div>
-    <?php endforeach; ?>
-<?php endif; ?>
+        <!-- 🥉 Assistant of Head of School Administration -->
+        <?php if (!empty($ahosAdminUsers)): ?>
+            <h2 class="role-header">Assistant of Head of School Administration</h2>
+            <?php foreach ($ahosAdminUsers as $user): ?>
+                <?php
+                $profilePicPath = $user['profile_pic'];
+                if (!str_starts_with($profilePicPath, "../")) {
+                    $profilePicPath = "../" . $profilePicPath;
+                }
+                if (!file_exists($profilePicPath) || empty($user['profile_pic'])) {
+                    $profilePicPath = "../profile/images/default-profile.jpg";
+                }
+                ?>
+                <div class="staff-card" onclick="location.href='../profile/profile.php?id=<?php echo htmlspecialchars($user['id']); ?>'">
+                    <img src="<?php echo htmlspecialchars($profilePicPath); ?>" alt="Profile Picture">
+                    <h2><?php echo htmlspecialchars($user['full_name']); ?></h2>
+                    <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role_with_department']); ?></p>
+                    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+                    <p><strong>Office:</strong> <?php echo htmlspecialchars($user['office'] ?? 'Not Set'); ?></p>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
-<!-- 👥 All Other Roles -->
-<?php foreach ($groupedByRole as $role => $usersInRole): ?>
-    <h2 class="role-header"><?php echo htmlspecialchars($role); ?></h2>
-    <?php foreach ($usersInRole as $user): ?>
-        <?php
-        $profilePicPath = $user['profile_pic'];
-        if (!str_starts_with($profilePicPath, "../")) {
-            $profilePicPath = "../" . $profilePicPath;
-        }
-        if (!file_exists($profilePicPath) || empty($user['profile_pic'])) {
-            $profilePicPath = "../profile/images/default-profile.jpg";
-        }
-        ?>
-        <div class="staff-card" onclick="location.href='../profile/profile.php?id=<?php echo htmlspecialchars($user['id']); ?>'">
-            <img src="<?php echo htmlspecialchars($profilePicPath); ?>" alt="Profile Picture">
-            <h2><?php echo htmlspecialchars($user['full_name']); ?></h2>
-            <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role_with_department']); ?></p>
-            <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-            <p><strong>Office:</strong> <?php echo htmlspecialchars($user['office'] ?? 'Not Set'); ?></p>
-        </div>
-    <?php endforeach; ?>
-<?php endforeach; ?>
+        <!-- 👥 All Other Roles -->
+        <?php foreach ($groupedByRole as $role => $usersInRole): ?>
+            <h2 class="role-header"><?php echo htmlspecialchars($role); ?></h2>
+            <?php foreach ($usersInRole as $user): ?>
+                <?php
+                $profilePicPath = $user['profile_pic'];
+                if (!str_starts_with($profilePicPath, "../")) {
+                    $profilePicPath = "../" . $profilePicPath;
+                }
+                if (!file_exists($profilePicPath) || empty($user['profile_pic'])) {
+                    $profilePicPath = "../profile/images/default-profile.jpg";
+                }
+                ?>
+                <div class="staff-card" onclick="location.href='../profile/profile.php?id=<?php echo htmlspecialchars($user['id']); ?>'">
+                    <img src="<?php echo htmlspecialchars($profilePicPath); ?>" alt="Profile Picture">
+                    <h2><?php echo htmlspecialchars($user['full_name']); ?></h2>
+                    <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role_with_department']); ?></p>
+                    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+                    <p><strong>Office:</strong> <?php echo htmlspecialchars($user['office'] ?? 'Not Set'); ?></p>
+                </div>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
 
-</div>
+    </div>
 
 
 
 
     <script>
-    function openProfile(userId) {
-        window.location.href = "../profile/profile.php?id=" + userId;
-    }
+        function openProfile(userId) {
+            window.location.href = "../profile/profile.php?id=" + userId;
+        }
 
-    let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
-    let currentPageUrl = window.location.pathname + window.location.search;
-    let currentPageName = new URLSearchParams(window.location.search).get('department') || 'Staff';
+        let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
+        let currentPageUrl = window.location.pathname + window.location.search;
+        let currentPageName = new URLSearchParams(window.location.search).get('department') || 'Staff';
 
 
 
-    let pageExists = breadcrumbs.some(breadcrumb => breadcrumb.url === currentPageUrl);
-    if (!pageExists) {
-        breadcrumbs.push({ name: currentPageName, url: currentPageUrl });
-        sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
-    }
-
-    let breadcrumbList = document.getElementById('breadcrumb-list');
-    breadcrumbList.innerHTML = '';
-    breadcrumbs.forEach((breadcrumb, index) => {
-        let breadcrumbItem = document.createElement('li');
-        let link = document.createElement('a');
-        link.href = breadcrumb.url;
-        link.textContent = breadcrumb.name;
-
-        link.addEventListener('click', function (event) {
-            event.preventDefault();
-            breadcrumbs = breadcrumbs.slice(0, index + 1);
+        let pageExists = breadcrumbs.some(breadcrumb => breadcrumb.url === currentPageUrl);
+        if (!pageExists) {
+            breadcrumbs.push({
+                name: currentPageName,
+                url: currentPageUrl
+            });
             sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
-            window.location.href = breadcrumb.url;
+        }
+
+        let breadcrumbList = document.getElementById('breadcrumb-list');
+        breadcrumbList.innerHTML = '';
+        breadcrumbs.forEach((breadcrumb, index) => {
+            let breadcrumbItem = document.createElement('li');
+            let link = document.createElement('a');
+            link.href = breadcrumb.url;
+            link.textContent = breadcrumb.name;
+
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                breadcrumbs = breadcrumbs.slice(0, index + 1);
+                sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
+                window.location.href = breadcrumb.url;
+            });
+
+            breadcrumbItem.appendChild(link);
+            breadcrumbList.appendChild(breadcrumbItem);
+
+            if (index < breadcrumbs.length - 1) {
+                let separator = document.createElement('span');
+                separator.textContent = ' > ';
+                breadcrumbList.appendChild(separator);
+            }
         });
 
-        breadcrumbItem.appendChild(link);
-        breadcrumbList.appendChild(breadcrumbItem);
+        //favorite
+        const pageName = "<?php echo $page_name; ?>";
+        const pageUrl = "<?php echo $page_url; ?>";
+        const button = document.getElementById('favoriteButton');
 
-        if (index < breadcrumbs.length - 1) {
-            let separator = document.createElement('span');
-            separator.textContent = ' > ';
-            breadcrumbList.appendChild(separator);
+        // Check if already favorited when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            const exists = favorites.find(fav => fav.pageName === pageName);
+            if (exists) {
+                button.classList.add('favorited');
+                button.textContent = 'Favorited';
+            }
+        });
+
+        function toggleFavorite() {
+            let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+
+            const index = favorites.findIndex(fav => fav.pageName === pageName);
+
+            if (index === -1) {
+                // Not favorited yet, add it
+                favorites.push({
+                    pageName: pageName,
+                    pageUrl: pageUrl
+                });
+                button.classList.add('favorited');
+                button.textContent = 'Favorited';
+            } else {
+                // Already favorited, remove it
+                favorites.splice(index, 1);
+                button.classList.remove('favorited');
+                button.textContent = 'Add to Favorite';
+            }
+
+            localStorage.setItem('favorites', JSON.stringify(favorites));
         }
-    });
-   
-//favorite
-const pageName = "<?php echo $page_name; ?>";
-const pageUrl = "<?php echo $page_url; ?>";
-const button = document.getElementById('favoriteButton');
-
-// Check if already favorited when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    const exists = favorites.find(fav => fav.pageName === pageName);
-    if (exists) {
-        button.classList.add('favorited');
-        button.textContent = 'Favorited';
-    }
-});
-
-function toggleFavorite() {
-    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-
-    const index = favorites.findIndex(fav => fav.pageName === pageName);
-
-    if (index === -1) {
-        // Not favorited yet, add it
-        favorites.push({ pageName: pageName, pageUrl: pageUrl });
-        button.classList.add('favorited');
-        button.textContent = 'Favorited';
-    } else {
-        // Already favorited, remove it
-        favorites.splice(index, 1);
-        button.classList.remove('favorited');
-        button.textContent = 'Add to Favorite';
-    }
-
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-}
-
- 
     </script>
 
 </body>

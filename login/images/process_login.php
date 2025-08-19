@@ -1,11 +1,7 @@
 <?php
 session_start();
 require_once '../mypbra_connect.php'; // Ensure this path is correct!
-require_once '../mailer.php'; // Load the mailer configuration/instance
-require_once '../login/otp_notification.php'; // Include the file containing the showOtpNotification function
-
-// Get the PHPMailer instance from mailer.php
-$mail = require '../mailer.php'; // Assuming mailer.php returns the PHPMailer object
+require_once '../mailer.php'; // For sending OTP email
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
@@ -19,16 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // First check if the is_verified column exists
     $columnExists = false;
-    // Using prepare/execute for SHOW COLUMNS is not typical and can be less robust.
-    // A direct query is often used for schema checks, but let's stick to your pattern if it works.
-    $checkColumnStmt = $conn->prepare("SHOW COLUMNS FROM users LIKE 'is_verified'");
-    if ($checkColumnStmt) {
-        $checkColumnStmt->execute();
-        $checkColumnResult = $checkColumnStmt->get_result();
-        if ($checkColumnResult->num_rows > 0) {
-            $columnExists = true;
-        }
-        $checkColumnStmt->close(); // Close the statement for column check
+    $checkColumn = $conn->query("SHOW COLUMNS FROM users LIKE 'is_verified'");
+    if ($checkColumn->num_rows > 0) {
+        $columnExists = true;
     }
 
     // Prepare and execute SQL query with or without is_verified column
@@ -64,13 +53,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_type'] = $user['user_type'];
 
                 if ($user['user_type'] === 'admin') {
-                    // Call the centralized OTP sending function
-                    if (showOtpNotification($user, $mail)) {
+                    // Generate OTP
+                    $otp = rand(100000, 999999);
+                    $_SESSION['otp'] = $otp;
+                    $_SESSION['otp_expiry'] = time() + 300; // 5 minutes
+
+                    // Send OTP to admin's recovery email
+                    $mail = require '../mailer.php';
+                    $mail->clearAddresses();
+                    $mail->setFrom('noreply@pb.edu.bn', 'Politeknik Brunei Role Appointment System');
+                    $mail->addAddress($user['recovery_email']);
+                    $mail->Subject = "Your PBRA Admin Login OTP";
+                    $mail->Body = "Your OTP for admin login is: <b>$otp</b><br>This code will expire in 5 minutes.";
+                    $mail->AltBody = "Your OTP for admin login is: $otp\nThis code will expire in 5 minutes.";
+                    try {
+                        $mail->send();
                         $stmt->close();
                         header("Location: ../login/verify_otp.php");
                         exit();
-                    } else {
-                        // OTP email failed to send
+                    } catch (Exception $e) {
                         $_SESSION['login_error'] = "Failed to send OTP email. Please contact IT support.";
                         $stmt->close();
                         header("Location: ../login/login.php");

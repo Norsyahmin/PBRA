@@ -1,0 +1,131 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(135deg, #e3f0ff 0%, #cbe2ff 100%);
+    min-height: 100vh;
+}
+
+.otp-bg {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.otp-header {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.otp-header img {
+    margin-bottom: 10px;
+}
+
+.otp-header h1 {
+    font-size: 2rem;
+    color: #1a397b;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.otp-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 30px;
+}
+
+.otp-form {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(30, 64, 175, 0.08);
+    padding: 40px 32px 32px 32px;
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.otp-form h2 {
+    text-align: center;
+    color: #1a397b;
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+    font-weight: 500;
+}
+
+.otp-form label {
+    font-size: 1rem;
+    color: #1a397b;
+    margin-bottom: 8px;
+    font-weight: 500;
+    display: block;
+}
+
+.otp-form input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #c0c0c0;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-bottom: 18px;
+    box-sizing: border-box;
+    background: #f7faff;
+    transition: border-color 0.2s;
+}
+
+.otp-form input[type="text"]:focus {
+    border-color: #1a397b;
+    outline: none;
+}
+
+.otp-form button[type="submit"] {
+    width: 100%;
+    background: #1a397b;
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 12px 0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 8px;
+    transition: background 0.2s;
+}
+
+.otp-form button[type="submit"]:hover {
+    background: #274bb6;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    font-size: 0.95em;
+}
+
+.error-message i {
+    margin-right: 8px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    color: #1a397b;
+    font-size: 0.95em;
+    letter-spacing: 0.02em;
+}

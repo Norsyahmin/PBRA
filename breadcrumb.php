@@ -1,9 +1,10 @@
 <?php
-function generateBreadcrumb() {
+function generateBreadcrumb()
+{
     $path = $_SERVER['REQUEST_URI']; // Get current URL path
     $parts = explode("/", trim($path, "/")); // Split URL into parts
     $breadcrumb = '<ul id="breadcrumb">';
-    
+
     $breadcrumb .= '<li><a href="/homepage/homepage.html">Home</a></li>'; // Home link
     $link = "";
 
@@ -16,4 +17,3 @@ function generateBreadcrumb() {
     $breadcrumb .= '</ul>';
     return $breadcrumb;
 }
-?>

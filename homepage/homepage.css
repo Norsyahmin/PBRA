@@ -7,6 +7,9 @@ body {
     color: #333;
     line-height: 1.6;
     min-height: 100vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Content Body */
@@ -16,6 +19,7 @@ body {
     max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
+    flex: 1 0 auto;
 }
 
 /* Favorites Section */
@@ -94,8 +98,8 @@ body {
     margin-bottom: 30px;
 }
 
-.role-container, 
-.events-container, 
+.role-container,
+.events-container,
 .pbstaff-container {
     background-color: white;
     border: 1px solid #e1e6f0;
@@ -107,8 +111,8 @@ body {
     overflow: hidden;
 }
 
-.role-container:before, 
-.events-container:before, 
+.role-container:before,
+.events-container:before,
 .pbstaff-container:before {
     content: "";
     position: absolute;
@@ -119,8 +123,8 @@ body {
     background: linear-gradient(to bottom, #174080, #4a89dc);
 }
 
-.role-container:hover, 
-.events-container:hover, 
+.role-container:hover,
+.events-container:hover,
 .pbstaff-container:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(23, 64, 128, 0.15);
@@ -176,14 +180,21 @@ body {
     background-clip: initial;
 }
 
-.feedback h, 
-.report h, 
+.feedback h,
+.report h,
 .user-support h {
     color: #174080;
     margin: 0;
     font-size: 0.9rem;
     font-weight: 600;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Ensure footer sticks to bottom and no gap */
+footer {
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
 }
 
 /* Responsive adjustments for modal */
@@ -200,36 +211,21 @@ body {
         width: 95%;
         padding: 15px;
     }
-    
+
     .toolbar {
         gap: 5px;
     }
-    
+
     .toolbar button {
         padding: 5px 8px;
         font-size: 0.8rem;
     }
-    
+
     .rich-text-box {
         height: 150px;
     }
 }
 
-
-/* Footer */
-footer {
-    background: linear-gradient(135deg, #174080 0%, #2a5ba0 100%);
-    color: white;
-    text-align: center;
-    padding: 25px;
-    margin-top: 50px;
-    box-shadow: 0 -4px 12px rgba(23, 64, 128, 0.1);
-}
-
-footer p {
-    margin: 0;
-    letter-spacing: 0.5px;
-}
 
 /* Responsive Design */
 @media (max-width: 1024px) {
@@ -243,16 +239,16 @@ footer p {
         padding: 20px;
         margin-top: 70px;
     }
-    
+
     .favorites-container,
     .announcements {
         padding: 20px;
     }
-    
+
     .feature-container {
         grid-template-columns: 1fr;
     }
-    
+
     .modal-content {
         width: 80%;
         margin: 10% auto;
@@ -263,17 +259,17 @@ footer p {
     .content-body {
         padding: 15px;
     }
-    
+
     .favorites-container,
     .announcements {
         padding: 15px;
     }
-    
+
     .modal-content {
         width: 95%;
         padding: 20px;
     }
-    
+
     .favorite-tabs {
         flex-direction: column;
         align-items: flex-start;
