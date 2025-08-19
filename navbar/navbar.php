@@ -47,7 +47,7 @@ $stmt->execute();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../navbar.css">
+    <link rel="stylesheet" href="../navbar/navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Navbar</title>
@@ -65,7 +65,6 @@ $stmt->execute();
             <div id="search-results" class="search-results"></div>
         </div>
     </div>
-
 
     <div class="nav-right">
         <button class="mail-button" onclick="window.location.href='../mails/mail_page.php';" style="cursor: pointer;">
@@ -114,11 +113,13 @@ $stmt->execute();
             <li><a href="../feedback/feedback.php">Feedback</a></li>
             <li><a href="../report/report.php">Report</a></li>
             <li><a href="../usersupport/usersupport.php">User Support</a></li>
-            <li><a href="../registration/register.php">Register User</a></li>
+            <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin') { ?>
+                <li><a href="../registration/register.php">Register User</a></li>
+            <?php } ?>
         </ul>
     </div>
 
 
 </nav>
 
-<script src="../navbar.js"></script> <!-- Load the external JS -->
+<script src="../navbar/navbar.js"></script> <!-- Load the external JS -->

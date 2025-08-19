@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../includes/language_setup.php'; // Ensure language setup is included
+include '../languages/language_setup.php'; // Ensure language setup is included
 
 // Get messages from session or query parameters
 $error_message = $_SESSION['forgot_error'] ?? ($_GET['error'] ?? '');

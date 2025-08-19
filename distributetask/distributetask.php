@@ -41,15 +41,15 @@ $stmt_fav->close();
 </head>
 
 <header>
-  <?php include '../includes/navbar.php'; ?>
+  <?php include '../navbar/navbar.php'; ?>
 </header>
 
 <body onload="fetchNotifications(); showSuccessMessage();">
   <div class="page-title">
     <h1 style="font-size: 30px;">DISTRIBUTE TASK</h1>
     <button type="button" id="favoriteButton" class="favorite-button" onclick="toggleFavorite()">
-    Add to Favorite
-</button>
+      Add to Favorite
+    </button>
   </div>
 
   <div class="breadcrumb">
@@ -193,85 +193,89 @@ $stmt_fav->close();
       });
     }
 
-// Breadcrumbs
-let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
-let currentPageUrl = window.location.pathname;
+    // Breadcrumbs
+    let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
+    let currentPageUrl = window.location.pathname;
 
-// 🧠 Instead of hardcoding, get <title> automatically
-let currentPageName = document.title.trim(); 
+    // 🧠 Instead of hardcoding, get <title> automatically
+    let currentPageName = document.title.trim();
 
-let pageExists = breadcrumbs.some(b => b.url === currentPageUrl);
+    let pageExists = breadcrumbs.some(b => b.url === currentPageUrl);
 
-if (!pageExists) {
-  breadcrumbs.push({ name: currentPageName, url: currentPageUrl });
-  sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
-}
-
-let breadcrumbList = document.getElementById('breadcrumb-list');
-breadcrumbList.innerHTML = '';
-
-breadcrumbs.forEach((breadcrumb, index) => {
-  let item = document.createElement('li');
-  let link = document.createElement('a');
-  link.href = breadcrumb.url;
-  link.textContent = breadcrumb.name;
-  
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    breadcrumbs = breadcrumbs.slice(0, index + 1);
-    sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
-    window.location.href = breadcrumb.url;
-  });
-
-  item.appendChild(link);
-  breadcrumbList.appendChild(item);
-
-  if (index < breadcrumbs.length - 1) {
-    let separator = document.createElement('span');
-    separator.textContent = ' > ';
-    breadcrumbList.appendChild(separator);
-  }
-});
-
-  
-
-//favorite
-const pageName = "<?php echo $page_name; ?>";
-const pageUrl = "<?php echo $page_url; ?>";
-const button = document.getElementById('favoriteButton');
-
-// Check if already favorited when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    const exists = favorites.find(fav => fav.pageName === pageName);
-    if (exists) {
-        button.classList.add('favorited');
-        button.textContent = 'Favorited';
+    if (!pageExists) {
+      breadcrumbs.push({
+        name: currentPageName,
+        url: currentPageUrl
+      });
+      sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
     }
-});
 
-function toggleFavorite() {
-    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    let breadcrumbList = document.getElementById('breadcrumb-list');
+    breadcrumbList.innerHTML = '';
 
-    const index = favorites.findIndex(fav => fav.pageName === pageName);
+    breadcrumbs.forEach((breadcrumb, index) => {
+      let item = document.createElement('li');
+      let link = document.createElement('a');
+      link.href = breadcrumb.url;
+      link.textContent = breadcrumb.name;
 
-    if (index === -1) {
-        // Not favorited yet, add it
-        favorites.push({ pageName: pageName, pageUrl: pageUrl });
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        breadcrumbs = breadcrumbs.slice(0, index + 1);
+        sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
+        window.location.href = breadcrumb.url;
+      });
+
+      item.appendChild(link);
+      breadcrumbList.appendChild(item);
+
+      if (index < breadcrumbs.length - 1) {
+        let separator = document.createElement('span');
+        separator.textContent = ' > ';
+        breadcrumbList.appendChild(separator);
+      }
+    });
+
+
+
+    //favorite
+    const pageName = "<?php echo $page_name; ?>";
+    const pageUrl = "<?php echo $page_url; ?>";
+    const button = document.getElementById('favoriteButton');
+
+    // Check if already favorited when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+      const exists = favorites.find(fav => fav.pageName === pageName);
+      if (exists) {
         button.classList.add('favorited');
         button.textContent = 'Favorited';
-    } else {
+      }
+    });
+
+    function toggleFavorite() {
+      let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+
+      const index = favorites.findIndex(fav => fav.pageName === pageName);
+
+      if (index === -1) {
+        // Not favorited yet, add it
+        favorites.push({
+          pageName: pageName,
+          pageUrl: pageUrl
+        });
+        button.classList.add('favorited');
+        button.textContent = 'Favorited';
+      } else {
         // Already favorited, remove it
         favorites.splice(index, 1);
         button.classList.remove('favorited');
         button.textContent = 'Add to Favorite';
+      }
+
+      localStorage.setItem('favorites', JSON.stringify(favorites));
     }
-
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-}
-
- 
-    </script>
+  </script>
 
 </body>
 

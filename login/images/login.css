@@ -1,0 +1,286 @@
+/* Base Styles */
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #b7d4ff 0%, #ffffff 100%);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Logo Styles */
+img {
+    width: auto;
+    height: 100px;
+    /* Fixed height maintains aspect ratio */
+    margin-bottom: 30px;
+    object-fit: contain;
+    /* Prevents stretching */
+    transition: all 0.3s ease;
+}
+
+img:hover {
+    transform: scale(1.05);
+}
+
+/* Heading Styles */
+h1 {
+    color: #174080;
+    font-size: 2.2rem;
+    margin: 0 0 50px 0;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.5px;
+}
+
+h1 span {
+    display: block;
+    font-size: 1.8rem;
+    margin-top: 10px;
+    color: #2a5ba0;
+}
+
+/* Container Styles */
+.container {
+    width: 100%;
+    max-width: 80%;
+    /* Wider container */
+    padding: 0 20px;
+}
+
+.login-form {
+    background: linear-gradient(to right, #ffffff 0%, #f8faff 100%);
+    border: 1px solid #e1e6f0;
+    border-radius: 12px;
+    padding: 50px 40px;
+    box-shadow: 0 8px 20px rgba(23, 64, 128, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.login-form:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(to bottom, #174080, #4a89dc);
+}
+
+/* Form Elements */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    /* Increased spacing */
+    width: 97%;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    /* Space between label and input */
+}
+
+label {
+    text-align: left;
+    color: #174080;
+    font-weight: 600;
+    font-size: 1rem;
+    padding-left: 15px;
+    position: relative;
+}
+
+label:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background: #2e45ff;
+    border-radius: 50%;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 16px 20px;
+    border: 1px solid #e1e6f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #a8c6f5;
+    box-shadow: 0 0 0 3px rgba(23, 64, 128, 0.1);
+    outline: none;
+}
+
+input::placeholder {
+    color: #aaa;
+    font-size: 0.95rem;
+}
+
+/* Button Styles */
+button[type="submit"] {
+    background: linear-gradient(135deg, #174080 0%, #2a5ba0 100%);
+    color: white;
+    padding: 18px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px rgba(23, 64, 128, 0.2);
+    letter-spacing: 0.5px;
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, #2a5ba0 0%, #174080 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(23, 64, 128, 0.3);
+}
+
+/* Error Message Styles */
+.error-message {
+    background: linear-gradient(135deg, rgba(217, 83, 79, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+    color: #d9534f;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #d9534f;
+    font-size: 0.95rem;
+    text-align: left;
+    margin: -10px 0 15px 0;
+    /* Adjusted margin to fit within form context */
+    animation: fadeIn 0.4s ease-out;
+    display: flex;
+    /* Added for icon alignment */
+    align-items: center;
+    /* Added for icon alignment */
+}
+
+.error-message i {
+    margin-right: 8px;
+    /* Space between icon and text */
+}
+
+
+/* Success Message Styles (Reiterated from inline for clarity if it were in the CSS file) */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    border-left: 4px solid #28a745;
+    /* Green border for success */
+    animation: fadeIn 0.4s ease-out;
+    /* Added for consistency */
+}
+
+.success-message i {
+    margin-right: 8px;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 30px 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 40px;
+    }
+
+    .login-form {
+        padding: 40px 30px;
+    }
+
+    form {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 20px 15px;
+    }
+
+    img {
+        height: 80px;
+        margin-bottom: 25px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+
+    .login-form {
+        padding: 30px 20px;
+        border-radius: 10px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+        padding: 14px 18px;
+    }
+
+    button[type="submit"] {
+        padding: 16px;
+    }
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    border-left: 4px solid #28a745;
+    /* Green border for success */
+}
+
+.success-message i {
+    margin-right: 8px;
+    /* Space between icon and text */
+}

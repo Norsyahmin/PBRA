@@ -10,7 +10,6 @@ require_once '../account_activation/send_verification_email.php';
 // Include registration notification functions
 require_once 'registration_notification.php';
 
-include '../includes/navbar.php';
 $success_message = '';
 $error_message = '';
 
@@ -130,13 +129,27 @@ function get_field_value($field_name, $default = '')
 <head>
     <title>Register New User</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="register.css">
+    <link rel="stylesheet" href="../registration/register.css">
 </head>
 
 <body>
-    <div class="container">
-        <h2>Register New User</h2>
-        <div class="subtitle">Fill out the form below to create a new user account.</div>
+    <header>
+        <?php include '../navbar/navbar.php'; ?>
+    </header>
+    <!-- Breadcrumb bar -->
+    <div class="breadcrumb">
+        <ul id="breadcrumb-list"></ul>
+    </div>
+    <!-- Page header with title (removed create user button) -->
+    <div class="page-title">
+        <h1>Register New User</h1>
+    </div>
+    <!-- Card-style registration form -->
+    <div class="reg-card">
+        <div class="reg-card-header">
+            <span class="reg-card-title">User Registration</span>
+            <span class="reg-card-desc">Fill out the form below to create a new user account.</span>
+        </div>
         <?php if ($success_message): ?>
             <div class="success"><?= $success_message ?></div>
         <?php endif; ?>
@@ -208,9 +221,12 @@ function get_field_value($field_name, $default = '')
 
             <label>Education:</label>
             <textarea name="education" rows="3" placeholder="Enter education details (Institution, Degree, Year)"><?= get_field_value('education'); ?></textarea>
-
             <input type="hidden" name="final_submit" value="1">
-            <button type="button" class="submit-btn" onclick="showSummary()">Proceed to Confirmation</button>
+            <!-- Form action buttons at bottom right -->
+            <div class="form-actions-right">
+                <button type="button" class="delete-btn" onclick="window.location.href='../homepage/homepage.php'">Cancel</button>
+                <button type="button" class="edit-btn" onclick="showSummary()">Proceed to Confirmation</button>
+            </div>
         </form>
     </div>
     <!-- Modal for summary -->
@@ -224,16 +240,49 @@ function get_field_value($field_name, $default = '')
             </div>
         </div>
     </div>
-
     <script>
         // Roles data for JS filtering
         const rolesData = <?= json_encode($roles); ?>;
         // Pre-fill role if coming back from confirmation
         const selectedDepartment = "<?= get_field_value('department'); ?>";
         const selectedRole = "<?= get_field_value('role'); ?>";
+
+        // Breadcrumbs (copied from report.php)
+        let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
+        let currentPageUrl = window.location.pathname;
+        let currentPageName = document.title.trim();
+        let pageExists = breadcrumbs.some(b => b.url === currentPageUrl);
+        if (!pageExists) {
+            breadcrumbs.push({
+                name: currentPageName,
+                url: currentPageUrl
+            });
+            sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
+        }
+        let breadcrumbList = document.getElementById('breadcrumb-list');
+        breadcrumbList.innerHTML = '';
+        breadcrumbs.forEach((breadcrumb, index) => {
+            let item = document.createElement('li');
+            let link = document.createElement('a');
+            link.href = breadcrumb.url;
+            link.textContent = breadcrumb.name;
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                breadcrumbs = breadcrumbs.slice(0, index + 1);
+                sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
+                window.location.href = breadcrumb.url;
+            });
+            item.appendChild(link);
+            breadcrumbList.appendChild(item);
+            if (index < breadcrumbs.length - 1) {
+                let separator = document.createElement('span');
+                separator.textContent = ' > ';
+                breadcrumbList.appendChild(separator);
+            }
+        });
     </script>
     <script src="register.js"></script>
-    <?php include '../includes/footer.php'; ?>
+    <?php include '../footer/footer.php'; ?>
 </body>
 
 </html>

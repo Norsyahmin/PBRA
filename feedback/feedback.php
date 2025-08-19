@@ -21,6 +21,7 @@ if (isset($_GET['success'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,16 +30,17 @@ if (isset($_GET['success'])) {
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Feedback</title>
 </head>
+
 <body onload="fetchNotifications()">
 
-    <?php include '../includes/navbar.php'; ?>
+    <?php include '../navbar/navbar.php'; ?>
 
     <!-- Page Title -->
     <div class="page-title">
         <h1 style="font-size: 30px;">FEEDBACK</h1>
         <button type="button" id="favoriteButton" class="favorite-button" onclick="toggleFavorite()">
-    Add to Favorite
-</button>
+            Add to Favorite
+        </button>
     </div>
 
     <div class="breadcrumb">
@@ -77,8 +79,8 @@ if (isset($_GET['success'])) {
                 <div id="file-info"></div>
             </div>
 
-             <!-- Rating System -->
-             <label>Rate Us:</label>
+            <!-- Rating System -->
+            <label>Rate Us:</label>
             <div class="rating">
                 <i class="fa fa-star" data-value="1"></i>
                 <i class="fa fa-star" data-value="2"></i>
@@ -102,152 +104,156 @@ if (isset($_GET['success'])) {
         <?php endif; ?>
     </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const stars = document.querySelectorAll(".rating i");
-    const ratingInput = document.getElementById("rating-value");
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const stars = document.querySelectorAll(".rating i");
+            const ratingInput = document.getElementById("rating-value");
 
-    stars.forEach((star, index) => {
-        star.addEventListener("click", function() {
-            let value = index + 1; // Get the star value (1-5)
-            ratingInput.value = value;
+            stars.forEach((star, index) => {
+                star.addEventListener("click", function() {
+                    let value = index + 1; // Get the star value (1-5)
+                    ratingInput.value = value;
 
-            // Reset all stars
-            stars.forEach(s => s.classList.remove("selected"));
+                    // Reset all stars
+                    stars.forEach(s => s.classList.remove("selected"));
 
-            // Highlight the clicked star and all previous ones
-            for (let i = 0; i < value; i++) {
-                stars[i].classList.add("selected");
+                    // Highlight the clicked star and all previous ones
+                    for (let i = 0; i < value; i++) {
+                        stars[i].classList.add("selected");
+                    }
+
+                    // Force reflow to apply color change
+                    this.offsetHeight;
+                });
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            const dropArea = document.getElementById("drop-area");
+            const fileInput = document.getElementById("attached-files");
+            const fileInfo = document.getElementById("file-info");
+            const fileLabel = document.getElementById("file-label");
+
+            // Prevent default behavior for drag & drop
+            ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+                dropArea.addEventListener(eventName, (e) => e.preventDefault(), false);
+                document.body.addEventListener(eventName, (e) => e.preventDefault(), false);
+            });
+
+            dropArea.addEventListener("dragover", () => dropArea.classList.add("drag-over"));
+            dropArea.addEventListener("dragleave", () => dropArea.classList.remove("drag-over"));
+
+            dropArea.addEventListener("drop", (e) => {
+                dropArea.classList.remove("drag-over");
+
+                if (e.dataTransfer.files.length > 0) {
+                    fileInput.files = e.dataTransfer.files;
+                    updateFileInfo(e.dataTransfer.files);
+                }
+            });
+
+            fileInput.addEventListener("change", function() {
+                if (this.files.length > 0) {
+                    updateFileInfo(this.files);
+                }
+            });
+
+            function updateFileInfo(files) {
+                fileInfo.innerHTML = ""; // Clear previous info
+                for (let i = 0; i < files.length; i++) {
+                    let file = files[i];
+                    fileInfo.innerHTML += `<p><i class="fa fa-file"></i> ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</p>`;
+                }
+                fileLabel.innerHTML = `<i class="fa fa-check-circle"></i> Files Attached`;
+            }
+        });
+
+
+        function closePopup() {
+            document.getElementById("successPopup").style.display = "none";
+        }
+
+
+        // Breadcrumbs
+        // Breadcrumbs
+        let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
+        let currentPageUrl = window.location.pathname;
+
+        // 🧠 Instead of hardcoding, get <title> automatically
+        let currentPageName = document.title.trim();
+
+        let pageExists = breadcrumbs.some(b => b.url === currentPageUrl);
+
+        if (!pageExists) {
+            breadcrumbs.push({
+                name: currentPageName,
+                url: currentPageUrl
+            });
+            sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
+        }
+
+        let breadcrumbList = document.getElementById('breadcrumb-list');
+        breadcrumbList.innerHTML = '';
+
+        breadcrumbs.forEach((breadcrumb, index) => {
+            let item = document.createElement('li');
+            let link = document.createElement('a');
+            link.href = breadcrumb.url;
+            link.textContent = breadcrumb.name;
+
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                breadcrumbs = breadcrumbs.slice(0, index + 1);
+                sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
+                window.location.href = breadcrumb.url;
+            });
+
+            item.appendChild(link);
+            breadcrumbList.appendChild(item);
+
+            if (index < breadcrumbs.length - 1) {
+                let separator = document.createElement('span');
+                separator.textContent = ' > ';
+                breadcrumbList.appendChild(separator);
+            }
+        });
+
+        //favorite
+        const pageName = "<?php echo $page_name; ?>";
+        const pageUrl = "<?php echo $page_url; ?>";
+        const button = document.getElementById('favoriteButton');
+
+        // Check if already favorited when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            const exists = favorites.find(fav => fav.pageName === pageName);
+            if (exists) {
+                button.classList.add('favorited');
+                button.textContent = 'Favorited';
+            }
+        });
+
+        function toggleFavorite() {
+            let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+
+            const index = favorites.findIndex(fav => fav.pageName === pageName);
+
+            if (index === -1) {
+                // Not favorited yet, add it
+                favorites.push({
+                    pageName: pageName,
+                    pageUrl: pageUrl
+                });
+                button.classList.add('favorited');
+                button.textContent = 'Favorited';
+            } else {
+                // Already favorited, remove it
+                favorites.splice(index, 1);
+                button.classList.remove('favorited');
+                button.textContent = 'Add to Favorite';
             }
 
-            // Force reflow to apply color change
-            this.offsetHeight;
-        });
-    });
-});
-document.addEventListener("DOMContentLoaded", function() {
-    const dropArea = document.getElementById("drop-area");
-    const fileInput = document.getElementById("attached-files");
-    const fileInfo = document.getElementById("file-info");
-    const fileLabel = document.getElementById("file-label");
-
-    // Prevent default behavior for drag & drop
-    ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
-        dropArea.addEventListener(eventName, (e) => e.preventDefault(), false);
-        document.body.addEventListener(eventName, (e) => e.preventDefault(), false);
-    });
-
-    dropArea.addEventListener("dragover", () => dropArea.classList.add("drag-over"));
-    dropArea.addEventListener("dragleave", () => dropArea.classList.remove("drag-over"));
-
-    dropArea.addEventListener("drop", (e) => {
-        dropArea.classList.remove("drag-over");
-
-        if (e.dataTransfer.files.length > 0) {
-            fileInput.files = e.dataTransfer.files;
-            updateFileInfo(e.dataTransfer.files);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
         }
-    });
-
-    fileInput.addEventListener("change", function() {
-        if (this.files.length > 0) {
-            updateFileInfo(this.files);
-        }
-    });
-
-    function updateFileInfo(files) {
-        fileInfo.innerHTML = ""; // Clear previous info
-        for (let i = 0; i < files.length; i++) {
-            let file = files[i];
-            fileInfo.innerHTML += `<p><i class="fa fa-file"></i> ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</p>`;
-        }
-        fileLabel.innerHTML = `<i class="fa fa-check-circle"></i> Files Attached`;
-    }
-});
-
-
-    function closePopup() {
-        document.getElementById("successPopup").style.display = "none";
-    }
-
-
-// Breadcrumbs
-// Breadcrumbs
-let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
-let currentPageUrl = window.location.pathname;
-
-// 🧠 Instead of hardcoding, get <title> automatically
-let currentPageName = document.title.trim(); 
-
-let pageExists = breadcrumbs.some(b => b.url === currentPageUrl);
-
-if (!pageExists) {
-  breadcrumbs.push({ name: currentPageName, url: currentPageUrl });
-  sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
-}
-
-let breadcrumbList = document.getElementById('breadcrumb-list');
-breadcrumbList.innerHTML = '';
-
-breadcrumbs.forEach((breadcrumb, index) => {
-  let item = document.createElement('li');
-  let link = document.createElement('a');
-  link.href = breadcrumb.url;
-  link.textContent = breadcrumb.name;
-  
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    breadcrumbs = breadcrumbs.slice(0, index + 1);
-    sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
-    window.location.href = breadcrumb.url;
-  });
-
-  item.appendChild(link);
-  breadcrumbList.appendChild(item);
-
-  if (index < breadcrumbs.length - 1) {
-    let separator = document.createElement('span');
-    separator.textContent = ' > ';
-    breadcrumbList.appendChild(separator);
-  }
-});
-
-//favorite
-const pageName = "<?php echo $page_name; ?>";
-const pageUrl = "<?php echo $page_url; ?>";
-const button = document.getElementById('favoriteButton');
-
-// Check if already favorited when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    const exists = favorites.find(fav => fav.pageName === pageName);
-    if (exists) {
-        button.classList.add('favorited');
-        button.textContent = 'Favorited';
-    }
-});
-
-function toggleFavorite() {
-    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-
-    const index = favorites.findIndex(fav => fav.pageName === pageName);
-
-    if (index === -1) {
-        // Not favorited yet, add it
-        favorites.push({ pageName: pageName, pageUrl: pageUrl });
-        button.classList.add('favorited');
-        button.textContent = 'Favorited';
-    } else {
-        // Already favorited, remove it
-        favorites.splice(index, 1);
-        button.classList.remove('favorited');
-        button.textContent = 'Add to Favorite';
-    }
-
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-}
-
- 
     </script>
 
 </body>

@@ -6,7 +6,7 @@ if (!isset($_SESSION['id'])) {
 }
 
 include '../mypbra_connect.php';
-include_once '../includes/language_setup.php';
+include_once '../languages/language_setup.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -91,7 +91,7 @@ if (!$result) {
 
 <body onload="fetchNotifications()">
     <header>
-        <?php include '../includes/navbar.php'; ?>
+        <?php include '../navbar/navbar.php'; ?>
     </header>
 
     <div class="content-body">
@@ -143,11 +143,6 @@ if (!$result) {
         </div>
 
     </div>
-
-
-    <footer>
-        <p><?= get_text('footer_text', '&copy; 2025 Politeknik Brunei Role Appointment (PbRA). All rights reserved.'); ?></p>
-    </footer>
 
     <script>
         function formatText(command) {
@@ -268,7 +263,7 @@ if (!$result) {
             }
         });
     </script>
-
+    <?php include '../footer/footer.php'; ?>
 </body>
 
 </html>

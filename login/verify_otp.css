@@ -1,131 +1,103 @@
-body,
-html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+/* Import the main login styles to ensure consistency */
+@import url('login.css');
+
+/* Specific overrides for the OTP page */
+
+body {
+    /* Keep the background consistent or subtly different if desired */
     background: linear-gradient(135deg, #e3f0ff 0%, #cbe2ff 100%);
-    min-height: 100vh;
-}
-
-.otp-bg {
-    min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.otp-header {
-    text-align: center;
-    margin-top: 40px;
-    margin-bottom: 20px;
-}
-
-.otp-header img {
-    margin-bottom: 10px;
-}
-
-.otp-header h1 {
-    font-size: 2rem;
-    color: #1a397b;
-    font-weight: 600;
-    margin: 0;
-    line-height: 1.3;
-}
-
-.otp-container {
-    width: 100%;
-    display: flex;
+    /* Ensure body is a flex container */
     justify-content: center;
-    align-items: flex-start;
-    margin-top: 30px;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    min-height: 100vh;
+    /* Ensure it takes full viewport height */
+    margin: 0;
+    /* Remove default body margin */
+    padding: 0;
+    /* Remove default body padding */
 }
 
-.otp-form {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 24px rgba(30, 64, 175, 0.08);
-    padding: 40px 32px 32px 32px;
-    max-width: 480px;
+/* Adjustments for the login-header specifically on the OTP page if needed */
+.login-header {
+    margin-bottom: 25px;
+    /* Slightly less margin than login page if desired */
+}
+
+.login-header h2 {
+    font-size: 2em;
+    /* Slightly smaller or same as login */
+    margin-bottom: 5px;
+    /* Adjust spacing */
+}
+
+.login-header p {
+    font-size: 0.95em;
+    /* Adjust font size for the subtext */
+    color: var(--light-text-color);
+}
+
+/* Adjustments for the form groups on the OTP page */
+.login-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+    /* Keep labels left-aligned */
+}
+
+.login-form input[type="text"] {
     width: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    padding: 14px 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1em;
+    color: var(--text-color);
+    background-color: #fdfdfd;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.otp-form h2 {
-    text-align: center;
-    color: #1a397b;
-    font-size: 1.5rem;
-    margin-bottom: 24px;
-    font-weight: 500;
-}
-
-.otp-form label {
-    font-size: 1rem;
-    color: #1a397b;
-    margin-bottom: 8px;
-    font-weight: 500;
-    display: block;
-}
-
-.otp-form input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #c0c0c0;
-    border-radius: 6px;
-    font-size: 1rem;
-    margin-bottom: 18px;
-    box-sizing: border-box;
-    background: #f7faff;
-    transition: border-color 0.2s;
-}
-
-.otp-form input[type="text"]:focus {
-    border-color: #1a397b;
+.login-form input[type="text"]:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
     outline: none;
 }
 
-.otp-form button[type="submit"] {
-    width: 100%;
-    background: #1a397b;
-    color: #fff;
-    font-size: 1.1rem;
-    padding: 12px 0;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-top: 8px;
-    transition: background 0.2s;
+.login-form input::placeholder {
+    color: #a0a0a0;
 }
 
-.otp-form button[type="submit"]:hover {
-    background: #274bb6;
-}
 
+/* Adjust error message to be consistent with login page */
 .error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    border-left: 4px solid #dc3545;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 4px;
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    text-align: left;
+    /* Align text to left within message box */
     display: flex;
     align-items: center;
-    font-size: 0.95em;
 }
 
 .error-message i {
     margin-right: 8px;
 }
 
-footer {
-    text-align: center;
-    margin-top: 40px;
-    color: #1a397b;
-    font-size: 0.95em;
-    letter-spacing: 0.02em;
+/* Adjustments for buttons (already handled by .login-button) */
+.login-button {
+    margin-top: 15px;
+    /* Add some space above the button */
+}
+
+
+/* Optional: Responsive adjustments if needed for OTP page specifically */
+@media (max-width: 500px) {
+    .login-container {
+        margin: 20px;
+        padding: 30px 25px;
+    }
 }
