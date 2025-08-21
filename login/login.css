@@ -198,39 +198,78 @@ h2 span {
     color: var(--light-text-color);
 }
 
-/* Messages for PHP output */
+/* Messages for PHP output - UNIFIED STYLES */
 .message {
+    /* Consider if you still need this generic .message or just .error/success */
     padding: 10px 15px;
     border-radius: 8px;
     margin-bottom: 20px;
     font-size: 0.9em;
     text-align: center;
+    /* This might conflict with left-align in the unified style, review usage */
 }
 
-.message.error {
+/* UNIFIED error-message styles */
+.error-message {
     background-color: rgba(220, 53, 69, 0.1);
     color: var(--error-color);
     border: 1px solid var(--error-color);
-}
-
-.message.success {
-    background-color: #d4edda;
-    color: #155724;
-    border-color: #c3e6cb;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 4px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    text-align: left;
+    /* Align text to left within message box */
     display: flex;
     align-items: center;
-    font-size: 0.9em;
-    border-left: 4px solid #28a745;
-    /* Green border for success */
+    animation: fadeIn 0.4s ease-out;
+    /* Add fade-in animation */
 }
 
-.message.info {
-    background-color: rgba(23, 162, 184, 0.1);
-    color: var(--info-color);
-    border: 1px solid var(--info-color);
+.error-message i {
+    margin-right: 8px;
+}
+
+/* UNIFIED success-message styles */
+.success-message {
+    background-color: rgba(40, 167, 69, 0.1);
+    /* Green tint */
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    text-align: left;
+    /* Align text to left within message box */
+    display: flex;
+    align-items: center;
+    animation: fadeIn 0.4s ease-out;
+    /* Add fade-in animation */
+}
+
+.success-message i {
+    margin-right: 8px;
+}
+
+/* Define success-color if not already present in :root */
+:root {
+    --success-color: #28a745;
+    /* Example green for success messages */
+    /* ... existing variables ... */
+}
+
+/* Add keyframes for fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Responsive Design */

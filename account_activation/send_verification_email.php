@@ -22,7 +22,7 @@ function send_verification_email($user_id, $email, $recovery_email, $conn)
     if ($ins_stmt->execute()) {
         // Token inserted, proceed to send email
         // Fix the verification link path - include full path without PBRA in URL
-        $verification_link = "http://" . $_SERVER['HTTP_HOST'] . "/account/verify_account.php?token=" . $token;
+        $verification_link = "http://" . $_SERVER['HTTP_HOST'] . "/account_activation/verify_account.php?token=" . $token;
 
         $mail->isHTML(true);
         $mail->clearAddresses();

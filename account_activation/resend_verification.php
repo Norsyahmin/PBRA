@@ -1,7 +1,7 @@
 <?php
 session_start();
 include '../mypbra_connect.php';
-include '../includes/language_setup.php';
+include '../languages/language_setup.php';
 
 $error_message = $_SESSION['resend_error'] ?? '';
 unset($_SESSION['resend_error']);
@@ -16,96 +16,10 @@ unset($_SESSION['resend_success']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= get_text('resend_verification_title', 'Resend Verification Email'); ?></title>
-    <link rel="stylesheet" href="../forget_password/forget_password.css">
+    <link rel="stylesheet" href="../languages/language_switcher.css">
+    <link rel="stylesheet" href="../login/login.css">
     <!-- Include Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        /* CSS for the Language Selector with Dropdown (Copied from login.php) */
-        .language-switcher-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-        }
-
-        .language-trigger {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 180px;
-            padding: 8px 12px;
-            border: 1px solid #c0c0c0;
-            border-radius: 4px;
-            background-color: white;
-            cursor: pointer;
-            color: #333;
-            font-size: 0.9em;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            box-sizing: border-box;
-        }
-
-        .language-trigger:hover {
-            border-color: #007bff;
-            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
-        }
-
-        .language-trigger .arrow-icon {
-            margin-left: 10px;
-            font-size: 0.8em;
-            color: #555;
-        }
-
-        .language-dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 5px);
-            right: 0;
-            background-color: white;
-            border: 1px solid #c0c0c0;
-            border-radius: 4px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            min-width: 180px;
-            padding: 0;
-            overflow: hidden;
-            list-style: none;
-            margin: 0;
-            box-sizing: border-box;
-        }
-
-        .language-dropdown.show {
-            display: block;
-        }
-
-        .language-dropdown a {
-            display: block;
-            padding: 8px 15px;
-            text-decoration: none;
-            color: #333;
-            font-size: 0.9em;
-            transition: background-color 0.1s ease-in-out;
-            white-space: nowrap;
-        }
-
-        .language-dropdown a:hover {
-            background-color: #e6f7ff;
-            color: #007bff;
-        }
-
-        .language-dropdown a.active {
-            background-color: #e0f2ff;
-            color: #007bff;
-            font-weight: bold;
-        }
-
-        .form-info {
-            font-size: 0.9em;
-            color: #555;
-            margin-top: 5px;
-            text-align: center;
-        }
-    </style>
 </head>
 
 <body>
@@ -125,34 +39,49 @@ unset($_SESSION['resend_success']);
         </div>
     </div>
 
-    <img src="../login/images/pbralogo.png" alt="PbRa Logo" width="250" height="100" />
-    <h1><?= get_text('resend_verification_heading', 'Resend Verification Email'); ?></h1>
-    <div class="container">
-        <div class="login-form">
+    <div class="login-container">
+        <div class="login-header">
+            <img src="../login/images/pbralogo.png" alt="PbRa Logo" class="college-logo">
+            <h2><?= get_text('page_title', 'Role Appointment'); ?></h2>
+            <p><?= get_text('resend_verification_sub_heading', 'Enter your email to resend the verification link.'); ?></p>
+
             <?php if ($success_message): ?>
-                <div class="success-message"><?= htmlspecialchars($success_message); ?></div>
-            <?php else: /* Only show the form if there's no success message */ ?>
-                <form action="process_resend_verification.php" method="post">
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <?= htmlspecialchars($success_message); ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <?php if (!$success_message): ?>
+            <form action="process_resend_verification.php" method="post" class="login-form">
+                <div class="form-group">
                     <label for="email"><?= get_text('email_label', 'Enter your primary email:'); ?></label>
                     <input type="email" id="email" name="email"
-                        placeholder="<?= get_text('email_placeholder', 'e.g muhamad.ali@pb.edu.bn'); ?>" required>
-                    <p class="form-info">Verification link will be sent to your recovery email address.</p>
-                    <?php if ($error_message): ?>
-                        <div class="error-message"><?= htmlspecialchars($error_message); ?></div>
-                    <?php endif; ?>
-                    <button type="submit"><?= get_text('resend_verification_submit', 'Resend Verification Email'); ?></button>
-                </form>
-            <?php endif; ?>
-            <div style="margin-top: 10px; text-align: center;">
-                <a href="../login/login.php" style="color: #007bff; text-decoration: underline;">
-                    <?= get_text('back_to_login', 'Back to Login'); ?>
-                </a>
-            </div>
+                        placeholder="<?= get_text('email_placeholder', 'e.g., muhamad.ali@pb.edu.bn'); ?>" required>
+                </div>
+
+                <?php if ($error_message): ?>
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <?= htmlspecialchars($error_message); ?>
+                    </div>
+                <?php endif; ?>
+
+                <button type="submit" class="login-button"><?= get_text('resend_verification_submit', 'Resend Verification Email'); ?></button>
+            </form>
+        <?php endif; ?>
+
+        <div class="login-links">
+            <p>
+                <a href="../login/login.php" class="forgot-password"><?= get_text('back_to_login', 'Back to Login'); ?></a>
+            </p>
+        </div>
+
+        <div class="login-footer">
+            <p>&copy; <?= date("Y"); ?> Politeknik Brunei Role Appointment (PbRA). All rights reserved.</p>
         </div>
     </div>
-    <footer>
-        <p>&copy; 2025 Politeknik Brunei Role Appointment (PbRA). All rights reserved.</p>
-    </footer>
 
     <!-- JavaScript for Language Switcher -->
     <script>

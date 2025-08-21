@@ -72,7 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <form method="post" class="login-form">
-            <h2><?= get_text('admin_otp_heading', 'Admin OTP Verification'); ?></h2>
             <div class="form-group">
                 <label for="otp"><?= get_text('enter_otp_label', 'Enter OTP sent to your recovery email:'); ?></label>
                 <input type="text" id="otp" name="otp" placeholder="<?= get_text('otp_placeholder', 'Enter 6-digit OTP'); ?>" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" required>
@@ -89,8 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <div class="login-links" style="margin-top: 20px;">
-            <p><?= get_text('otp_did_not_receive', "Didn't receive the OTP?"); ?> <a href="#" onclick="alert('<?= get_text('resend_otp_alert', 'This feature is not yet implemented. Please try logging in again.'); ?>'); return false;" class="verify-link"><?= get_text('resend_otp_link', 'Resend OTP'); ?></a></p>
-            <p><?= get_text('otp_lost_recovery_email', 'Lost access to recovery email?'); ?> <a href="#" onclick="alert('<?= get_text('contact_support_alert', 'Please contact IT support.'); ?>'); return false;" class="verify-link"><?= get_text('contact_support_link', 'Contact Support'); ?></a></p>
+            <p><?= get_text('otp_did_not_receive', "Didn't receive the OTP?"); ?>
+                <a href="resend_otp.php" class="verify-link"><?= get_text('resend_otp_link', 'Resend OTP'); ?></a>
+            </p>
+            <p><?= get_text('otp_lost_recovery_email', 'Lost access to recovery email?'); ?>
+                <a href="contact_support.php" class="verify-link"><?= get_text('contact_support_link', 'Contact Support'); ?></a>
+            </p>
         </div>
 
         <div class="login-footer">

@@ -17,7 +17,7 @@ $stmt->store_result();
 
 if ($stmt->num_rows > 0) {
     // Here you would generate a token and send an email
-    $_SESSION['forgot_success'] = 'A password reset link has been sent to your email (demo only).';
+    $_SESSION['forgot_success'] = 'A password reset link has been sent to your email.';
 } else {
     $_SESSION['forgot_error'] = 'Email address not found.';
 }

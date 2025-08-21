@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../languages/language_setup.php'; // Ensure language setup is included
+include '../languages/language_setup.php';
 
 // Get messages from session or query parameters
 $error_message = $_SESSION['forgot_error'] ?? ($_GET['error'] ?? '');
@@ -10,6 +10,15 @@ unset($_SESSION['forgot_error']); // Clear after displaying
 $success_type = $_GET['success'] ?? '';
 if ($success_type === 'email_sent') {
     $_SESSION['forgot_success'] = 'A password reset link has been sent to your email. The link will expire in 5 minutes.';
+} else if ($success_type === 'email_not_found') {
+    // Handle the case where email is not found more gracefully
+    $_SESSION['forgot_error'] = get_text('forgot_email_not_found_error', 'Email address not found. Please check the email and try again.');
+} else if ($success_type === 'email_send_failed') {
+    $_SESSION['forgot_error'] = get_text('forgot_email_send_failed_error', 'Failed to send password reset email. Please try again later.');
+} else if ($success_type === 'no_email_provided') {
+    $_SESSION['forgot_error'] = get_text('forgot_no_email_provided_error', 'Please enter your email address.');
+} else if ($success_type === 'database_error') {
+    $_SESSION['forgot_error'] = get_text('forgot_database_error', 'A system error occurred. Please try again later.');
 }
 
 $success_message = $_SESSION['forgot_success'] ?? '';
@@ -22,89 +31,10 @@ unset($_SESSION['forgot_success']); // Clear after displaying
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= get_text('forgot_password_title', 'Forgot Password'); ?></title>
-    <link rel="stylesheet" href="forget_password.css">
-    <!-- Include Font Awesome CSS for the dropdown icon -->
+    <link rel="stylesheet" href="../languages/language_switcher.css">
+    <link rel="stylesheet" href="../login/login.css">
+    <!-- Include Font Awesome CSS for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        /* CSS for the Language Selector with Dropdown (Copied from login.php) */
-        .language-switcher-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-        }
-
-        .language-trigger {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 180px;
-            padding: 8px 12px;
-            border: 1px solid #c0c0c0;
-            border-radius: 4px;
-            background-color: white;
-            cursor: pointer;
-            color: #333;
-            font-size: 0.9em;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            box-sizing: border-box;
-        }
-
-        .language-trigger:hover {
-            border-color: #007bff;
-            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
-        }
-
-        .language-trigger .arrow-icon {
-            margin-left: 10px;
-            font-size: 0.8em;
-            color: #555;
-        }
-
-        .language-dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 5px);
-            right: 0;
-            background-color: white;
-            border: 1px solid #c0c0c0;
-            border-radius: 4px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            min-width: 180px;
-            padding: 0;
-            overflow: hidden;
-            list-style: none;
-            margin: 0;
-            box-sizing: border-box;
-        }
-
-        .language-dropdown.show {
-            display: block;
-        }
-
-        .language-dropdown a {
-            display: block;
-            padding: 8px 15px;
-            text-decoration: none;
-            color: #333;
-            font-size: 0.9em;
-            transition: background-color 0.1s ease-in-out;
-            white-space: nowrap;
-        }
-
-        .language-dropdown a:hover {
-            background-color: #e6f7ff;
-            color: #007bff;
-        }
-
-        .language-dropdown a.active {
-            background-color: #e0f2ff;
-            color: #007bff;
-            font-weight: bold;
-        }
-    </style>
 </head>
 
 <body>
@@ -124,53 +54,67 @@ unset($_SESSION['forgot_success']); // Clear after displaying
         </div>
     </div>
 
-    <img src="../login/images/pbralogo.png" alt="PbRa Logo" width="250" height="100" />
-    <h1><?= get_text('forgot_password_heading', 'Forgot Your Password?'); ?></h1>
-    <div class="container">
-        <div class="login-form">
+    <!-- Main container matching login.php's structure -->
+    <div class="login-container">
+        <div class="login-header">
+            <!-- Image path adjusted to be relative to the common 'images' directory -->
+            <img src="../login/images/pbralogo.png" alt="PbRa Logo" class="college-logo">
+            <h2><?= get_text('page_title', 'Role Appointment'); ?></h2>
+            <p><?= get_text('forgot_password_sub_heading', 'Enter your email to receive a reset password link'); ?></p>
+
+            <!-- Success Message Display -->
             <?php if ($success_message): ?>
-                <div class="success-message"><?= htmlspecialchars($success_message); ?></div>
-            <?php else: /* Only show the form if there's no success message */ ?>
-                <form action="send_password_reset.php" method="post">
-                    <label for="recovery_email"><?= get_text('forgot_email_label', 'Enter your email:'); ?></label>
-                    <input type="email" id="recovery_email" name="recovery_email"
-                        placeholder="<?= get_text('forgot_email_placeholder', 'e.g muhamad.ali@pb.edu.bn'); ?>" required>
-                    <?php if ($error_message): ?>
-                        <div class="error-message"><?= htmlspecialchars($error_message); ?></div>
-                    <?php endif; ?>
-                    <button type="submit"><?= get_text('forgot_submit', 'Send Reset Link'); ?></button>
-                </form>
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <?= htmlspecialchars($success_message); ?>
+                </div>
             <?php endif; ?>
-            <div style="margin-top: 10px; text-align: center;">
-                <a href="../login/login.php" style="color: #007bff; text-decoration: underline;">
+        </div>
+
+        <?php if (!$success_message): /* Only show the form if there's no success message */ ?>
+            <form action="send_password_reset.php" method="post" class="login-form">
+                <div class="form-group">
+                    <label for="recovery_email"><?= get_text('forgot_email_label', 'Enter Recovery Email:'); ?></label>
+                    <input type="email" id="recovery_email" name="recovery_email"
+                        placeholder="<?= get_text('forgot_email_placeholder', 'e.g., muhamad.ali@pb.edu.bn'); ?>" required>
+                </div>
+
+                <!-- Error Message Display -->
+                <?php if ($error_message): ?>
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <?= htmlspecialchars($error_message); ?>
+                    </div>
+                <?php endif; ?>
+
+                <button type="submit" class="login-button"><?= get_text('forgot_submit', 'Send Reset Link'); ?></button>
+            </form>
+        <?php endif; ?>
+
+        <div class="login-links">
+            <p>
+                <a href="../login/login.php" class="forgot-password">
                     <?= get_text('back_to_login', 'Back to Login'); ?>
                 </a>
-            </div>
+            </p>
+        </div>
+
+        <div class="login-footer">
+            <p>&copy; <?php echo date("Y"); ?> Politeknik Brunei Role Appointment (PbRA). All rights reserved.</p>
         </div>
     </div>
-    <footer>
-        <p>&copy; 2025 Politeknik Brunei Role Appointment (PbRA). All rights reserved.</p>
-    </footer>
 
     <!-- JavaScript for Language Switcher (Copied from login.php) -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const languageTrigger = document.getElementById('languageTrigger');
-            const languageDropdown = document.getElementById('languageDropdown');
-
-            languageTrigger.addEventListener('click', function(event) {
-                languageDropdown.classList.toggle('show');
-                event.stopPropagation(); // Prevent click from bubbling up and closing immediately
+    <script src="../languages/language_switcher.js"></script>
+    <?php if ($success_message): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(function() {
+                    window.location.href = '../login/login.php';
+                }, 5000); // Redirect after 5 seconds
             });
-
-            // Close dropdown if clicked outside
-            document.addEventListener('click', function(event) {
-                if (!languageDropdown.contains(event.target) && !languageTrigger.contains(event.target)) {
-                    languageDropdown.classList.remove('show');
-                }
-            });
-        });
-    </script>
+        </script>
+    <?php endif; ?>
 </body>
 
 </html>
