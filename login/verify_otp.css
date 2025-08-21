@@ -68,7 +68,6 @@ body {
 }
 
 
-/* Adjust error message to be consistent with login page */
 .error-message {
     background-color: rgba(220, 53, 69, 0.1);
     color: var(--error-color);
@@ -81,10 +80,25 @@ body {
     /* Align text to left within message box */
     display: flex;
     align-items: center;
+    animation: fadeIn 0.4s ease-out;
+    /* Add fade-in animation */
 }
 
 .error-message i {
     margin-right: 8px;
+}
+
+/* Add keyframes for fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Adjustments for buttons (already handled by .login-button) */

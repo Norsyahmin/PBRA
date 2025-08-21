@@ -56,10 +56,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['final_submit'])) {
     } elseif ($password !== $confirm_password) {
         $error_message = "Passwords do not match!";
     } else {
+
         // Check if email already exists
         $check_email = $conn->query("SELECT id FROM users WHERE email = '$email'");
+        $check_recovery_email = $conn->query("SELECT id FROM users WHERE recovery_email = '$recovery_email'");
+
         if ($check_email->num_rows > 0) {
             $error_message = "Email already exists!";
+        } elseif ($check_recovery_email->num_rows > 0) {
+            $error_message = "Recovery email already exists!";
         } else {
             // Hash password
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);

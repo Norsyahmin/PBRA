@@ -10,21 +10,21 @@ $confirm_password = $_POST['confirm_password'] ?? '';
 // Validate input
 if (empty($token) || empty($new_password) || empty($confirm_password)) {
     $_SESSION['reset_error'] = 'All fields are required';
-    header("Location: reset-password.php?token=" . urlencode($token));
+    header("Location: reset_password.php?token=" . urlencode($token));
     exit;
 }
 
 // Check password match
 if ($new_password !== $confirm_password) {
     $_SESSION['reset_error'] = 'Passwords do not match';
-    header("Location: reset-password.php?token=" . urlencode($token));
+    header("Location: reset_password.php?token=" . urlencode($token));
     exit;
 }
 
 // Validate password strength
 if (strlen($new_password) < 8) {
     $_SESSION['reset_error'] = 'Password must be at least 8 characters long';
-    header("Location: reset-password.php?token=" . urlencode($token));
+    header("Location: reset_password.php?token=" . urlencode($token));
     exit;
 }
 
@@ -76,5 +76,5 @@ if ($row = $result->fetch_assoc()) {
 }
 
 $stmt->close();
-header("Location: reset-password.php?token=" . urlencode($token));
+header("Location: reset_password.php?token=" . urlencode($token));
 exit;

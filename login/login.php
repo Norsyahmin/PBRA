@@ -14,12 +14,10 @@ unset($_SESSION['reset_success']); // Clear after displaying
 unset($_SESSION['login_success']); // Clear after displaying
 
 // Additionally, check for success parameter from URL
-if (isset($_GET['success'])) {
-    if ($_GET['success'] === 'password_reset' && !$success_message) {
-        // Use get_text for this message as well
+if (isset($_GET['success']) && !$success_message) {
+    if ($_GET['success'] === 'password_reset') {
         $success_message = get_text('password_reset_success', 'Your password has been successfully updated. You can now login with your new password.');
-    } else if ($_GET['success'] === 'verified' && !$success_message) {
-        // Use get_text for this message as well
+    } else if ($_GET['success'] === 'verified') {
         $success_message = get_text('account_verified_success', 'Your account has been successfully verified. You can now log in.');
     }
 }
@@ -83,7 +81,6 @@ if (isset($_GET['success'])) {
                 <input type="password" id="password" name="password" placeholder="<?= get_text('password_placeholder', 'Enter your password'); ?>" required>
             </div>
 
-            <!-- Error Message Display -->
             <?php if (!empty($error_message)) : ?>
                 <div class="error-message">
                     <i class="fas fa-exclamation-triangle"></i>
