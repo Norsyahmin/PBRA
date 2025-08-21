@@ -63,9 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['final_submit'])) {
 
         if ($check_email->num_rows > 0) {
             $error_message = "Email already exists!";
-            if ($check_recovery_email->num_rows > 0) {
-                $error_message = "Recovery email already exists!";
-            }
+        } elseif ($check_recovery_email->num_rows > 0) {
+            $error_message = "Recovery email already exists!";
         } else {
             // Hash password
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
