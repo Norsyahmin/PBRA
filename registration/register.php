@@ -69,9 +69,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['final_submit'])) {
             // Hash password
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            // Insert user with is_verified=0
-            $stmt = $conn->prepare("INSERT INTO users (full_name, email, recovery_email, password, office, user_type, start_date, work_experience, education, is_verified)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
+            // Insert user with is_verified=0 and must_change_password=1
+            $stmt = $conn->prepare("INSERT INTO users (full_name, email, recovery_email, password, office, user_type, start_date, work_experience, education, is_verified, must_change_password)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1)");
             $stmt->bind_param(
                 "sssssssss",
                 $full_name,
