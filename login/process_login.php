@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Prepare and execute SQL query with or without is_verified column
     if ($columnExists) {
-        $stmt = $conn->prepare("SELECT id, email, password, full_name, profile_pic, is_verified, user_type, recovery_email FROM users WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, email, password, full_name, profile_pic, is_verified, user_type, recovery_email, must_change_password FROM users WHERE email = ?");
     } else {
         $stmt = $conn->prepare("SELECT id, email, password, full_name, profile_pic, user_type, recovery_email FROM users WHERE email = ?");
     }
@@ -62,6 +62,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['full_name'] = $user['full_name'];
                 $_SESSION['profile_pic'] = !empty($user['profile_pic']) ? $user['profile_pic'] : 'profile/images/default-profile.jpg';
                 $_SESSION['user_type'] = $user['user_type'];
+
+                // Check if user must change password
+                if (isset($user['must_change_password']) && $user['must_change_password'] == 1) {
+                    $stmt->close();
+                    header("Location: ../forget_password/change_temp_password.php");
+                    exit();
+                }
 
                 if ($user['user_type'] === 'admin') {
                     // Call the centralized OTP sending function
