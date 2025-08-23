@@ -16,7 +16,7 @@ unset($_SESSION['resend_otp_success']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= get_text('resend_otp_title', 'Resend OTP'); ?></title>
-    <link rel="stylesheet" href="../login/login.css">
+    <link rel="stylesheet" href="resend_otp.css"> <!-- changed: use standalone CSS for this page -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 

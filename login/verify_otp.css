@@ -1,117 +1,219 @@
-/* Import the main login styles to ensure consistency */
-@import url('login.css');
+/* Fallback variables */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #0056b3;
+    --text-color: #222;
+    --light-text-color: #556;
+    --border-color: #d0d7de;
+    --error-color: #dc3545;
+    --card-bg: #ffffff;
+    --background-start: #e3f0ff;
+    --background-end: #cbe2ff;
+}
 
-/* Specific overrides for the OTP page */
+/* Page layout */
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%
+}
 
 body {
-    /* Keep the background consistent or subtly different if desired */
-    background: linear-gradient(135deg, #e3f0ff 0%, #cbe2ff 100%);
-    display: flex;
-    /* Ensure body is a flex container */
-    justify-content: center;
-    /* Center horizontally */
-    align-items: center;
-    /* Center vertically */
-    min-height: 100vh;
-    /* Ensure it takes full viewport height */
     margin: 0;
-    /* Remove default body margin */
-    padding: 0;
-    /* Remove default body padding */
-}
-
-/* Adjustments for the login-header specifically on the OTP page if needed */
-.login-header {
-    margin-bottom: 25px;
-    /* Slightly less margin than login page if desired */
-}
-
-.login-header h2 {
-    font-size: 2em;
-    /* Slightly smaller or same as login */
-    margin-bottom: 5px;
-    /* Adjust spacing */
-}
-
-.login-header p {
-    font-size: 0.95em;
-    /* Adjust font size for the subtext */
-    color: var(--light-text-color);
-}
-
-/* Adjustments for the form groups on the OTP page */
-.login-form .form-group {
-    margin-bottom: 20px;
-    text-align: left;
-    /* Keep labels left-aligned */
-}
-
-.login-form input[type="text"] {
-    width: 100%;
-    padding: 14px 18px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 1em;
+    padding: 20px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(135deg, var(--background-start), var(--background-end));
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--text-color);
-    background-color: #fdfdfd;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.login-form input[type="text"]:focus {
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+/* Card container */
+.verify-container {
+    width: 100%;
+    max-width: 480px;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(20, 30, 50, 0.08);
+    padding: 36px;
+    text-align: center;
+}
+
+/* Header */
+.verify-header {
+    margin-bottom: 20px
+}
+
+.college-logo {
+    width: 84px;
+    height: auto;
+    display: block;
+    margin: 0 auto 12px
+}
+
+.verify-header h2 {
+    margin: 0 0 6px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-color)
+}
+
+.verify-header p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--light-text-color)
+}
+
+/* Form */
+.otp-form {
+    margin-top: 8px;
+    text-align: left
+}
+
+.otp-form .form-group {
+    margin-bottom: 16px
+}
+
+.otp-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color)
+}
+
+.otp-form input[type="text"],
+.otp-form input[type="email"],
+.otp-form input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 1rem;
+    background: #fff;
+    color: var(--text-color);
+    transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+.otp-form input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 6px 18px rgba(0, 123, 255, 0.08);
     outline: none;
 }
 
-.login-form input::placeholder {
-    color: #a0a0a0;
+.otp-form input::placeholder {
+    color: #9aa4b2
 }
 
-
+/* Messages */
 .error-message {
-    background-color: rgba(220, 53, 69, 0.1);
+    background-color: rgba(220, 53, 69, 0.06);
     color: var(--error-color);
-    border: 1px solid var(--error-color);
-    padding: 10px 15px;
-    margin-bottom: 20px;
+    border: 1px solid rgba(220, 53, 69, 0.16);
+    padding: 10px 12px;
+    margin-bottom: 14px;
     border-radius: 8px;
-    font-size: 0.9em;
-    text-align: left;
-    /* Align text to left within message box */
+    font-size: 0.95rem;
     display: flex;
     align-items: center;
-    animation: fadeIn 0.4s ease-out;
-    /* Add fade-in animation */
+    gap: 8px;
+    text-align: left;
+    animation: fadeIn .24s ease-out;
 }
 
-.error-message i {
-    margin-right: 8px;
+.success-message {
+    background-color: rgba(40, 167, 69, 0.06);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.16);
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
 }
 
-/* Add keyframes for fade-in animation */
+/* Button */
+.otp-button {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0, 123, 255, 0.12);
+    transition: background .15s ease, transform .08s ease;
+}
+
+.otp-button:hover {
+    background: var(--secondary-color);
+    transform: translateY(-1px)
+}
+
+.otp-button:active {
+    transform: none
+}
+
+/* Links & footer */
+.otp-links {
+    margin-top: 16px;
+    font-size: 0.95rem;
+    color: var(--light-text-color);
+    text-align: center
+}
+
+.verify-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin-left: 6px
+}
+
+.verify-link:hover {
+    text-decoration: underline
+}
+
+.otp-footer {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: var(--light-text-color);
+    text-align: center
+}
+
+/* Language switcher position override if present */
+.language-switcher-container {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    z-index: 30
+}
+
+/* Animations */
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(-6px)
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0)
     }
 }
 
-/* Adjustments for buttons (already handled by .login-button) */
-.login-button {
-    margin-top: 15px;
-    /* Add some space above the button */
-}
+/* Responsive */
+@media(max-width:600px) {
+    .verify-container {
+        padding: 20px
+    }
 
-
-/* Optional: Responsive adjustments if needed for OTP page specifically */
-@media (max-width: 500px) {
-    .login-container {
-        margin: 20px;
-        padding: 30px 25px;
+    .college-logo {
+        width: 68px
     }
 }
