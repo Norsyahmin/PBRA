@@ -41,7 +41,7 @@ $stmt_fav->close();
 </head>
 
 <header>
-  <?php include '../navbar/navbar.php'; ?>
+  <?php include '../includes/navbar.php'; ?>
 </header>
 
 <body onload="fetchNotifications(); showSuccessMessage();">
