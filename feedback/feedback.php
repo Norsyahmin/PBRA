@@ -8,9 +8,6 @@ if (!isset($_SESSION['id'])) {
 // Include database connection
 include '../mypbra_connect.php';
 
-$page_name = $page_name ?? 'Feedback'; // or whatever you want
-$page_url = $page_url ?? $_SERVER['REQUEST_URI'];
-
 
 if (isset($_GET['success'])) {
     echo "Debug: Success flag is set to " . $_GET['success'];
@@ -38,9 +35,6 @@ if (isset($_GET['success'])) {
     <!-- Page Title -->
     <div class="page-title">
         <h1 style="font-size: 30px;">FEEDBACK</h1>
-        <button type="button" id="favoriteButton" class="favorite-button" onclick="toggleFavorite()">
-            Add to Favorite
-        </button>
     </div>
 
     <div class="breadcrumb">

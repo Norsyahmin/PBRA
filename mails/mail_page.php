@@ -6,8 +6,6 @@ if (!isset($_SESSION['id'])) {
 }
 include '../mypbra_connect.php';
 $user_id = $_SESSION['id'];
-$page_name = $page_name ?? 'Mail';
-$page_url = $page_url ?? $_SERVER['REQUEST_URI'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,8 +23,6 @@ $page_url = $page_url ?? $_SERVER['REQUEST_URI'];
 
     <div class="page-title">
         <h1>Mail</h1>
-        <button type="button" id="favoriteButton" class="favorite-button" onclick="toggleFavorite()">
-            Add to Favorite</button>
     </div>
 
     <div class="breadcrumb">
@@ -459,46 +455,6 @@ $page_url = $page_url ?? $_SERVER['REQUEST_URI'];
                 breadcrumbList.appendChild(separator);
             }
         });
-
-        //favorites
-
-        const pageName = "<?php echo $page_name; ?>";
-        const pageUrl = "<?php echo $page_url; ?>";
-        const button = document.getElementById('favoriteButton');
-
-        // Check if already favorited when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-            const exists = favorites.find(fav => fav.pageName === pageName);
-            if (exists) {
-                button.classList.add('favorited');
-                button.textContent = 'Favorited';
-            }
-        });
-
-        //favorites
-        function toggleFavorite() {
-            let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-
-            const index = favorites.findIndex(fav => fav.pageName === pageName);
-
-            if (index === -1) {
-                // Not favorited yet, add it
-                favorites.push({
-                    pageName: pageName,
-                    pageUrl: pageUrl
-                });
-                button.classList.add('favorited');
-                button.textContent = 'Favorited';
-            } else {
-                // Already favorited, remove it
-                favorites.splice(index, 1);
-                button.classList.remove('favorited');
-                button.textContent = 'Add to Favorite';
-            }
-
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-        }
 
         // Modal Functions
         function showModal(message, type = 'info', callback = null) {

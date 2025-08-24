@@ -5,24 +5,12 @@ if (!isset($_SESSION['id'])) {
   exit();
 }
 
-$page_name = $page_name ?? 'Calendar'; // or whatever you want
-$page_url = $page_url ?? $_SERVER['REQUEST_URI'];
-
 include '../mypbra_connect.php'; // Database connection
 if (!$conn) {
   die("Database connection failed: " . mysqli_connect_error());
 }
 
 $user_id = $_SESSION['id'];
-
-// Check if favorite
-$sql_fav = "SELECT * FROM user_favorites WHERE user_id = ? AND page_name = 'Mail'";
-$stmt_fav = $conn->prepare($sql_fav);
-$stmt_fav->bind_param("i", $user_id);
-$stmt_fav->execute();
-$result_fav = $stmt_fav->get_result();
-$is_favorite = $result_fav->num_rows > 0;
-$stmt_fav->close();
 
 // Get unread count
 $unread_count = 0;
@@ -111,9 +99,6 @@ $count_stmt->close();
 
   <div class="page-title">
     <h1 style="font-size: 30px;">MAIL <?php if ($unread_count > 0) echo "<span class='unread-badge'>$unread_count</span>"; ?></h1>
-    <button id="favorite-btn" class="favorite-btn" onclick="toggleFavorite()">
-      <i class="fa <?php echo $is_favorite ? 'fa-heart' : 'fa-heart-o'; ?>" id="fav-icon"></i>
-    </button>
   </div>
 
   <div class="breadcrumb">
@@ -428,81 +413,6 @@ $count_stmt->close();
           event.target.style.display = 'none';
         }
       };
-    });
-
-    function toggleFavorite() {
-      var btn = document.getElementById("favorite-btn");
-      var icon = document.getElementById("fav-icon");
-
-      if (icon.classList.contains("fa-heart")) {
-        icon.classList.remove("fa-heart");
-        icon.classList.add("fa-heart-o");
-        btn.classList.remove("favorited");
-        var isFavorite = 0;
-      } else {
-        icon.classList.remove("fa-heart-o");
-        icon.classList.add("fa-heart");
-        btn.classList.add("favorited");
-        var isFavorite = 1;
-      }
-
-      $.ajax({
-        url: 'update_favorite.php',
-        type: 'POST',
-        data: {
-          favorite: isFavorite,
-          page_name: 'Mail',
-          user_id: <?php echo $_SESSION['id']; ?>
-        },
-        success: function(response) {
-          console.log("Favorite status updated successfully");
-        },
-        error: function(xhr, status, error) {
-          console.error("Error updating favorite status:", error);
-        }
-      });
-    }
-
-    // Breadcrumb functionality (same as in your original code)
-    let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
-    let currentPageUrl = window.location.pathname;
-    let currentPageName = 'Mail';
-
-    let pageExists = breadcrumbs.some(breadcrumb => breadcrumb.url === currentPageUrl);
-
-    if (!pageExists) {
-      breadcrumbs.push({ name: currentPageName, url: currentPageUrl });
-      sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
-    }
-
-    let breadcrumbList = document.getElementById('breadcrumb-list');
-    breadcrumbList.innerHTML = '';
-
-    breadcrumbs.forEach((breadcrumb, index) => {
-      let breadcrumbItem = document.createElement('li');
-      let link = document.createElement('a');
-
-      link.href = breadcrumb.url;
-      link.textContent = breadcrumb.name;
-
-      link.addEventListener('click', function(event) {
-        event.preventDefault();
-        let clickedIndex = index;
-
-        breadcrumbs = breadcrumbs.slice(0, clickedIndex + 1);
-        sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
-
-        window.location.href = breadcrumb.url;
-      });
-
-      breadcrumbItem.appendChild(link);
-      breadcrumbList.appendChild(breadcrumbItem);
-
-      if (index < breadcrumbs.length - 1) {
-        let separator = document.createElement('span');
-        separator.textContent = ' > ';
-        breadcrumbList.appendChild(separator);
-      }
     });
     // Breadcrumbs
 let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
