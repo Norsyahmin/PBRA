@@ -55,7 +55,7 @@ if (isset($_SESSION['report_success']) && $_SESSION['report_success']) {
 
 <body onload="fetchNotifications()">
 
-  <header><?php include '../navbar/navbar.php'; ?></header>
+  <header><?php include '../includes/navbar.php'; ?></header>
 
   <div class="page-title">
     <h1>REPORT</h1>
