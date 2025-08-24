@@ -6,13 +6,12 @@ if (!isset($_SESSION['id'])) {
 }
 
 // Include the database connection
-include '../mypbra_connect.php'; // Adjust path if needed
+include '../mypbra_connect.php';
 
-
-$page_name = $page_name ?? 'Schedule'; // or whatever you want
+$page_name = $page_name ?? 'Schedule';
 $page_url = $page_url ?? $_SERVER['REQUEST_URI'];
 
-$user_id = $_SESSION['id']; // Correct session variable
+$user_id = $_SESSION['id'];
 
 // Fetch image path from the database
 $sql = "SELECT image_path FROM schedule WHERE user_id = ?";
@@ -43,7 +42,7 @@ $conn->close();
 
 <body onload="fetchNotifications()">
 
-  <?php include '../navbar/navbar.php'; ?>
+  <?php include '../includes/navbar.php'; ?>
 
   <div class="page-title">
     <h1 style="font-size: 30px;">SCHEDULE</h1>
@@ -81,10 +80,10 @@ $conn->close();
       </form>
     </div>
   </div>
+  
   <footer>
     <p>&copy; 2025 Politeknik Brunei Role Appointment (PbRA). All rights reserved.</p>
   </footer>
-
 
   <script>
     //favorite
@@ -124,7 +123,6 @@ $conn->close();
 
       localStorage.setItem('favorites', JSON.stringify(favorites));
     }
-
 
     // Fetch breadcrumbs from sessionStorage
     let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
@@ -210,16 +208,6 @@ $conn->close();
         separator.textContent = ' > ';
         breadcrumbList.appendChild(separator);
       }
-    });
-
-    // Show modal
-    document.getElementById('openUploadModal').addEventListener('click', function() {
-      document.getElementById('uploadModal').style.display = 'flex';
-    });
-
-    // Hide modal
-    document.getElementById('closeUploadModal').addEventListener('click', function() {
-      document.getElementById('uploadModal').style.display = 'none';
     });
   </script>
 
