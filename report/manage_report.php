@@ -46,7 +46,7 @@ $result = $stmt->get_result();
 
 <body>
 
-  <?php include '../navbar/navbar.php'; ?>
+  <?php include '../includes/navbar.php'; ?>
 
   <div class="content-body">
     <h1>📋 Manage Reports</h1>
