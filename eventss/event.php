@@ -21,7 +21,7 @@ if (!isset($_SESSION['id'])) {
 
 <body onload="fetchNotifications()">
 
-    <?php include '../navbar/navbar.php'; ?>
+    <?php include '../includes/navbar.php'; ?>
 
     <div class="page-title">
         <h1 style="font-size: 30px;">EVENT</h1>

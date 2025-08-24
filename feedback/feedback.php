@@ -30,7 +30,7 @@ if (isset($_GET['success'])) {
 
 <body onload="fetchNotifications()">
 
-    <?php include '../navbar/navbar.php'; ?>
+    <?php include '../includes/navbar.php'; ?>
 
     <!-- Page Title -->
     <div class="page-title">

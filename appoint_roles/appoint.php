@@ -185,7 +185,7 @@ WHERE user_id = ? AND role_id = ? AND removed_at IS NULL
     <link rel="stylesheet" href="appoint.css">
 </head>
 <header>
-    <?php include '../navbar/navbar.php'; ?>
+    <?php include '../includes/navbar.php'; ?>
 </header>
 
 <body>

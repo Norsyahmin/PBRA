@@ -41,7 +41,7 @@ $stmt->close();
 <body>
 
     <header>
-        <?php include '../navbar/navbar.php'; ?>
+        <?php include '../includes/navbar.php'; ?>
     </header>
 
 

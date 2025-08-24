@@ -20,7 +20,7 @@ if (!isset($_SESSION['id'])) {
 </head>
 
 <header>
-  <?php include '../navbar/navbar.php'; ?>
+  <?php include '../includes/navbar.php'; ?>
 </header>
 
 <body onload="fetchNotifications()">

@@ -57,7 +57,7 @@ $conn->close();
 </head>
 
 <body>
-    <?php include '../navbar/navbar.php'; ?>
+    <?php include '../includes/navbar.php'; ?>
 
     <div class="page-title">
         <h1>🔍 Search All Staff</h1>

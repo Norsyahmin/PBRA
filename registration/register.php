@@ -139,7 +139,7 @@ function get_field_value($field_name, $default = '')
 
 <body>
     <header>
-        <?php include '../navbar/navbar.php'; ?>
+        <?php include '../includes/navbar.php'; ?>
     </header>
     <!-- Breadcrumb bar -->
     <div class="breadcrumb">

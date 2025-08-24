@@ -17,7 +17,7 @@ $user_id = $_SESSION['id'];
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
-<header><?php include '../navbar/navbar.php'; ?></header>
+<header><?php include '../includes/navbar.php'; ?></header>
 
 < onload="fetchNotifications()">
 

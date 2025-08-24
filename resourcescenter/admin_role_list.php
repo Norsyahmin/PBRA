@@ -36,7 +36,7 @@ if (!$is_admin) {
 
 <body>
 
-    <?php include '../navbar/navbar.php'; ?>
+    <?php include '../includes/navbar.php'; ?>
 
     <div class="page-title" style="padding: 10px 5% 0;">
         <h1>Manage Role Resources</h1>

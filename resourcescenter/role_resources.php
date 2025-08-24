@@ -70,7 +70,7 @@ $role_info = $conn->query("
 <body>
 
     <header>
-        <?php include '../navbar/navbar.php'; ?>
+        <?php include '../includes/navbar.php'; ?>
     </header>
 
     <div class="page-title" style="padding: 10px 5% 0;">
