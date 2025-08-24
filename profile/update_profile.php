@@ -9,15 +9,13 @@ error_reporting(E_ALL);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_POST['user_id'];
-    $full_name = $_POST['full_name'];
-    $email = $_POST['email'];
+    // Note: full_name and email are no longer processed for updates
     $work_experience = $_POST['work_experience'];
     $education = $_POST['education'];
 
     // ✅ Debug: show posted data
     echo "Debug: user_id = $user_id<br>";
-    echo "Debug: full_name = $full_name<br>";
-    echo "Debug: email = $email<br>";
+    echo "Debug: Note - full_name and email are locked and not being updated<br>";
 
     // Handle profile picture upload
     if (!empty($_FILES["profile_pic"]["name"])) {
@@ -33,10 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // ✅ Debug: image upload success
             echo "✅ File uploaded: $db_file_path<br>";
 
-            // Update all fields including profile picture
-            $query = "UPDATE users SET full_name = ?, email = ?, work_experience = ?, education = ?, profile_pic = ? WHERE id = ?";
+            // Update fields excluding full_name and email, including profile picture
+            $query = "UPDATE users SET work_experience = ?, education = ?, profile_pic = ? WHERE id = ?";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param("sssssi", $full_name, $email, $work_experience, $education, $db_file_path, $user_id);
+            $stmt->bind_param("sssi", $work_experience, $education, $db_file_path, $user_id);
         } else {
             echo "❌ File upload failed.<br>";
             exit();
@@ -45,14 +43,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // ✅ Debug: no new profile picture
         echo "✅ No new profile picture uploaded<br>";
 
-        // Update all fields without changing profile picture
-        $query = "UPDATE users SET full_name = ?, email = ?, work_experience = ?, education = ? WHERE id = ?";
+        // Update fields excluding full_name and email, without changing profile picture
+        $query = "UPDATE users SET work_experience = ?, education = ? WHERE id = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("ssssi", $full_name, $email, $work_experience, $education, $user_id);
+        $stmt->bind_param("ssi", $work_experience, $education, $user_id);
     }
 
     if ($stmt->execute()) {
-        $_SESSION['full_name'] = $full_name;
+        // Note: No longer updating session full_name since it's locked
 
         // Only update session profile_pic if a new one is uploaded
         if (!empty($_FILES["profile_pic"]["name"])) {

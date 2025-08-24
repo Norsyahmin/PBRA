@@ -122,11 +122,14 @@ body {
 .btn-section {
   text-align: center;
   margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
-.upload-btn {
+.upload-btn, .delete-btn {
   padding: 10px 25px;
-  background-color: #174080;
   color: #ffffff;
   font-size: 1rem;
   font-weight: 600;
@@ -134,14 +137,30 @@ body {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  min-width: 180px;
+  justify-content: center;
 }
 
-.upload-btn i {
-  margin-right: 8px;
+.upload-btn {
+  background-color: #174080;
 }
 
 .upload-btn:hover {
   background-color: #0d2a5d;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.upload-btn i, .delete-btn i {
+  margin-right: 8px;
 }
 
 /* Modal Overlay */
@@ -202,6 +221,60 @@ body {
   background: #f9f9f9;
 }
 
+/* Delete Modal Specific Styles */
+.delete-warning {
+  margin: 20px 0;
+}
+
+.delete-warning p {
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+.cancel-btn, .confirm-delete-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #5a6268;
+}
+
+.confirm-delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.confirm-delete-btn:hover {
+  background-color: #c82333;
+}
+
+.cancel-btn i, .confirm-delete-btn i {
+  margin-right: 8px;
+}
+
 /* Footer */
 footer {
   background: linear-gradient(135deg, #174080 0%, #2a5ba0 100%);
@@ -254,6 +327,26 @@ footer p {
   .image-frame {
       padding: 15px;
       min-height: 400px;
+  }
+  
+  .btn-section {
+      flex-direction: column;
+      align-items: center;
+  }
+  
+  .upload-btn, .delete-btn {
+      width: 100%;
+      max-width: 300px;
+  }
+  
+  .modal-buttons {
+      flex-direction: column;
+      align-items: center;
+  }
+  
+  .cancel-btn, .confirm-delete-btn {
+      width: 100%;
+      max-width: 250px;
   }
 }
 

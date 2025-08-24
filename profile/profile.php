@@ -62,7 +62,7 @@ $conn->close();
 </head>
 
 <header>
-    <?php include '../navbar/navbar.php'; ?>
+    <?php include '../includes/navbar.php'; ?>
 </header>
 
 <body onload="fetchNotifications()">
@@ -125,10 +125,10 @@ $conn->close();
                     <h3>Edit Profile</h3>
                     <form action="update_profile.php" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-                        <label>Full Name:</label><br>
-                        <input type="text" name="full_name" value="<?php echo htmlspecialchars($user['full_name']); ?>"><br><br>
-                        <label>Email:</label><br>
-                        <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>"><br><br>
+                        <label>Full Name: <span style="color: #888; font-size: 0.9em;">(Cannot be changed)</span></label><br>
+                        <input type="text" name="full_name" value="<?php echo htmlspecialchars($user['full_name']); ?>" readonly style="background-color: #f5f5f5; cursor: not-allowed; color: #666;"><br><br>
+                        <label>Email: <span style="color: #888; font-size: 0.9em;">(Cannot be changed)</span></label><br>
+                        <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" readonly style="background-color: #f5f5f5; cursor: not-allowed; color: #666;"><br><br>
                         <label>Profile Picture:</label><br>
                         <input type="file" name="profile_pic" class="file-input"><br><br>
                         <label>Work Experience:</label><br>
