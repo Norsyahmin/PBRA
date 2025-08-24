@@ -26,7 +26,7 @@ body {
     color: var(--text-color);
 }
 
-.login-container {
+.resend_otp-container {
     background: var(--card-bg);
     padding: 36px;
     border-radius: 12px;
@@ -37,27 +37,25 @@ body {
 }
 
 .college-logo {
-    width: 84px;
-    margin: 0 auto 12px;
-    display: block
+    object-fit: cover;
 }
 
-.login-header h2 {
+.resend_otp-header h2 {
     color: var(--primary-color);
     margin-bottom: 8px
 }
 
-.login-header p {
+.resend_otp-header p {
     color: var(--light-text-color);
     margin-bottom: 12px
 }
 
-.login-form .form-group {
+.resend_otp-form .form-group {
     margin-bottom: 16px;
     text-align: left
 }
 
-.login-form input[type="email"] {
+.resend_otp-form input[type="email"] {
     width: 100%;
     padding: 12px 14px;
     border: 1px solid var(--border-color);
@@ -66,7 +64,7 @@ body {
     color: var(--text-color);
 }
 
-.login-button {
+.resend_otp-button {
     width: 100%;
     padding: 12px;
     background: var(--primary-color);
@@ -94,18 +92,18 @@ body {
     text-align: left
 }
 
-.login-links {
+.resend_otp-links {
     margin-top: 18px
 }
 
-.login-footer {
+.resend_otp-footer {
     margin-top: 18px;
     font-size: 0.85rem;
     color: var(--light-text-color)
 }
 
 @media(max-width:500px) {
-    .login-container {
+    .resend_otp-container {
         padding: 24px
     }
 }

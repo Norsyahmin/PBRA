@@ -49,10 +49,7 @@ body {
 }
 
 .college-logo {
-    width: 84px;
-    height: auto;
-    display: block;
-    margin: 0 auto 12px
+    object-fit: cover;
 }
 
 .verify-header h2 {
