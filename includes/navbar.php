@@ -47,7 +47,7 @@ $profile_pic = (!empty($_SESSION['profile_pic']) && file_exists('../' . $_SESSIO
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../navbar.css">
+    <link rel="stylesheet" href="../navbar/navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Navbar</title>
@@ -112,7 +112,7 @@ $profile_pic = (!empty($_SESSION['profile_pic']) && file_exists('../' . $_SESSIO
     <ul>
         <li><a href="../homepage/homepage.php">Home</a></li>
         <li><a href="../schedule/schedule.php">Schedule</a></li>
-        <li><a href="../report/report.php">Report</a></li>
+        <li><a href="../report/report.php">UBAH NI</a></li>
         <li><a href="../usersupport/usersupport.php">User Support</a></li>
     </ul>
     
@@ -127,5 +127,4 @@ $profile_pic = (!empty($_SESSION['profile_pic']) && file_exists('../' . $_SESSIO
 
 </nav>
 
-<script src="../navbar.js"></script> <!-- Load the external JS -->
-
+<script src="../navbar/navbar.js"></script> <!-- Load the external JS -->
