@@ -344,7 +344,7 @@ if (!$result) {
             font-size: 14px;
             letter-spacing: 0.5px;
         }
-        
+
         /* Ensure 24-hour format is maintained */
         input[type="time"]::-webkit-calendar-picker-indicator {
             opacity: 0.7;
@@ -933,7 +933,7 @@ if (!$result) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Add New Event</h3>
-                    <span class="close-modal">&times;</span>
+                    <span class="close-modal" onclick="document.getElementById('eventFormModal').style.display='none'">&times;</span>
                 </div>
                 <div class="modal-body">
                     <form id="eventForm">
