@@ -114,8 +114,9 @@ $stmt->execute();
             <li><a href="../report/report.php">Report</a></li>
             <li><a href="../usersupport/usersupport.php">User Support</a></li>
             <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin') { ?>
-                <li><a href="../registration/register.php">Register User</a></li>
+                <li><a href="../registration/registration.php">Register User</a></li>
             <?php } ?>
+            <!--<li><a href="../registration/register.php">User Support</a></li>-->
         </ul>
     </div>
 

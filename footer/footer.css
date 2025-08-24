@@ -11,3 +11,16 @@
     margin: 0;
     letter-spacing: 0.5px;
 }
+
+/* Ensure footer sticks to bottom and no gap */
+footer {
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Remove gap above footer */
+body {
+    margin: 0;
+    padding: 0;
+}

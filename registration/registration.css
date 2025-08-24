@@ -1,0 +1,333 @@
+/* Form container */
+.form {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    padding: 32px 28px 24px 28px;
+    max-width: 600px;
+    margin: 32px auto;
+    border: 1px solid #e3e3e3;
+}
+
+/* Field spacing */
+.form label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 6px;
+    margin-top: 18px;
+    color: #1a2a3a;
+    letter-spacing: 0.01em;
+}
+
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="password"],
+.form input[type="date"],
+.form textarea,
+.form select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #bfc7d1;
+    border-radius: 6px;
+    background: #f7f9fa;
+    font-size: 15px;
+    margin-bottom: 2px;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.form input[type="text"]:focus,
+.form input[type="email"]:focus,
+.form input[type="password"]:focus,
+.form input[type="date"]:focus,
+.form textarea:focus,
+.form select:focus {
+    border-color: #0078d4;
+    outline: none;
+    background: #fff;
+}
+
+.form textarea {
+    resize: vertical;
+    min-height: 60px;
+    max-height: 180px;
+}
+
+/* File upload styling */
+.form input[type="file"] {
+    border: none;
+    background: none;
+    font-size: 15px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+/* Button row for password actions */
+.btn-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.btn-row input[type="password"] {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.btn-row button {
+    padding: 7px 14px;
+    border-radius: 5px;
+    border: 1px solid #bfc7d1;
+    background: #f3f6fa;
+    color: #1a2a3a;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-row button:hover {
+    background: #e6f0fa;
+    border-color: #0078d4;
+}
+
+/* Form action buttons */
+.form-actions-right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.edit-btn,
+.delete-btn {
+    padding: 10px 28px;
+    border-radius: 6px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.edit-btn {
+    background: #218838;
+    /* green */
+    color: #fff;
+}
+
+.edit-btn:hover {
+    background: #18672c;
+}
+
+.delete-btn {
+    background: #c82333;
+    /* red */
+    color: #fff;
+    border: none;
+}
+
+.delete-btn:hover {
+    background: #a71d2a;
+    color: #fff;
+    border: none;
+}
+
+/* Error and success messages */
+.error {
+    background: #ffeaea;
+    color: #c00;
+    border-radius: 6px;
+    padding: 10px 16px;
+    margin-bottom: 18px;
+    border: 1px solid #f5c2c7;
+}
+
+.success {
+    background: #e6faea;
+    color: #080;
+    border-radius: 6px;
+    padding: 10px 16px;
+    margin-bottom: 18px;
+    border: 1px solid #b7e4c7;
+}
+
+/* Hide number arrows for date input */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+}
+
+/* Custom office field */
+#custom_office {
+    margin-top: 8px;
+}
+
+/* Specific styling for select elements to ensure proper rendering */
+select {
+    appearance: auto;
+    /* Reset browser-specific styling */
+    -webkit-appearance: menulist;
+    /* For WebKit/Blink browsers */
+    -moz-appearance: menulist;
+    /* For Firefox */
+    background-color: #f7f9fa !important;
+    /* Force background color */
+    color: #333 !important;
+    /* Ensure text is visible */
+}
+
+select:focus {
+    background-color: #fff !important;
+}
+
+/* Specific styling for role dropdown */
+#role_select {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #bfc7d1;
+    border-radius: 6px;
+    background-color: #f7f9fa !important;
+    /* Force background color */
+    font-size: 15px;
+    margin-bottom: 2px;
+    color: #333 !important;
+    /* Force text color */
+    -webkit-appearance: menulist;
+    /* For WebKit/Blink browsers */
+    -moz-appearance: menulist;
+    /* For Firefox */
+    appearance: auto;
+    /* Standard */
+}
+
+#role_select:focus {
+    border-color: #0078d4;
+    outline: none;
+    background-color: #fff !important;
+}
+
+/* Ensure all dropdown options are visible */
+select option {
+    background-color: #fff;
+    color: #333;
+    padding: 8px;
+}
+
+/* Fix dropdown arrow in some browsers */
+select {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23888' d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .form {
+        padding: 18px 8px 16px 8px;
+        max-width: 98vw;
+    }
+
+    .form-actions-right {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+/* Ensure footer sticks to bottom and no gap */
+footer {
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Remove gap above footer */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure breadcrumb has no surrounding background or shadow on this page */
+.breadcrumb,
+.breadcrumb * {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* keep spacing but remove any large padded background from parent */
+.breadcrumb {
+    padding: 0 5% !important;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    /* Remove padding to eliminate gap above footer */
+    margin: 0;
+    padding: 0;
+}
+
+.form {
+    max-width: 600px;
+    margin: auto;
+}
+
+.field {
+    margin-bottom: 12px;
+}
+
+/* Updated error and success message styles to match login page */
+.error {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    padding: 10px 15px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.success {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    border: 1px solid #28a745;
+    padding: 10px 15px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.field-warning {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

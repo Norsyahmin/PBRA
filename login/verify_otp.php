@@ -63,9 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <div class="verify-container">
-        <div class="verify-header">
-            <!-- Use the same image path as in login.php if it's relative to common/images -->
+    <!-- Changed container class to match CSS: otp-container -->
+    <div class="otp-container">
+        <!-- Changed header class to match CSS: otp-header -->
+        <div class="otp-header">
             <img src="images/pbralogo.png" alt="College Logo" class="college-logo">
             <h2><?= get_text('page_title', 'Politeknik Brunei <br> Role Appointment'); ?></h2>
             <p><?= get_text('otp_sub_heading', 'Admin One-Time Password Verification'); ?></p>
@@ -76,9 +77,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group">
                 <label for="otp"><?= get_text('enter_otp_label', 'Enter OTP sent to your recovery email:'); ?></label>
                 <input
-                    type="text"
+                    type="password"
                     id="otp"
                     name="otp"
+                    value=""
                     placeholder="<?= get_text('otp_placeholder', 'Enter 6-digit OTP'); ?>"
                     maxlength="6"
                     inputmode="numeric"
@@ -94,11 +96,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
 
-            <!-- Changed button class to match CSS: otp-button -->
             <button type="submit" class="otp-button"><?= get_text('verify_otp_button', 'Verify OTP'); ?></button>
         </form>
 
-        <!-- Changed links container class to match CSS: otp-links -->
         <div class="otp-links" style="margin-top: 20px;">
             <p><?= get_text('otp_did_not_receive', "Didn't receive the OTP?"); ?>
                 <a href="resend_otp.php" class="verify-link"><?= get_text('resend_otp_link', 'Resend OTP'); ?></a>
@@ -108,7 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </p>
         </div>
 
-        <!-- Changed footer class to match CSS: otp-footer -->
         <div class="otp-footer">
             <p><?= get_text('footer_text', '&copy; ' . date("Y") . ' Politeknik Brunei Role Appointment (PbRA). All rights reserved.'); ?></p>
         </div>
