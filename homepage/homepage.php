@@ -10,20 +10,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $id = $_SESSION['id'];
-$favorites = [];
-
-// Get user favorites
-$sql_fav = "SELECT page_name, page_url FROM user_favorites WHERE id = ?";
-$stmt_fav = $conn->prepare($sql_fav);
-if ($stmt_fav) {
-    $stmt_fav->bind_param("i", $id);
-    $stmt_fav->execute();
-    $result_fav = $stmt_fav->get_result();
-    while ($row = $result_fav->fetch_assoc()) {
-        $favorites[] = $row;
-    }
-    $stmt_fav->close();
-}
 
 // Admin check
 $is_admin = false;
@@ -744,37 +730,6 @@ if (!$result) {
             document.getElementById('openFormBtn')?.addEventListener('click', openModal);
         });
 
-        //FAVORITE
-        function toggleFavorite() {
-            var btn = document.getElementById("favorite-btn");
-            var icon = document.getElementById("fav-icon");
-
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "toggle_favorite.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    if (response.success) {
-                        if (response.favorited) {
-                            icon.classList.remove("fa-heart-o");
-                            icon.classList.add("fa-heart");
-                            btn.classList.add("favorited");
-                        } else {
-                            icon.classList.remove("fa-heart");
-                            icon.classList.add("fa-heart-o");
-                            btn.classList.remove("favorited");
-                        }
-                    } else {
-                        alert("Failed to update favorite.");
-                    }
-                }
-            };
-
-            xhr.send("toggle_favorite=true");
-        }
-
         // Breadcrumbs
         let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
         let currentPageName = "Homepage";
@@ -809,26 +764,6 @@ if (!$result) {
 
         // Modal Controls
         // Update your modal control functions
-
-        // FAVORITE from localStorage
-        document.addEventListener('DOMContentLoaded', function() {
-            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-            const favContainer = document.getElementById('favoriteTabs');
-
-            if (favorites.length === 0) {
-                const noFav = document.createElement('span');
-                noFav.textContent = "No favorites yet.";
-                favContainer.appendChild(noFav);
-            } else {
-                favorites.forEach(fav => {
-                    const link = document.createElement('a');
-                    link.href = fav.pageUrl;
-                    link.className = 'favorite-tab';
-                    link.textContent = fav.pageName;
-                    favContainer.appendChild(link);
-                });
-            }
-        });
 
         // Calendar functionality
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
