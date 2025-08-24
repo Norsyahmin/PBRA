@@ -1312,6 +1312,9 @@ if (!$result) {
             }
 
             // Replace the displayEvents function with a slider version
+            let currentSlide = 0;
+            let totalSlides = 0;
+            
             window.displayEvents = function(events) {
                 const eventsSlider = document.getElementById('events-slider');
                 if (!eventsSlider) return;
@@ -1364,35 +1367,49 @@ if (!$result) {
 
                 eventsSlider.innerHTML = html;
 
-                // Initialize slider at first item
-                let currentSlide = 0;
-                const totalSlides = upcomingEvents.length;
+                // Reset slider position
+                currentSlide = 0;
+                totalSlides = upcomingEvents.length;
 
                 // Update navigation buttons
-                document.querySelector('.prev-btn').disabled = true;
-                document.querySelector('.next-btn').disabled = totalSlides <= 1;
-
-                // Add navigation functionality
-                document.querySelector('.prev-btn').onclick = function() {
-                    if (currentSlide > 0) {
-                        currentSlide--;
-                        updateSliderPosition();
-                    }
-                };
-
-                document.querySelector('.next-btn').onclick = function() {
-                    if (currentSlide < totalSlides - 1) {
-                        currentSlide++;
-                        updateSliderPosition();
-                    }
-                };
-
-                function updateSliderPosition() {
-                    eventsSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
-                    document.querySelector('.prev-btn').disabled = currentSlide === 0;
-                    document.querySelector('.next-btn').disabled = currentSlide === totalSlides - 1;
-                }
+                updateSliderButtons();
+                updateSliderPosition();
             };
+            
+            function updateSliderPosition() {
+                const eventsSlider = document.getElementById('events-slider');
+                if (eventsSlider) {
+                    eventsSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
+                }
+            }
+            
+            function updateSliderButtons() {
+                const prevBtn = document.querySelector('.prev-btn');
+                const nextBtn = document.querySelector('.next-btn');
+                
+                if (prevBtn) prevBtn.disabled = currentSlide === 0;
+                if (nextBtn) nextBtn.disabled = currentSlide === totalSlides - 1 || totalSlides <= 1;
+            }
+            
+            // Set up slider navigation once
+            document.addEventListener('DOMContentLoaded', function() {
+                // Add navigation functionality
+                document.addEventListener('click', function(e) {
+                    if (e.target.closest('.prev-btn')) {
+                        if (currentSlide > 0) {
+                            currentSlide--;
+                            updateSliderPosition();
+                            updateSliderButtons();
+                        }
+                    } else if (e.target.closest('.next-btn')) {
+                        if (currentSlide < totalSlides - 1) {
+                            currentSlide++;
+                            updateSliderPosition();
+                            updateSliderButtons();
+                        }
+                    }
+                });
+            });
 
             // Get existing events from localStorage and display them
             let savedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
