@@ -46,9 +46,6 @@ $conn->close();
 
   <div class="page-title">
     <h1 style="font-size: 30px;">SCHEDULE</h1>
-    <button type="button" id="favoriteButton" class="favorite-button" onclick="toggleFavorite()">
-      Add to Favorite
-    </button>
   </div>
 
   <div class="breadcrumb">
@@ -64,6 +61,9 @@ $conn->close();
   </div>
 
   <div class="btn-section">
+    <button class="delete-btn" onclick="document.getElementById('deleteModal').style.display='flex'">
+      <i class="fa fa-trash" aria-hidden="true"></i> Delete Schedule
+    </button>
     <button class="upload-btn" onclick="document.getElementById('uploadModal').style.display='flex'">
       <i class="fa fa-upload" aria-hidden="true"></i> Upload New Schedule
     </button>
@@ -80,48 +80,36 @@ $conn->close();
       </form>
     </div>
   </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <h3>Delete Schedule</h3>
+      <div class="delete-warning">
+        <p>Are you sure you want to delete your schedule?</p>
+      </div>
+      <div class="modal-buttons">
+        <button type="button" class="cancel-btn" onclick="document.getElementById('deleteModal').style.display='none'">
+          <i class="fa fa-times" aria-hidden="true"></i> Cancel
+        </button>
+        <button type="button" class="confirm-delete-btn" onclick="confirmDelete()">
+          <i class="fa fa-trash" aria-hidden="true"></i> Delete Schedule
+        </button>
+      </div>
+    </div>
+  </div>
   
   <footer>
     <p>&copy; 2025 Politeknik Brunei Role Appointment (PbRA). All rights reserved.</p>
   </footer>
 
   <script>
-    //favorite
-    const pageName = "<?php echo $page_name; ?>";
-    const pageUrl = "<?php echo $page_url; ?>";
-    const button = document.getElementById('favoriteButton');
-
-    // Check if already favorited when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-      const exists = favorites.find(fav => fav.pageName === pageName);
-      if (exists) {
-        button.classList.add('favorited');
-        button.textContent = 'Favorited';
-      }
-    });
-
-    function toggleFavorite() {
-      let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-
-      const index = favorites.findIndex(fav => fav.pageName === pageName);
-
-      if (index === -1) {
-        // Not favorited yet, add it
-        favorites.push({
-          pageName: pageName,
-          pageUrl: pageUrl
-        });
-        button.classList.add('favorited');
-        button.textContent = 'Favorited';
-      } else {
-        // Already favorited, remove it
-        favorites.splice(index, 1);
-        button.classList.remove('favorited');
-        button.textContent = 'Add to Favorite';
-      }
-
-      localStorage.setItem('favorites', JSON.stringify(favorites));
+    // Delete schedule function
+    function confirmDelete() {
+      // Close the modal
+      document.getElementById('deleteModal').style.display='none';
+      // Redirect to delete script
+      window.location.href = 'delete_schedule.php';
     }
 
     // Fetch breadcrumbs from sessionStorage
