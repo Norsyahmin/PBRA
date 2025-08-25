@@ -256,6 +256,29 @@ if (!$result) {
         </div>
     </div>
 
+    <!-- Delete Event Confirmation Modal -->
+    <div id="deleteEventModal" class="modal-overlay" style="display: none;">
+        <div class="delete-modal-content">
+            <span class="close-btn" onclick="closeDeleteEventModal()">&times;</span>
+            <h3>Are you sure you want to delete this event?</h3>
+            <div class="modal-button-group">
+                <button type="button" class="confirm-delete-btn" id="confirmDeleteEventBtn">Yes, Delete</button>
+                <button type="button" class="cancel-btn" onclick="closeDeleteEventModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Notification Modal -->
+    <div id="successNotificationModal" class="modal-overlay" style="display: none;">
+        <div class="delete-modal-content">
+            <span class="close-btn" onclick="closeSuccessModal()">&times;</span>
+            <h3 id="successMessage">Event deleted successfully!</h3>
+            <div class="modal-button-group">
+                <button type="button" class="cancel-btn" onclick="closeSuccessModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <p>&copy; 2025 Politeknik Brunei Role Appointment (PbRA). All rights reserved.</p>
     </footer>

@@ -243,6 +243,9 @@ window.editEvent = function(eventId) {
 
     if (!eventToEdit) return;
 
+    // Close the events popup first
+    closeEventsPopup();
+
     // Use the existing edit modal from PHP
     const modal = document.getElementById('editEventFormModal');
     if (!modal) return;
@@ -262,28 +265,11 @@ window.editEvent = function(eventId) {
 
 // Delete event function
 window.deleteEvent = function(eventId) {
-    if (confirm('Are you sure you want to delete this event?')) {
-        // Get existing events
-        let savedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
-
-        // Remove the event
-        const filteredEvents = savedEvents.filter(event => event.id !== eventId);
-
-        // Save updated events
-        localStorage.setItem('calendarEvents', JSON.stringify(filteredEvents));
-
-        // Close the events popup
-        closeEventsPopup();
-
-        // Regenerate calendar to update dots
-        generateCalendar();
-
-        // Update upcoming events
-        displayEvents(filteredEvents);
-
-        // Show success message
-        alert('Event deleted successfully!');
-    }
+    // Store the event ID for deletion
+    window.eventToDelete = eventId;
+    
+    // Show the delete confirmation modal
+    document.getElementById('deleteEventModal').style.display = 'flex';
 };
 
 // Close events popup function
@@ -300,6 +286,55 @@ window.closeEventsPopup = function() {
         overlay.style.display = 'none';
         container.style.display = 'none';
     }, 300);
+};
+
+// Delete event modal functions
+window.closeDeleteEventModal = function() {
+    document.getElementById('deleteEventModal').style.display = 'none';
+    window.eventToDelete = null;
+};
+
+window.closeSuccessModal = function() {
+    document.getElementById('successNotificationModal').style.display = 'none';
+};
+
+window.showSuccessModal = function(message) {
+    document.getElementById('successMessage').textContent = message;
+    document.getElementById('successNotificationModal').style.display = 'flex';
+    
+    // Auto close after 3 seconds
+    setTimeout(() => {
+        closeSuccessModal();
+    }, 3000);
+};
+
+window.performEventDeletion = function() {
+    if (!window.eventToDelete) return;
+    
+    // Get existing events
+    let savedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
+
+    // Remove the event
+    const filteredEvents = savedEvents.filter(event => event.id !== window.eventToDelete);
+
+    // Save updated events
+    localStorage.setItem('calendarEvents', JSON.stringify(filteredEvents));
+
+    // Close modals
+    closeDeleteEventModal();
+    closeEventsPopup();
+
+    // Regenerate calendar to update dots
+    generateCalendar();
+
+    // Update upcoming events
+    displayEvents(filteredEvents);
+
+    // Show success message
+    showSuccessModal('Event deleted successfully!');
+    
+    // Clear the stored event ID
+    window.eventToDelete = null;
 };
 
 // ==================== UPCOMING EVENTS SLIDER FUNCTIONALITY ====================
@@ -449,6 +484,33 @@ document.addEventListener('DOMContentLoaded', function() {
         eventsPopupOverlay.addEventListener('click', closeEventsPopup);
     }
 
+    // Set up delete confirmation modal functionality
+    const deleteEventModal = document.getElementById('deleteEventModal');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteEventBtn');
+    const successModal = document.getElementById('successNotificationModal');
+    
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', performEventDeletion);
+    }
+    
+    // Close delete modal when clicking outside
+    if (deleteEventModal) {
+        window.addEventListener('click', function(event) {
+            if (event.target === deleteEventModal) {
+                closeDeleteEventModal();
+            }
+        });
+    }
+    
+    // Close success modal when clicking outside
+    if (successModal) {
+        window.addEventListener('click', function(event) {
+            if (event.target === successModal) {
+                closeSuccessModal();
+            }
+        });
+    }
+
     // Set up form submission handlers
     const eventForm = document.getElementById('eventForm');
     if (eventForm) {
@@ -499,7 +561,7 @@ document.addEventListener('DOMContentLoaded', function() {
             displayEvents(savedEvents);
 
             // Show success message
-            alert('Event created successfully!');
+            showSuccessModal('Event created successfully!');
         });
     }
 
@@ -549,7 +611,7 @@ document.addEventListener('DOMContentLoaded', function() {
             displayEvents(updatedEvents);
 
             // Show success message
-            alert('Event updated successfully!');
+            showSuccessModal('Event updated successfully!');
         });
     }
 
