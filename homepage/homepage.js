@@ -149,121 +149,11 @@ function nextMonth() {
 
 // Event form functionality
 function openEventForm() {
-    // If modal already exists, just show it
-    if (document.getElementById('eventFormModal')) {
-        document.getElementById('eventFormModal').style.display = 'block';
-        return;
-    }
+    // Use the existing modal from PHP
+    const modal = document.getElementById('eventFormModal');
+    if (!modal) return;
 
-    // Create modal elements
-    const modal = document.createElement('div');
-    modal.id = 'eventFormModal';
-    modal.className = 'modal';
-
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Add New Event</h3>
-                <span class="close-modal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="eventForm">
-                    <div class="form-group">
-                        <label for="eventTitle">Event Title</label>
-                        <input type="text" id="eventTitle" name="title" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="eventDate">Date</label>
-                        <input type="date" id="eventDate" name="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="startTime">Start Time</label>
-                        <input type="time" id="startTime" name="start_time" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="endTime">End Time</label>
-                        <input type="time" id="endTime" name="end_time" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="eventLocation">Location</label>
-                        <input type="text" id="eventLocation" name="location">
-                    </div>
-                    <div class="form-group">
-                        <label for="eventDescription">Description</label>
-                        <textarea id="eventDescription" name="description" rows="4"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="submit-btn">Save Event</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    // Set up event handlers
-    const closeBtn = modal.querySelector('.close-modal');
-    closeBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-    });
-
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-
-    // Event form submission handler
-    const eventForm = document.getElementById('eventForm');
-    eventForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // Get form values
-        const eventTitle = document.getElementById('eventTitle').value;
-        const eventDate = document.getElementById('eventDate').value;
-        const startTime = document.getElementById('startTime').value;
-        const endTime = document.getElementById('endTime').value;
-        const eventLocation = document.getElementById('eventLocation').value;
-        const eventDescription = document.getElementById('eventDescription').value;
-
-        // Create new event object
-        const newEvent = {
-            id: Date.now(), // unique id using timestamp
-            title: eventTitle,
-            date: eventDate,
-            startTime: startTime,
-            endTime: endTime,
-            location: eventLocation,
-            description: eventDescription
-        };
-
-        // Get existing events from localStorage
-        let savedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
-
-        // Add new event to the list
-        savedEvents.push(newEvent);
-
-        // Sort events by date
-        savedEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-        // Save back to localStorage
-        localStorage.setItem('calendarEvents', JSON.stringify(savedEvents));
-
-        // Close the modal
-        modal.style.display = 'none';
-
-        // Regenerate calendar to update event dots
-        generateCalendar();
-
-        // Update the upcoming events display
-        displayEvents(savedEvents);
-
-        // Show success message
-        alert('Event created successfully!');
-    });
-
-    // If a day was clicked, pre-fill the date
+    // Pre-fill date if a day was clicked
     const selectedDay = document.querySelector('.day-cell.highlight');
     if (selectedDay) {
         const day = selectedDay.textContent;
@@ -353,104 +243,9 @@ window.editEvent = function(eventId) {
 
     if (!eventToEdit) return;
 
-    // Create edit form modal if it doesn't exist
-    if (!document.getElementById('editEventFormModal')) {
-        const modal = document.createElement('div');
-        modal.id = 'editEventFormModal';
-        modal.className = 'modal';
-
-        modal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Edit Event</h3>
-                    <span class="close-modal" onclick="document.getElementById('editEventFormModal').style.display='none'">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <form id="editEventForm">
-                        <input type="hidden" id="editEventId">
-                        <div class="form-group">
-                            <label for="editEventTitle">Event Title</label>
-                            <input type="text" id="editEventTitle" name="title" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editEventDate">Date</label>
-                            <input type="date" id="editEventDate" name="date" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editStartTime">Start Time</label>
-                            <input type="time" id="editStartTime" name="start_time" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editEndTime">End Time</label>
-                            <input type="time" id="editEndTime" name="end_time" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editEventLocation">Location</label>
-                            <input type="text" id="editEventLocation" name="location">
-                        </div>
-                        <div class="form-group">
-                            <label for="editEventDescription">Description</label>
-                            <textarea id="editEventDescription" name="description" rows="4"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="submit-btn">Update Event</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(modal);
-
-        // Set up form submission handler
-        document.getElementById('editEventForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const eventId = parseInt(document.getElementById('editEventId').value);
-            const title = document.getElementById('editEventTitle').value;
-            const date = document.getElementById('editEventDate').value;
-            const startTime = document.getElementById('editStartTime').value;
-            const endTime = document.getElementById('editEndTime').value;
-            const location = document.getElementById('editEventLocation').value;
-            const description = document.getElementById('editEventDescription').value;
-
-            // Get all events
-            let savedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
-
-            // Find and update the event
-            const updatedEvents = savedEvents.map(event => {
-                if (event.id === eventId) {
-                    return {
-                        ...event,
-                        title,
-                        date,
-                        startTime,
-                        endTime,
-                        location,
-                        description
-                    };
-                }
-                return event;
-            });
-
-            // Save updated events
-            localStorage.setItem('calendarEvents', JSON.stringify(updatedEvents));
-
-            // Close modals
-            document.getElementById('editEventFormModal').style.display = 'none';
-            document.getElementById('eventsPopupOverlay').classList.remove('active');
-            document.getElementById('eventsPopupContainer').classList.remove('active');
-
-            // Regenerate calendar to update dots
-            generateCalendar();
-
-            // Update upcoming events
-            displayEvents(updatedEvents);
-
-            // Show success message
-            alert('Event updated successfully!');
-        });
-    }
+    // Use the existing edit modal from PHP
+    const modal = document.getElementById('editEventFormModal');
+    if (!modal) return;
 
     // Fill the form with event data
     document.getElementById('editEventId').value = eventToEdit.id;
@@ -462,7 +257,7 @@ window.editEvent = function(eventId) {
     document.getElementById('editEventDescription').value = eventToEdit.description || '';
 
     // Show the edit modal
-    document.getElementById('editEventFormModal').style.display = 'block';
+    modal.style.display = 'block';
 };
 
 // Delete event function
@@ -607,56 +402,155 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Create popup elements for events if they don't exist
-    if (!document.getElementById('eventsPopupOverlay')) {
-        const overlay = document.createElement('div');
-        overlay.id = 'eventsPopupOverlay';
-        overlay.className = 'events-popup-overlay';
-        document.body.appendChild(overlay);
-
-        const popupContainer = document.createElement('div');
-        popupContainer.id = 'eventsPopupContainer';
-        popupContainer.className = 'events-popup-container';
-        popupContainer.innerHTML = `
-            <div class="events-popup-header">
-                <h3 id="eventsPopupDate">Events for Today</h3>
-                <span class="events-popup-close">&times;</span>
-            </div>
-            <div class="events-popup-body">
-                <div id="eventsContent">
-                    <div class="no-events">No events scheduled for this day.</div>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(popupContainer);
-
-        // Close popup when clicking X or overlay
-        document.querySelector('.events-popup-close').addEventListener('click', closeEventsPopup);
-        overlay.addEventListener('click', closeEventsPopup);
+    // Set up modal close functionality for existing modals
+    const eventModal = document.getElementById('eventFormModal');
+    const editEventModal = document.getElementById('editEventFormModal');
+    
+    if (eventModal) {
+        const closeBtn = eventModal.querySelector('.close-modal');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                eventModal.style.display = 'none';
+            });
+        }
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === eventModal) {
+                eventModal.style.display = 'none';
+            }
+        });
+    }
+    
+    if (editEventModal) {
+        const closeBtn = editEventModal.querySelector('.close-modal');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                editEventModal.style.display = 'none';
+            });
+        }
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === editEventModal) {
+                editEventModal.style.display = 'none';
+            }
+        });
     }
 
-    // Create upcoming events section with slider capability
-    if (!document.querySelector('.upcoming-events')) {
-        const calendarSection = document.querySelector('.calendar-widget');
-        if (calendarSection) {
-            const upcomingEvents = document.createElement('div');
-            upcomingEvents.className = 'upcoming-events';
-            upcomingEvents.innerHTML = `
-                <div class="upcoming-header">
-                    <h4><i class="fas fa-calendar-check"></i> Upcoming Events</h4>
-                    <div class="slider-controls">
-                        <button class="slider-btn prev-btn" disabled><i class="fas fa-chevron-left"></i></button>
-                        <button class="slider-btn next-btn"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                </div>
-                <div class="events-slider-container">
-                    <div id="events-slider">
-                        <p class="no-events-message">No upcoming events.</p>
-                    </div>
-                </div>
-            `;
-            calendarSection.appendChild(upcomingEvents);
-        }
+    // Set up events popup close functionality
+    const eventsPopupClose = document.querySelector('.events-popup-close');
+    const eventsPopupOverlay = document.getElementById('eventsPopupOverlay');
+    
+    if (eventsPopupClose) {
+        eventsPopupClose.addEventListener('click', closeEventsPopup);
+    }
+    if (eventsPopupOverlay) {
+        eventsPopupOverlay.addEventListener('click', closeEventsPopup);
+    }
+
+    // Set up form submission handlers
+    const eventForm = document.getElementById('eventForm');
+    if (eventForm) {
+        eventForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form values
+            const eventTitle = document.getElementById('eventTitle').value;
+            const eventDate = document.getElementById('eventDate').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+            const eventLocation = document.getElementById('eventLocation').value;
+            const eventDescription = document.getElementById('eventDescription').value;
+
+            // Create new event object
+            const newEvent = {
+                id: Date.now(), // unique id using timestamp
+                title: eventTitle,
+                date: eventDate,
+                startTime: startTime,
+                endTime: endTime,
+                location: eventLocation,
+                description: eventDescription
+            };
+
+            // Get existing events from localStorage
+            let savedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
+
+            // Add new event to the list
+            savedEvents.push(newEvent);
+
+            // Sort events by date
+            savedEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            // Save back to localStorage
+            localStorage.setItem('calendarEvents', JSON.stringify(savedEvents));
+
+            // Close the modal
+            document.getElementById('eventFormModal').style.display = 'none';
+
+            // Clear form
+            eventForm.reset();
+
+            // Regenerate calendar to update event dots
+            generateCalendar();
+
+            // Update the upcoming events display
+            displayEvents(savedEvents);
+
+            // Show success message
+            alert('Event created successfully!');
+        });
+    }
+
+    const editEventForm = document.getElementById('editEventForm');
+    if (editEventForm) {
+        editEventForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const eventId = parseInt(document.getElementById('editEventId').value);
+            const title = document.getElementById('editEventTitle').value;
+            const date = document.getElementById('editEventDate').value;
+            const startTime = document.getElementById('editStartTime').value;
+            const endTime = document.getElementById('editEndTime').value;
+            const location = document.getElementById('editEventLocation').value;
+            const description = document.getElementById('editEventDescription').value;
+
+            // Get all events
+            let savedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
+
+            // Find and update the event
+            const updatedEvents = savedEvents.map(event => {
+                if (event.id === eventId) {
+                    return {
+                        ...event,
+                        title,
+                        date,
+                        startTime,
+                        endTime,
+                        location,
+                        description
+                    };
+                }
+                return event;
+            });
+
+            // Save updated events
+            localStorage.setItem('calendarEvents', JSON.stringify(updatedEvents));
+
+            // Close modals
+            document.getElementById('editEventFormModal').style.display = 'none';
+            closeEventsPopup();
+
+            // Regenerate calendar to update dots
+            generateCalendar();
+
+            // Update upcoming events
+            displayEvents(updatedEvents);
+
+            // Show success message
+            alert('Event updated successfully!');
+        });
     }
 
     // Set up slider navigation
