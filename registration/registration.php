@@ -175,99 +175,124 @@ function get_field_value($field_name, $default = '')
 
         <!-- Registration Form Section -->
         <form id="regForm" method="post" autocomplete="off">
-            <label>Full Name:</label>
-            <input type="text" name="full_name" required>
-
-            <label>Email:</label>
-            <input type="email" name="email" id="email" required>
-            <div id="emailWarning" class="field-warning" style="display:none;">
-                <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
-                Please include an '@' in the email address. <span id="emailValue"></span> is missing an '@'.
+            <div class="field">
+                <label>Full Name:</label>
+                <input type="text" name="full_name" required value="<?= get_field_value('full_name') ?>">
             </div>
 
-            <label>Recovery Email:</label>
-            <input type="email" name="recovery_email" id="recovery_email" required>
-            <div id="recoveryEmailWarning" class="field-warning" style="display:none;">
-                <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
-                Please include an '@' in the email address. <span id="recoveryEmailValue"></span> is missing an '@'.
+            <div class="field">
+                <label>Email:</label>
+                <input type="email" name="email" id="email" required value="<?= get_field_value('email') ?>">
+                <div id="emailWarning" class="field-warning" style="display:none;">
+                    <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+                    Please include an '@' in the email address. <span id="emailValue"></span> is missing an '@'.
+                </div>
             </div>
 
-            <label>Password:</label>
-            <div class="btn-row">
-                <input type="password" name="password" id="password" style="width:60%;display:inline-block;" required>
-                <button type="button" onclick="generatePassword()" title="Generate Password">Generate</button>
-                <button type="button" onclick="toggleBothPasswords()" title="Show/Hide Password">Show</button>
-                <button type="button" onclick="copyPassword()" title="Copy Password">Copy</button>
-            </div>
-            <div id="passwordWarning" class="field-warning" style="display:none;">
-                <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
-                Password is required.
+            <div class="field">
+                <label>Recovery Email:</label>
+                <input type="email" name="recovery_email" id="recovery_email" required value="<?= get_field_value('recovery_email') ?>">
+                <div id="recoveryEmailWarning" class="field-warning" style="display:none;">
+                    <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+                    Please include an '@' in the email address. <span id="recoveryEmailValue"></span> is missing an '@'.
+                </div>
             </div>
 
-            <label>Confirm Password:</label>
-            <input type="password" name="confirm_password" id="confirm_password" required>
-            <!-- No warning for confirm password, as password warning covers it -->
-
-            <label>Department:</label>
-            <select name="department" id="department" required onchange="filterRoles()">
-                <option value="">Select Department</option>
-                <?php foreach ($departments as $d): ?>
-                    <option value="<?= htmlspecialchars($d['id']) ?>" <?= (get_field_value('department') == $d['id']) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($d['name']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <div id="departmentWarning" class="field-warning" style="display:none;">
-                <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
-                Department is required.
+            <div class="field">
+                <label>Password:</label>
+                <div class="btn-row">
+                    <input type="password" name="password" id="password" required>
+                    <button type="button" onclick="generatePassword()" title="Generate Password">Generate</button>
+                    <button type="button" onclick="toggleBothPasswords()" title="Show/Hide Password">Show</button>
+                    <button type="button" onclick="copyPassword()" title="Copy Password">Copy</button>
+                </div>
+                <div id="passwordWarning" class="field-warning" style="display:none;">
+                    <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+                    Password is required.
+                </div>
             </div>
 
-            <label>Role:</label>
-            <select name="role" id="role_select" required>
-                <option value="">Select Role</option>
-            </select>
-            <div id="roleWarning" class="field-warning" style="display:none;">
-                <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
-                Role is required.
+            <div class="field">
+                <label>Confirm Password:</label>
+                <input type="password" name="confirm_password" id="confirm_password" required>
             </div>
 
-            <label>Office:</label>
-            <select name="office" id="office_select" required onchange="toggleCustomOffice()">
-                <option value="">Select Office</option>
-                <?php foreach ($offices as $o): ?>
-                    <option value="<?= htmlspecialchars($o['office']) ?>" <?= (get_field_value('office') == $o['office']) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($o['office']) ?>
-                    </option>
-                <?php endforeach; ?>
-                <option value="other" <?= (get_field_value('office') === 'other') ? 'selected' : '' ?>>Other</option>
-            </select>
-            <input type="text" name="custom_office" id="custom_office" placeholder="Enter office name" style="display:none;">
-            <div id="officeWarning" class="field-warning" style="display:none;">
-                <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
-                Office is required.
+            <div class="field">
+                <label>Department:</label>
+                <select name="department" id="department" required onchange="filterRoles()">
+                    <option value="">Select Department</option>
+                    <?php foreach ($departments as $d): ?>
+                        <option value="<?= htmlspecialchars($d['id']) ?>" <?= (get_field_value('department') == $d['id']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($d['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <div id="departmentWarning" class="field-warning" style="display:none;">
+                    <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+                    Department is required.
+                </div>
             </div>
 
-            <label>User Type:</label>
-            <select name="user_type" required>
-                <option value="regular" <?= (get_field_value('user_type', 'regular') === 'regular') ? 'selected' : '' ?>>Regular</option>
-                <option value="admin" <?= (get_field_value('user_type') === 'admin') ? 'selected' : '' ?>>Admin</option>
-            </select>
-
-            <label>Start Date:</label>
-            <input type="date" name="start_date" id="start_date" required>
-            <div id="startDateWarning" class="field-warning" style="display:none;">
-                <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
-                Start date is required.
+            <div class="field">
+                <label>Role:</label>
+                <select name="role" id="role_select" required>
+                    <option value="">Select Role</option>
+                </select>
+                <div id="roleWarning" class="field-warning" style="display:none;">
+                    <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+                    Role is required.
+                </div>
             </div>
-            <label>Work Experience:</label>
-            <textarea name="work_experience" rows="3" placeholder="Enter work experience details (Company, Position, Duration)"><?= get_field_value('work_experience') ?></textarea>
 
-            <label>Education:</label>
-            <textarea name="education" rows="3" placeholder="Enter education details (Institution, Degree, Year)"><?= get_field_value('education') ?></textarea>
+            <div class="field">
+                <label>Office:</label>
+                <select name="office" id="office_select" required onchange="toggleCustomOffice()">
+                    <option value="">Select Office</option>
+                    <?php foreach ($offices as $o): ?>
+                        <option value="<?= htmlspecialchars($o['office']) ?>" <?= (get_field_value('office') == $o['office']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($o['office']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                    <option value="other" <?= (get_field_value('office') === 'other') ? 'selected' : '' ?>>Other</option>
+                </select>
+                <input type="text" name="custom_office" id="custom_office" placeholder="Enter office name" style="display:none;" value="<?= get_field_value('custom_office') ?>">
+                <div id="officeWarning" class="field-warning" style="display:none;">
+                    <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+                    Office is required.
+                </div>
+            </div>
+
+            <div class="field">
+                <label>User Type:</label>
+                <select name="user_type" required>
+                    <option value="regular" <?= (get_field_value('user_type', 'regular') === 'regular') ? 'selected' : '' ?>>Regular</option>
+                    <option value="admin" <?= (get_field_value('user_type') === 'admin') ? 'selected' : '' ?>>Admin</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Start Date:</label>
+                <input type="date" name="start_date" id="start_date" required value="<?= get_field_value('start_date') ?>">
+                <div id="startDateWarning" class="field-warning" style="display:none;">
+                    <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+                    Start date is required.
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Work Experience:</label>
+                <textarea name="work_experience" rows="3" placeholder="Enter work experience details (Company, Position, Duration)"><?= get_field_value('work_experience') ?></textarea>
+            </div>
+
+            <div class="field">
+                <label>Education:</label>
+                <textarea name="education" rows="3" placeholder="Enter education details (Institution, Degree, Year)"><?= get_field_value('education') ?></textarea>
+            </div>
+
             <input type="hidden" name="final_submit" value="1">
             <div class="form-actions-right">
-                <button type="button" class="delete-btn" onclick="window.location.href='../homepage/homepage.php'">Cancel</button>
-                <button type="button" class="edit-btn" id="proceedBtn" onclick="showSummary()">Proceed to Confirmation</button>
+                <button type="button" class="cancel-btn" onclick=" window.location.href='../homepage/homepage.php'">Cancel</button>
+                <button type="button" class="confirm-btn" id="proceedBtn" onclick="showSummary()">Proceed to Confirmation</button>
             </div>
         </form>
         <!-- End Registration Form Section -->
@@ -280,8 +305,8 @@ function get_field_value($field_name, $default = '')
             <h3>Registration Summary</h3>
             <div id="summaryContent" style="margin-top:12px;"></div>
             <div style="margin-top:16px;text-align:right;">
-                <button onclick="closeSummary()" style="padding:8px 12px;margin-right:8px;background:#a71d2a;color:#fff;border:1px solid #a71d2a;border-radius:4px;">Close</button>
-                <button onclick="submitForm()" style="padding:8px 12px;background:#218838;color:#fff;border:none;border-radius:4px;font-weight:500;">Confirm & Submit</button>
+                <button type="button" class="cancel-btn" onclick="closeSummary()" style="margin-right:8px;">Edit</button>
+                <button type="button" class="confirm-btn" onclick="submitForm()">Confirm &amp; Submit</button>
             </div>
         </div>
     </div>
