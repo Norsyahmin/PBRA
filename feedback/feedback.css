@@ -43,6 +43,10 @@ body {
   padding: 0 5%;
   max-width: 1200px;
   margin: 0 auto 20px;
+  background: transparent !important;
+  /* remove any colored background from shared styles */
+  box-shadow: none !important;
+  /* remove any shadow that may create a "panel" look */
 }
 
 #breadcrumb-list {
@@ -104,7 +108,8 @@ label {
   font-size: 1rem;
 }
 
-select, textarea {
+select,
+textarea {
   width: 100%;
   padding: 12px;
   margin-bottom: 20px;
@@ -114,7 +119,8 @@ select, textarea {
   transition: all 0.3s ease;
 }
 
-select:focus, textarea:focus {
+select:focus,
+textarea:focus {
   border-color: #174080;
   outline: none;
   box-shadow: 0 0 0 2px rgba(23, 64, 128, 0.2);
@@ -189,8 +195,8 @@ select:focus, textarea:focus {
   color: #f0ad4e;
 }
 
-.rating i:hover, 
-.rating i:hover ~ i {
+.rating i:hover,
+.rating i:hover~i {
   color: #f0ad4e;
 }
 
@@ -286,6 +292,7 @@ select:focus, textarea:focus {
 
 
 @media (max-width: 767px) {
+
   /* Body overall smaller */
   body {
     font-size: 13px;
@@ -340,7 +347,8 @@ select:focus, textarea:focus {
     margin-bottom: 6px;
   }
 
-  select, textarea {
+  select,
+  textarea {
     font-size: 0.85rem;
     padding: 10px;
     margin-bottom: 15px;

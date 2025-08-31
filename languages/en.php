@@ -35,7 +35,7 @@ $en = [
 
     // resend otp page
     'resend_otp_title' => 'Resend OTP',
-    'resend_otp_heading' => 'Resend OTP',
+    'resend_otp_heading' => 'Role Appointment',
     'resend_otp_sub_heading' => 'Enter your email to resend the OTP.',
     'resend_otp_submit' => 'Resend OTP',
     'back_to_verify_otp' => 'Back to OTP Verification',

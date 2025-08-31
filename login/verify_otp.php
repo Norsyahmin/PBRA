@@ -63,18 +63,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <div class="login-container">
-        <div class="login-header">
-            <!-- Use the same image path as in login.php if it's relative to common/images -->
+    <!-- Changed container class to match CSS: otp-container -->
+    <div class="otp-container">
+        <!-- Changed header class to match CSS: otp-header -->
+        <div class="otp-header">
             <img src="images/pbralogo.png" alt="College Logo" class="college-logo">
             <h2><?= get_text('page_title', 'Politeknik Brunei <br> Role Appointment'); ?></h2>
             <p><?= get_text('otp_sub_heading', 'Admin One-Time Password Verification'); ?></p>
         </div>
 
-        <form method="post" class="login-form">
+        <!-- Changed form class to match CSS: otp-form -->
+        <form method="post" class="otp-form">
             <div class="form-group">
                 <label for="otp"><?= get_text('enter_otp_label', 'Enter OTP sent to your recovery email:'); ?></label>
-                <input type="text" id="otp" name="otp" placeholder="<?= get_text('otp_placeholder', 'Enter 6-digit OTP'); ?>" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" required>
+                <input
+                    type="password"
+                    id="otp"
+                    name="otp"
+                    value=""
+                    placeholder="<?= get_text('otp_placeholder', 'Enter 6-digit OTP'); ?>"
+                    maxlength="6"
+                    inputmode="numeric"
+                    pattern="[0-9]{6}"
+                    autocomplete="one-time-code"
+                    required>
             </div>
 
             <?php if ($error) : ?>
@@ -84,10 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
 
-            <button type="submit" class="login-button"><?= get_text('verify_otp_button', 'Verify OTP'); ?></button>
+            <button type="submit" class="otp-button"><?= get_text('verify_otp_button', 'Verify OTP'); ?></button>
         </form>
 
-        <div class="login-links" style="margin-top: 20px;">
+        <div class="otp-links" style="margin-top: 20px;">
             <p><?= get_text('otp_did_not_receive', "Didn't receive the OTP?"); ?>
                 <a href="resend_otp.php" class="verify-link"><?= get_text('resend_otp_link', 'Resend OTP'); ?></a>
             </p>
@@ -96,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </p>
         </div>
 
-        <div class="login-footer">
+        <div class="otp-footer">
             <p><?= get_text('footer_text', '&copy; ' . date("Y") . ' Politeknik Brunei Role Appointment (PbRA). All rights reserved.'); ?></p>
         </div>
     </div>

@@ -32,8 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $is_admin && isset($_POST['submit_a
         $imageName = uniqid() . '_' . basename($_FILES['image']['name']);
         $fullPath = $uploadDir . $imageName;
         move_uploaded_file($imageTmp, $fullPath);
-        $imagePath = 'uploads/announcements/' . $imageName; // ✅ just this
-
+        $imagePath = 'uploads/announcements/' . $imageName;
     }
 
     if (!empty($title) && !empty($content)) {
@@ -41,7 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $is_admin && isset($_POST['submit_a
         $stmt->bind_param("sss", $title, $content, $imagePath);
         $stmt->execute();
         $stmt->close();
-        header("Location: " . $_SERVER['PHP_SELF']);
+        
+        // Use JavaScript redirect instead of header()
+        echo "<script>window.location.href = '" . $_SERVER['PHP_SELF'] . "';</script>";
         exit();
     }
 }
@@ -49,8 +50,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $is_admin && isset($_POST['submit_a
 // Handle delete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $is_admin && isset($_POST['delete_id'])) {
     $idToDelete = $_POST['delete_id'];
-    $conn->query("DELETE FROM announcement WHERE id = " . intval($idToDelete));
-    header("Location: " . $_SERVER['PHP_SELF']);
+    
+    // First, get the image path before deleting the record
+    $stmt = $conn->prepare("SELECT image_path FROM announcement WHERE id = ?");
+    $stmt->bind_param("i", $idToDelete);
+    $stmt->execute();
+    $stmt->bind_result($imagePath);
+    $stmt->fetch();
+    $stmt->close();
+    
+    // Delete the physical image file if it exists
+    if (!empty($imagePath)) {
+        $fullImagePath = '../' . $imagePath;
+        if (file_exists($fullImagePath)) {
+            if (!unlink($fullImagePath)) {
+                // Log error but continue with database deletion
+                error_log("Failed to delete image file: " . $fullImagePath);
+            }
+        }
+    }
+    
+    // Then delete the database record
+    $stmt = $conn->prepare("DELETE FROM announcement WHERE id = ?");
+    $stmt->bind_param("i", $idToDelete);
+    $stmt->execute();
+    $stmt->close();
+    
+    // Use JavaScript redirect instead of header()
+    echo "<script>window.location.href = '" . $_SERVER['PHP_SELF'] . "';</script>";
     exit();
 }
 

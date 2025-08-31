@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="login-container">
         <div class="login-header">
             <img src="../login/images/pbralogo.png" alt="PbRa Logo" class="college-logo">
-            <h2>Change Your Password</h2>
+            <h2>Change Temporary Your Password</h2>
             <p>You must change your temporary password before accessing the system.</p>
             <?php if ($success_message): ?>
                 <div class="success-message">

@@ -52,7 +52,7 @@ h2 span {
 
 
 
-.otp-container {
+.resend_otp-container {
     background-color: var(--card-background);
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -65,12 +65,12 @@ h2 span {
     transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
 }
 
-.otp-container:hover {
+.resend_otp-container:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
-.otp-header {
+.resend_otp-header {
     margin-bottom: 30px;
 }
 
@@ -79,24 +79,24 @@ h2 span {
 
 }
 
-.otp-header h2 {
+.resend_otp-header h2 {
     font-size: 2.2em;
     color: var(--primary-color);
     margin-bottom: 8px;
     font-weight: 700;
 }
 
-.otp-header p {
+.resend_otp-header p {
     font-size: 1em;
     color: var(--light-text-color);
 }
 
-.otp-form .form-group {
+.resend_otp-form .form-group {
     margin-bottom: 20px;
     text-align: left;
 }
 
-.otp-form label {
+.resend_otp-form label {
     display: block;
     font-size: 0.95em;
     margin-bottom: 8px;
@@ -104,8 +104,8 @@ h2 span {
     font-weight: 500;
 }
 
-.otp-form input[type="email"],
-.otp-form input[type="password"] {
+.resend_otp-form input[type="email"],
+.resend_otp-form input[type="password"] {
     width: 100%;
     padding: 14px 18px;
     border: 1px solid var(--border-color);
@@ -116,14 +116,14 @@ h2 span {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.otp-form input[type="email"]:focus,
-.otp-form input[type="password"]:focus {
+.resend_otp-form input[type="email"]:focus,
+.resend_otp-form input[type="password"]:focus {
     border-color: var(--secondary-color);
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
     outline: none;
 }
 
-.otp-form input::placeholder {
+.resend_otp-form input::placeholder {
     color: #a0a0a0;
 }
 
@@ -137,18 +137,12 @@ h2 span {
     /* Ensure it spans full width for proper alignment */
 }
 
-.forgot-password {
-    color: var(--secondary-color);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
 .forgot-password:hover {
     color: var(--primary-color);
     text-decoration: underline;
 }
 
-.otp-button {
+.resend_otp-button {
     width: 100%;
     padding: 15px 20px;
     background-color: var(--primary-color);
@@ -163,36 +157,36 @@ h2 span {
     box-shadow: 0 4px 10px rgba(0, 95, 178, 0.2);
 }
 
-.otp-button:hover {
+.resend_otp-button:hover {
     background-color: var(--button-hover-color);
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 95, 178, 0.3);
 }
 
-.otp-button:active {
+.resend_otp-button:active {
     transform: translateY(0);
     box-shadow: 0 2px 5px rgba(0, 95, 178, 0.1);
 }
 
-.otp-links {
+.resend_otp-links {
     margin-top: 25px;
     font-size: 0.9em;
     color: var(--light-text-color);
     line-height: 1.8;
 }
 
-.otp-links a {
+.resend_otp-links a {
     color: var(--secondary-color);
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
-.otp-links a:hover {
+.resend_otp-links a:hover {
     color: var(--primary-color);
     text-decoration: underline;
 }
 
-.otp-footer {
+.resend_otp-footer {
     margin-top: 30px;
     font-size: 0.85em;
     color: var(--light-text-color);
@@ -274,16 +268,16 @@ h2 span {
 
 /* Responsive Design */
 @media (max-width: 500px) {
-    .otp-container {
+    .resend_otp-container {
         margin: 20px;
         padding: 30px 25px;
     }
 
-    .otp-header h2 {
+    .resend_otp-header h2 {
         font-size: 1.8em;
     }
 
-    .otp-button {
+    .resend_otp-button {
         padding: 12px 15px;
         font-size: 1em;
     }

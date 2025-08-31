@@ -50,6 +50,13 @@ unset($_SESSION['resend_success']);
                     <i class="fas fa-check-circle"></i>
                     <?= htmlspecialchars($success_message); ?>
                 </div>
+
+                <script>
+                    // Redirect to login after 5 seconds without showing a countdown
+                    setTimeout(function() {
+                        window.location.href = '../login/login.php';
+                    }, 10000);
+                </script>
             <?php endif; ?>
         </div>
 
@@ -82,26 +89,7 @@ unset($_SESSION['resend_success']);
             <p>&copy; <?= date("Y"); ?> Politeknik Brunei Role Appointment (PbRA). All rights reserved.</p>
         </div>
     </div>
-
-    <!-- JavaScript for Language Switcher -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const languageTrigger = document.getElementById('languageTrigger');
-            const languageDropdown = document.getElementById('languageDropdown');
-
-            languageTrigger.addEventListener('click', function(event) {
-                languageDropdown.classList.toggle('show');
-                event.stopPropagation();
-            });
-
-            // Close dropdown if clicked outside
-            document.addEventListener('click', function(event) {
-                if (!languageDropdown.contains(event.target) && !languageTrigger.contains(event.target)) {
-                    languageDropdown.classList.remove('show');
-                }
-            });
-        });
-    </script>
+    <script src="../languages/language_switcher.js"></script> <!-- Link to your new JavaScript file -->
 </body>
 
 </html>
