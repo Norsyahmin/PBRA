@@ -8,8 +8,8 @@ if (!isset($_SESSION['id'])) {
 include '../mypbra_connect.php';
 
 $user_id = $_SESSION['id'];
-$upload_dir = 'schedule/uploads/'; // relative to this file
-$full_dir = '../' . $upload_dir;
+$upload_dir = 'uploads/'; // relative to schedule folder
+$full_dir = $upload_dir;
 
 // Create folder if not exists
 if (!is_dir($full_dir)) {
@@ -22,7 +22,7 @@ if (isset($_FILES['schedule_image']) && $_FILES['schedule_image']['error'] === U
     $file_ext = pathinfo($_FILES['schedule_image']['name'], PATHINFO_EXTENSION);
     $file_name = 'schedule_' . $user_id . '.' . strtolower($file_ext);
     $file_path = $full_dir . $file_name;
-    $relative_path = '../' . $upload_dir . $file_name;
+    $relative_path = $upload_dir . $file_name;
 
     // Move uploaded file
     if (move_uploaded_file($file_tmp, $file_path)) {
