@@ -44,24 +44,24 @@ if (!isset($_SESSION['id'])) {
 </head>
 
 <header>
-    <?php include '../navbar/navbar.php'; ?>
+<?php include '../includes/navbar.php'; ?>
 </header>
 
 <body onload="fetchNotifications()">
 
     <div class="page-title">
         <h1 style="font-size: 30px;">CALENDAR</h1>
-
-        <button type="button" id="favoriteButton" class="favorite-button" onclick="toggleFavorite()">
-            Add to Favorite
-        </button>
+        
+    <button type="button" id="favoriteButton" class="favorite-button" onclick="toggleFavorite()">
+    Add to Favorite
+</button>
     </div>
 
     <div class="breadcrumb">
         <ul id="breadcrumb-list">
         </ul>
     </div>
-
+    
 
     <div class="main-container">
         <div class="calendar-container">
@@ -117,35 +117,38 @@ if (!isset($_SESSION['id'])) {
     </div>
 
     <script>
-        const phpEvents = <?php echo json_encode($php_tasks); ?>;
-        let events = [];
+const phpEvents = <?php echo json_encode($php_tasks); ?>;
+let events = [];
 
-        // Add DB tasks (source: db)
-        phpEvents.forEach(task => {
-            events.push({
-                date: task.task_date,
-                time: task.task_time,
-                title: task.task_name,
-                type: 'urgent',
-                source: 'db'
-            });
-        });
+// Add DB tasks (source: db)
+phpEvents.forEach(task => {
+    events.push({
+        date: task.task_date,
+        time: task.task_time,
+        title: task.task_name,
+        type: 'urgent',
+        source: 'db'
+    });
+});
 
-        // Add manual events (source: manual)
-        const localEvents = JSON.parse(localStorage.getItem('events')) || [];
-        localEvents.forEach(event => {
-            events.push({
-                date: event.date,
-                time: event.time,
-                title: event.title,
-                type: event.type || 'neutral',
-                source: 'manual'
-            });
-        });
-    </script>
+// Add manual events (source: manual)
+const localEvents = JSON.parse(localStorage.getItem('events')) || [];
+localEvents.forEach(event => {
+    events.push({
+        date: event.date,
+        time: event.time,
+        title: event.title,
+        type: event.type || 'neutral',
+        source: 'manual'
+    });
+});
+
+
+</script>
 
 
     <script>
+
         const calendarGrid = document.getElementById('calendar-grid');
         const currentMonthYear = document.getElementById('current-month-year');
         const prevMonthButton = document.getElementById('prev-month');
@@ -163,11 +166,11 @@ if (!isset($_SESSION['id'])) {
         let editingEventIndex = null;
 
         function formatDateToInputValue(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;     
+    }
 
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -212,95 +215,91 @@ if (!isset($_SESSION['id'])) {
                 if (event) dateElement.classList.add(event.type);
 
                 if (!event || event.source === 'manual') {
-                    dateElement.addEventListener('click', () => openEventForm(new Date(year, month, i)));
-                }
+    dateElement.addEventListener('click', () => openEventForm(new Date(year, month, i)));
+}
                 calendarGrid.appendChild(dateElement);
             }
         }
 
         function openEventForm(date, eventIndex = null) {
-            eventFormScene.style.display = 'flex';
-            editingEventIndex = eventIndex;
+    eventFormScene.style.display = 'flex';
+    editingEventIndex = eventIndex;
 
-            let displayDate = date;
-            let inputDate = formatDateToInputValue(date);
+    let displayDate = date;
+    let inputDate = formatDateToInputValue(date);
 
-            // If editing an existing event
-            if (eventIndex !== null && events[eventIndex]) {
-                const event = events[eventIndex];
+    // If editing an existing event
+    if (eventIndex !== null && events[eventIndex]) {
+        const event = events[eventIndex];
 
-                displayDate = new Date(event.date);
-                inputDate = formatDateToInputValue(displayDate);
+        displayDate = new Date(event.date);
+        inputDate = formatDateToInputValue(displayDate);
 
-                document.getElementById('event-date').value = event.date;
-                document.getElementById('event-time').value = event.time;
-                document.getElementById('event-title').value = event.title;
-                const typeRadio = document.querySelector(`input[name="event-type"][value="${event.type}"]`);
-                if (typeRadio) typeRadio.checked = true;
+        document.getElementById('event-date').value = event.date;
+        document.getElementById('event-time').value = event.time;
+        document.getElementById('event-title').value = event.title;
+        const typeRadio = document.querySelector(`input[name="event-type"][value="${event.type}"]`);
+        if (typeRadio) typeRadio.checked = true;
 
-                eventFormTitle.textContent = 'Edit Event';
-                document.getElementById('delete-event-btn').style.display = 'inline-block';
+        eventFormTitle.textContent = 'Edit Event';
+        document.getElementById('delete-event-btn').style.display = 'inline-block';
 
-            } else {
-                eventForm.reset();
-                document.getElementById('event-date').value = inputDate;
-                document.getElementById('event-time').value = '';
-                document.getElementById('event-title').value = '';
-                const radios = document.querySelectorAll('input[name="event-type"]');
-                radios.forEach(r => r.checked = false);
+    } else {
+        eventForm.reset();
+        document.getElementById('event-date').value = inputDate;
+        document.getElementById('event-time').value = '';
+        document.getElementById('event-title').value = '';
+        const radios = document.querySelectorAll('input[name="event-type"]');
+        radios.forEach(r => r.checked = false);
 
-                eventFormTitle.textContent = 'Add Event';
-                document.getElementById('delete-event-btn').style.display = 'none';
+        eventFormTitle.textContent = 'Add Event';
+        document.getElementById('delete-event-btn').style.display = 'none';
 
-            }
+    }
 
-            // Format and show the selected date as dd/mm/yyyy
-            const day = String(displayDate.getDate()).padStart(2, '0');
-            const month = String(displayDate.getMonth() + 1).padStart(2, '0');
-            const year = displayDate.getFullYear();
-            const formattedDisplay = `${day}/${month}/${year}`;
-            document.getElementById('formatted-date-display').textContent = `Selected Date: ${formattedDisplay}`;
-        }
+    // Format and show the selected date as dd/mm/yyyy
+    const day = String(displayDate.getDate()).padStart(2, '0');
+    const month = String(displayDate.getMonth() + 1).padStart(2, '0');
+    const year = displayDate.getFullYear();
+    const formattedDisplay = `${day}/${month}/${year}`;
+    document.getElementById('formatted-date-display').textContent = `Selected Date: ${formattedDisplay}`;
+}
 
-        function renderEvents() {
-            eventsContainer.innerHTML = '';
-            events.forEach((event, index) => {
-                const eventElement = document.createElement('div');
-                eventElement.classList.add('event');
-                eventElement.setAttribute('data-type', event.type);
+function renderEvents() {
+    eventsContainer.innerHTML = '';
+    events.forEach((event, index) => {
+        const eventElement = document.createElement('div');
+        eventElement.classList.add('event');
+        eventElement.setAttribute('data-type', event.type);
 
-                const dateObj = new Date(event.date);
-                const dayOfWeek = dateObj.toLocaleString('default', {
-                    weekday: 'short'
-                });
-                const monthName = dateObj.toLocaleString('default', {
-                    month: 'short'
-                });
+        const dateObj = new Date(event.date);
+        const dayOfWeek = dateObj.toLocaleString('default', { weekday: 'short' });
+        const monthName = dateObj.toLocaleString('default', { month: 'short' });
 
-                eventElement.innerHTML = `
+        eventElement.innerHTML = `
             <span class="event-date">${dayOfWeek}, ${dateObj.getDate()} ${monthName} ${dateObj.getFullYear()}</span>
             <span class="event-title">${event.title}</span>
             <span class="event-time">${event.time}</span>
         `;
 
-                if (event.source === 'manual') {
-                    const editBtn = document.createElement('button');
-                    editBtn.classList.add('done-btn');
-                    editBtn.textContent = 'Edit';
-                    editBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        openEventForm(new Date(event.date), index);
-                    });
-                    eventElement.appendChild(editBtn);
-                }
+        if (event.source === 'manual') {
+    const editBtn = document.createElement('button');
+    editBtn.classList.add('done-btn');
+    editBtn.textContent = 'Edit';
+    editBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openEventForm(new Date(event.date), index);
+    });
+    eventElement.appendChild(editBtn);
+}
 
-                eventsContainer.appendChild(eventElement);
-            });
-        }
+        eventsContainer.appendChild(eventElement);
+    });
+}
 
-        function saveEvents() {
-            localStorage.setItem('events', JSON.stringify(events.filter(e => e.source === 'manual')));
-        }
+function saveEvents() {
+    localStorage.setItem('events', JSON.stringify(events.filter(e => e.source === 'manual')));
+}
 
 
         prevMonthButton.addEventListener('click', () => {
@@ -323,15 +322,15 @@ if (!isset($_SESSION['id'])) {
         const deleteEventBtn = document.getElementById('delete-event-btn');
 
         deleteEventBtn.addEventListener('click', () => {
-            if (editingEventIndex !== null) {
-                events.splice(editingEventIndex, 1);
-                saveEvents();
-                renderCalendar(currentDate);
-                renderEvents();
-                eventFormScene.style.display = 'none';
-                editingEventIndex = null;
-            }
-        });
+    if (editingEventIndex !== null) {
+        events.splice(editingEventIndex, 1);
+        saveEvents();
+        renderCalendar(currentDate);
+        renderEvents();
+        eventFormScene.style.display = 'none';
+        editingEventIndex = null;
+    }
+});
 
 
         eventForm.addEventListener('submit', (e) => {
@@ -343,12 +342,12 @@ if (!isset($_SESSION['id'])) {
 
             if (eventDate && eventTime && eventTitle && eventType) {
                 const newEvent = {
-                    date: eventDate,
-                    time: eventTime,
-                    title: eventTitle,
-                    type: eventType,
-                    source: 'manual' // ✅ add this
-                };
+  date: eventDate,
+  time: eventTime,
+  title: eventTitle,
+  type: eventType,
+  source: 'manual' // ✅ add this
+};
                 if (editingEventIndex !== null) {
                     events[editingEventIndex] = newEvent;
                 } else {
@@ -362,87 +361,83 @@ if (!isset($_SESSION['id'])) {
             }
         });
 
-        // Breadcrumbs
-        let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
-        let currentPageUrl = window.location.pathname;
+       // Breadcrumbs
+let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
+let currentPageUrl = window.location.pathname;
 
-        // 🧠 Instead of hardcoding, get <title> automatically
-        let currentPageName = document.title.trim();
+// 🧠 Instead of hardcoding, get <title> automatically
+let currentPageName = document.title.trim(); 
 
-        let pageExists = breadcrumbs.some(b => b.url === currentPageUrl);
+let pageExists = breadcrumbs.some(b => b.url === currentPageUrl);
 
-        if (!pageExists) {
-            breadcrumbs.push({
-                name: currentPageName,
-                url: currentPageUrl
-            });
-            sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
-        }
+if (!pageExists) {
+  breadcrumbs.push({ name: currentPageName, url: currentPageUrl });
+  sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
+}
 
-        let breadcrumbList = document.getElementById('breadcrumb-list');
-        breadcrumbList.innerHTML = '';
+let breadcrumbList = document.getElementById('breadcrumb-list');
+breadcrumbList.innerHTML = '';
 
-        breadcrumbs.forEach((breadcrumb, index) => {
-            let item = document.createElement('li');
-            let link = document.createElement('a');
-            link.href = breadcrumb.url;
-            link.textContent = breadcrumb.name;
+breadcrumbs.forEach((breadcrumb, index) => {
+  let item = document.createElement('li');
+  let link = document.createElement('a');
+  link.href = breadcrumb.url;
+  link.textContent = breadcrumb.name;
+  
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    breadcrumbs = breadcrumbs.slice(0, index + 1);
+    sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
+    window.location.href = breadcrumb.url;
+  });
 
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                breadcrumbs = breadcrumbs.slice(0, index + 1);
-                sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
-                window.location.href = breadcrumb.url;
-            });
+  item.appendChild(link);
+  breadcrumbList.appendChild(item);
 
-            item.appendChild(link);
-            breadcrumbList.appendChild(item);
-
-            if (index < breadcrumbs.length - 1) {
-                let separator = document.createElement('span');
-                separator.textContent = ' > ';
-                breadcrumbList.appendChild(separator);
-            }
-        });
+  if (index < breadcrumbs.length - 1) {
+    let separator = document.createElement('span');
+    separator.textContent = ' > ';
+    breadcrumbList.appendChild(separator);
+  }
+});
 
 
-        //favorite
-        const pageName = "<?php echo $page_name; ?>";
-        const pageUrl = "<?php echo $page_url; ?>";
-        const button = document.getElementById('favoriteButton');
+//favorite
+const pageName = "<?php echo $page_name; ?>";
+const pageUrl = "<?php echo $page_url; ?>";
+const button = document.getElementById('favoriteButton');
 
-        // Check if already favorited when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-            const exists = favorites.find(fav => fav.pageName === pageName);
-            if (exists) {
-                button.classList.add('favorited');
-                button.textContent = 'Favorited';
-            }
-        });
+// Check if already favorited when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    const exists = favorites.find(fav => fav.pageName === pageName);
+    if (exists) {
+        button.classList.add('favorited');
+        button.textContent = 'Favorited';
+    }
+});
 
-        function toggleFavorite() {
-            let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+function toggleFavorite() {
+    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
 
-            const index = favorites.findIndex(fav => fav.pageName === pageName);
+    const index = favorites.findIndex(fav => fav.pageName === pageName);
 
-            if (index === -1) {
-                // Not favorited yet, add it
-                favorites.push({
-                    pageName: pageName,
-                    pageUrl: pageUrl
-                });
-                button.classList.add('favorited');
-                button.textContent = 'Favorited';
-            } else {
-                // Already favorited, remove it
-                favorites.splice(index, 1);
-                button.classList.remove('favorited');
-                button.textContent = 'Add to Favorite';
-            }
+    if (index === -1) {
+        // Not favorited yet, add it
+        favorites.push({ pageName: pageName, pageUrl: pageUrl });
+        button.classList.add('favorited');
+        button.textContent = 'Favorited';
+    } else {
+        // Already favorited, remove it
+        favorites.splice(index, 1);
+        button.classList.remove('favorited');
+        button.textContent = 'Add to Favorite';
+    }
 
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-        }
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+}
+
+ 
     </script>
 
 </body>
