@@ -15,12 +15,14 @@ const navBar = (function () {
     let lastScrollTop = 0;
 
     function toggleSidebar(event) {
-        event.stopPropagation();
+        event && event.stopPropagation && event.stopPropagation();
+        if (!sidebar || !sidebarOverlay) return;
         sidebar.classList.toggle("active");
         sidebarOverlay.classList.toggle("active");
     }
 
     function closeSidebar() {
+        if (!sidebar || !sidebarOverlay) return;
         sidebar.classList.remove("active");
         sidebarOverlay.classList.remove("active");
     }
@@ -33,35 +35,31 @@ const navBar = (function () {
     }
 
     function closeSearch(event) {
+        if (!searchOverlay) return;
         // If the click is on the search overlay itself, or the close button, close it.
-        // We stop propagation for clicks *inside* search-popup to prevent closing when interacting with the input.
         if (
             event.target === searchOverlay ||
             (event.target && event.target.classList && event.target.classList.contains("search-close"))
         ) {
             searchOverlay.classList.remove("active");
             if (content) content.classList.remove("blurred");
-            if (topSearch) topSearch.blur(); // Remove focus from the top search bar
+            if (topSearch) topSearch.blur();
         }
     }
 
     // Toggle user dropdown menu
     function toggleUserMenu(event) {
         if (!userMenu) return;
-        event.stopPropagation();
+        event && event.stopPropagation && event.stopPropagation();
         const isOpen = userMenu.classList.toggle("open");
-        try {
-            userMenu.setAttribute("aria-expanded", isOpen ? "true" : "false");
-        } catch (e) { }
+        try { userMenu.setAttribute("aria-expanded", isOpen ? "true" : "false"); } catch (e) { }
     }
 
     // Close user menu
     function closeUserMenu() {
         if (!userMenu) return;
         userMenu.classList.remove("open");
-        try {
-            userMenu.setAttribute("aria-expanded", "false");
-        } catch (e) { }
+        try { userMenu.setAttribute("aria-expanded", "false"); } catch (e) { }
     }
 
     // Close user menu on outside click
@@ -85,19 +83,18 @@ const navBar = (function () {
     });
 
     // Scroll behavior for topbar
-    window.addEventListener("scroll", function () {
-        let st = window.pageYOffset || document.documentElement.scrollTop;
-
-        if (st > lastScrollTop) {
-            // Scrolling down
-            topbar.style.top = "-70px"; // Hide topbar (adjust if your topbar height is different)
-            closeSidebar(); // Also close sidebar if open for better UX
-        } else {
-            // Scrolling up
-            topbar.style.top = "0"; // Show topbar
-        }
-        lastScrollTop = st <= 0 ? 0 : st;
-    });
+    if (topbar) {
+        window.addEventListener("scroll", function () {
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop) {
+                topbar.style.top = "-70px";
+                closeSidebar();
+            } else {
+                topbar.style.top = "0";
+            }
+            lastScrollTop = st <= 0 ? 0 : st;
+        });
+    }
 
     return {
         toggleSidebar: toggleSidebar,

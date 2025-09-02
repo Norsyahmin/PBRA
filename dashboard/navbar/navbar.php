@@ -17,7 +17,6 @@ include '../mypbra_connect.php'; // Ensure DB connection
 
 $logged_in_user = $_SESSION['full_name'];
 ?>
-
 <link rel="stylesheet" href="../dashboard/navbar/style.css" />
 
 <!-- Navigation Bar Component -->
@@ -56,10 +55,15 @@ $logged_in_user = $_SESSION['full_name'];
     <div id="sidebar" class="sidebar">
         <span class="closebtn" onclick="navBar.closeSidebar()">&times;</span>
         <a href="../homepage/homepage.php">Home</a>
+        <a href="#">Task Management</a>
+        <a href="#">Statistics</a>
+        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin') { ?>
+            <a href="../registration/registration.php">Register User</a>
+        <?php } ?>
         <a href="../feedback/feedback.php">Feedback</a>
         <a href="./report/report.php">Report</a>
         <a href="../usersupport/usersupport.php">User Support</a>
-        <a href="#">Task Management</a>
+        <a href="../virtualmeeting/virtualmeeting.php">Virtual Meeting</a>
     </div>
 
     <!-- Overlay background -->
@@ -74,4 +78,6 @@ $logged_in_user = $_SESSION['full_name'];
     </div>
 
 </div>
+<!-- ensure navbar script is loaded; defer to avoid blocking and to ensure DOM exists -->
+<script src="../dashboard/navbar/navbar.js" defer></script>
 <!-- End Navigation Bar Component -->

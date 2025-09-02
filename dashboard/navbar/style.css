@@ -135,44 +135,125 @@
 }
 
 /* Sidebar (overlay style) */
+/* replaced left-based positioning with transform for smoother GPU-accelerated animation */
 .sidebar {
     height: 100%;
-    width: 250px;
+    width: 260px;
+    /* slightly wider for visual comfort */
     position: fixed;
     top: 0;
-    left: -250px;
+    left: 0;
+    /* keep origin at left:0 but hide with transform */
+    transform: translateX(-100%);
     background-color: #174080;
     overflow-x: hidden;
-    transition: 0.3s;
+    transition: transform 320ms cubic-bezier(.2, .9, .2, 1), box-shadow 220ms;
     padding-top: 60px;
     z-index: 1100;
     color: #fff;
+    box-shadow: none;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
+/* When active, slide in */
+.sidebar.active {
+    transform: translateX(0);
+    box-shadow: 8px 0 30px rgba(10, 25, 55, 0.45);
+}
+
+/* Overlay backdrop */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.32);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 260ms ease, visibility 260ms;
+    z-index: 1050;
+    pointer-events: none;
+    /* ignore clicks when hidden */
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    /* allow clicks when visible */
+}
+
+/* Sidebar link layout and entrance animation */
+/* keep transitions but no entrance delay by default (so closing is immediate) */
 .sidebar a {
-    padding: 10px 15px;
+    padding: 14px 22px;
     text-decoration: none;
     font-size: 18px;
     color: #f1f1f1;
     display: block;
-    transition: 0.2s;
+    transition: opacity 260ms ease, transform 320ms cubic-bezier(.2, .9, .2, 1);
+    opacity: 0;
+    transform: translateX(-12px);
+    margin: 6px 0;
+    will-change: opacity, transform;
 }
 
+/* When active, show links and apply staggered entrance delays */
+.sidebar.active a {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* staggered delays only while active */
+.sidebar.active a:nth-of-type(1) {
+    transition-delay: 60ms;
+}
+
+.sidebar.active a:nth-of-type(2) {
+    transition-delay: 110ms;
+}
+
+.sidebar.active a:nth-of-type(3) {
+    transition-delay: 160ms;
+}
+
+.sidebar.active a:nth-of-type(4) {
+    transition-delay: 210ms;
+}
+
+.sidebar.active a:nth-of-type(5) {
+    transition-delay: 260ms;
+}
+
+.sidebar.active a:nth-of-type(6) {
+    transition-delay: 310ms;
+}
+
+.sidebar.active a:nth-of-type(7) {
+    transition-delay: 360ms;
+}
+
+.sidebar.active a:nth-of-type(8) {
+    transition-delay: 410ms;
+}
+
+/* Slight hover highlight */
 .sidebar a:hover {
-    background-color: #174080;
+    background-color: rgba(255, 255, 255, 0.04);
+    transform: translateX(6px);
 }
 
+/* Close button position stays visible during animation */
 .closebtn {
     position: absolute;
-    top: 15px;
-    right: 20px;
+    top: 12px;
+    right: 18px;
     font-size: 30px;
     color: #f1f1f1;
     cursor: pointer;
-}
-
-.sidebar.active {
-    left: 0;
+    z-index: 1200;
+    transition: color 150ms;
 }
 
 /* Search popup overlay (glass blur) */
@@ -185,7 +266,6 @@
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1300;
