@@ -7,9 +7,6 @@
     <title>PHP Website with Components</title>
     <!-- Link to global CSS file -->
     <link rel="stylesheet" href="style.css" />
-    <!-- Link to component-specific CSS files -->
-    <link rel="stylesheet" href="../dashboard/navbar/style.css" />
-    <link rel="stylesheet" href="../dashboard/scrolltop/style.css" />
 </head>
 
 <body>

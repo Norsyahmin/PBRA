@@ -8,6 +8,10 @@ const navBar = (function () {
     const popupSearch = document.getElementById("popupSearch");
     const topSearch = document.getElementById("topSearch");
 
+    // user menu elements (may be null if component not present)
+    const userMenu = document.getElementById("userMenu");
+    const userDropdown = userMenu ? userMenu.querySelector(".user-dropdown") : null;
+
     let lastScrollTop = 0;
 
     function toggleSidebar(event) {
@@ -22,6 +26,7 @@ const navBar = (function () {
     }
 
     function openSearch() {
+        if (!searchOverlay || !content || !popupSearch) return;
         searchOverlay.classList.add("active");
         content.classList.add("blurred");
         setTimeout(() => popupSearch.focus(), 100);
@@ -32,22 +37,50 @@ const navBar = (function () {
         // We stop propagation for clicks *inside* search-popup to prevent closing when interacting with the input.
         if (
             event.target === searchOverlay ||
-            event.target.classList.contains("search-close")
+            (event.target && event.target.classList && event.target.classList.contains("search-close"))
         ) {
             searchOverlay.classList.remove("active");
-            content.classList.remove("blurred");
-            topSearch.blur(); // Remove focus from the top search bar
+            if (content) content.classList.remove("blurred");
+            if (topSearch) topSearch.blur(); // Remove focus from the top search bar
         }
     }
 
+    // Toggle user dropdown menu
+    function toggleUserMenu(event) {
+        if (!userMenu) return;
+        event.stopPropagation();
+        const isOpen = userMenu.classList.toggle("open");
+        try {
+            userMenu.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        } catch (e) { }
+    }
 
-    // Keyboard escape for search
+    // Close user menu
+    function closeUserMenu() {
+        if (!userMenu) return;
+        userMenu.classList.remove("open");
+        try {
+            userMenu.setAttribute("aria-expanded", "false");
+        } catch (e) { }
+    }
+
+    // Close user menu on outside click
+    document.addEventListener("click", function (e) {
+        if (!userMenu) return;
+        if (!userMenu.contains(e.target)) {
+            closeUserMenu();
+        }
+    });
+
+    // Keyboard escape for search and user menu
     document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && searchOverlay.classList.contains("active")) {
-            // Simulate clicking the overlay to close
-            closeSearch({
-                target: searchOverlay
-            });
+        if (e.key === "Escape") {
+            if (searchOverlay && searchOverlay.classList.contains("active")) {
+                closeSearch({ target: searchOverlay });
+            }
+            if (userMenu && userMenu.classList.contains("open")) {
+                closeUserMenu();
+            }
         }
     });
 
@@ -71,5 +104,7 @@ const navBar = (function () {
         closeSidebar: closeSidebar,
         openSearch: openSearch,
         closeSearch: closeSearch,
+        toggleUserMenu: toggleUserMenu,
+        closeUserMenu: closeUserMenu
     };
 })();
