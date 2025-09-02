@@ -1,7 +1,9 @@
+// Toggle sidebar collapse
 function toggleSidebar() {
     document.getElementById("sidebar").classList.toggle("collapsed");
 }
 
+// Toggle profile dropdown
 function toggleDropdown() {
     document.getElementById("dropdownMenu").classList.toggle("show");
 }
@@ -16,90 +18,46 @@ window.addEventListener("click", function (e) {
     }
 });
 
+// Toggle collapse/expand for a single chart card
+function toggleCard(header) {
+    const card = header.parentElement;
+    card.classList.toggle("collapsed");
+}
+
+// Collapse/Expand all chart cards
+function toggleAllCards() {
+    const cards = document.querySelectorAll(".chart-card");
+    const btn = document.getElementById("toggleAllBtn");
+
+    // Check if any card is expanded
+    const anyExpanded = Array.from(cards).some(
+        (card) => !card.classList.contains("collapsed")
+    );
+
+    if (anyExpanded) {
+        // Collapse all
+        cards.forEach((card) => card.classList.add("collapsed"));
+        btn.textContent = "Expand All";
+    } else {
+        // Expand all
+        cards.forEach((card) => card.classList.remove("collapsed"));
+        btn.textContent = "Collapse All";
+    }
+}
+
+// ✅ Dynamic chart height adjustment
+function adjustChartHeight(chartId, labelsCount, minHeight = 300, perLabel = 30) {
+    const canvas = document.getElementById(chartId);
+    if (canvas) {
+        // Calculate height: at least minHeight, otherwise scale by labels
+        canvas.height = Math.max(minHeight, labelsCount * perLabel);
+    }
+}
+
+// ================== Dashboard Charts ==================
 (function () {
-    'use strict';
-
-    const data = window.dashboardData || {};
-    const totals = (data.totals || {});
-    const charts = (data.charts || {});
-
-    // Update stat elements (defensive)
-    function setText(id, value) {
-        const el = document.getElementById(id);
-        if (el) el.textContent = value;
-    }
-    setText('stat-total-users', totals.totalUsers ?? 0);
-    setText('stat-new-users', totals.newUsers30 ?? 0);
-    setText('stat-announcements', totals.totalAnnouncements ?? 0);
-    setText('stat-reports', totals.totalReports ?? 0);
-    setText('stat-notifications', totals.unreadNotifications ?? 0);
-
-    // Users line chart
-    const usersCtx = document.getElementById('chart-users')?.getContext('2d');
-    if (usersCtx) {
-        new Chart(usersCtx, {
-            type: 'line',
-            data: {
-                labels: charts.labelsMonths || [],
-                datasets: [{
-                    label: 'New users (by start_date)',
-                    data: charts.usersPerMonth || [],
-                    borderColor: 'rgba(54,162,235,1)',
-                    backgroundColor: 'rgba(54,162,235,0.12)',
-                    fill: true,
-                    tension: 0.3,
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: false } }
-            }
-        });
-    }
-
-    // Reports by status - pie
-    const repCtx = document.getElementById('chart-reports')?.getContext('2d');
-    if (repCtx) {
-        const obj = charts.reportsByStatus || {};
-        const labels = Object.keys(obj);
-        const values = labels.map(k => obj[k]);
-        const colors = labels.map((l, i) => ['#4caf50', '#ff9800', '#f44336', '#9e9e9e'][i % 4]);
-        new Chart(repCtx, {
-            type: 'pie',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: values,
-                    backgroundColor: colors,
-                }]
-            },
-            options: { responsive: true }
-        });
-    }
-
-    // Announcements bar chart
-    const annCtx = document.getElementById('chart-announcements')?.getContext('2d');
-    if (annCtx) {
-        new Chart(annCtx, {
-            type: 'bar',
-            data: {
-                labels: charts.labelsMonths || [],
-                datasets: [{
-                    label: 'Announcements',
-                    data: charts.announcementsPerMonth || [],
-                    backgroundColor: 'rgba(153,102,255,0.6)',
-                    borderColor: 'rgba(153,102,255,1)',
-                    borderWidth: 1
-                }]
-            },
-            options: { responsive: true, plugins: { legend: { display: false } } }
-        });
-    }
-})();
-
-(function () {
-    if (typeof window.DASHBOARD_DATA === 'undefined') {
-        console.warn('DASHBOARD_DATA not available');
+    if (typeof window.DASHBOARD_DATA === "undefined") {
+        console.warn("DASHBOARD_DATA not available");
         return;
     }
     const data = window.DASHBOARD_DATA.charts || {};
@@ -108,71 +66,87 @@ window.addEventListener("click", function (e) {
     function extract(series) {
         series = series || [];
         return {
-            labels: series.map(r => r.label || ''),
-            values: series.map(r => parseInt(r.value || 0, 10))
+            labels: series.map((r) => r.label || ""),
+            values: series.map((r) => parseInt(r.value || 0, 10)),
         };
     }
 
     // Roles per department - horizontal bar
     const rpd = extract(data.rolesPerDept);
-    const ctxRPD = document.getElementById('rolesPerDeptChart');
+    const ctxRPD = document.getElementById("rolesPerDeptChart");
     if (ctxRPD) {
+        adjustChartHeight("rolesPerDeptChart", rpd.labels.length);
+
         new Chart(ctxRPD, {
-            type: 'bar',
+            type: "bar",
             data: {
                 labels: rpd.labels,
-                datasets: [{
-                    label: 'Roles',
-                    data: rpd.values,
-                    backgroundColor: rpd.labels.map((_, i) => `hsl(${(i * 40) % 360} 70% 60%)`)
-                }]
+                datasets: [
+                    {
+                        label: "Roles",
+                        data: rpd.values,
+                        backgroundColor: rpd.labels.map(
+                            (_, i) => `hsl(${(i * 40) % 360} 70% 60%)`
+                        ),
+                    },
+                ],
             },
             options: {
-                indexAxis: 'y',
+                indexAxis: "y",
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
-                scales: { x: { beginAtZero: true } }
-            }
+                scales: { x: { beginAtZero: true } },
+            },
         });
     }
 
     // Users per role - bar
     const upr = extract(data.usersPerRole);
-    const ctxUPR = document.getElementById('usersPerRoleChart');
+    const ctxUPR = document.getElementById("usersPerRoleChart");
     if (ctxUPR) {
+        adjustChartHeight("usersPerRoleChart", upr.labels.length);
+
         new Chart(ctxUPR, {
-            type: 'bar',
+            type: "bar",
             data: {
                 labels: upr.labels,
-                datasets: [{
-                    label: 'Assigned users',
-                    data: upr.values,
-                    backgroundColor: upr.labels.map((_, i) => `hsl(${(i * 60) % 360} 65% 55%)`)
-                }]
+                datasets: [
+                    {
+                        label: "Assigned users",
+                        data: upr.values,
+                        backgroundColor: upr.labels.map(
+                            (_, i) => `hsl(${(i * 60) % 360} 65% 55%)`
+                        ),
+                    },
+                ],
             },
             options: {
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true } }
-            }
+                scales: { y: { beginAtZero: true } },
+            },
         });
     }
 
     // Tasks by status - doughnut
     const tbs = extract(data.tasksByStatus);
-    const ctxTBS = document.getElementById('tasksByStatusChart');
+    const ctxTBS = document.getElementById("tasksByStatusChart");
     if (ctxTBS) {
+        adjustChartHeight("tasksByStatusChart", tbs.labels.length, 250, 40);
+
         new Chart(ctxTBS, {
-            type: 'doughnut',
+            type: "doughnut",
             data: {
                 labels: tbs.labels,
-                datasets: [{
-                    label: 'Tasks',
-                    data: tbs.values,
-                    backgroundColor: ['#4caf50', '#ff9800', '#f44336', '#9e9e9e']
-                }]
+                datasets: [
+                    {
+                        label: "Tasks",
+                        data: tbs.values,
+                        backgroundColor: ["#4caf50", "#ff9800", "#f44336", "#9e9e9e"],
+                    },
+                ],
             },
-            options: { maintainAspectRatio: false }
+            options: { maintainAspectRatio: false },
         });
     }
 })();

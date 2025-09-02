@@ -3,47 +3,65 @@
 require_once dirname(__DIR__) . '/mypbra_connect.php';
 
 // Helper to run simple count queries
-function getCount($pdo, $sql, $params = [])
+function getCount($conn, $sql)
 {
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
-    return (int)$stmt->fetchColumn();
+    $result = $conn->query($sql);
+    if ($result) {
+        $row = $result->fetch_row();
+        return (int)$row[0];
+    }
+    return 0;
 }
 
 // Summary counts
-$totalUsers = getCount($pdo, "SELECT COUNT(*) FROM users");
-$totalRoles = getCount($pdo, "SELECT COUNT(*) FROM roles");
-$totalDepartments = getCount($pdo, "SELECT COUNT(*) FROM departments");
-$totalAppointments = getCount($pdo, "SELECT COUNT(*) FROM userroles");
-$totalAnnouncements = getCount($pdo, "SELECT COUNT(*) FROM announcement");
-$totalFeedbacks = getCount($pdo, "SELECT COUNT(*) FROM feedback");
+$totalUsers = getCount($conn, "SELECT COUNT(*) FROM users");
+$totalRoles = getCount($conn, "SELECT COUNT(*) FROM roles");
+$totalDepartments = getCount($conn, "SELECT COUNT(*) FROM departments");
+$totalAppointments = getCount($conn, "SELECT COUNT(*) FROM userroles");
+$totalAnnouncements = getCount($conn, "SELECT COUNT(*) FROM announcement");
+$totalFeedbacks = getCount($conn, "SELECT COUNT(*) FROM feedback");
 
 // Aggregations for charts
-// Roles per department (top 10 by count)
-$stmt = $pdo->query("
+// Roles per department (top 20 by count)
+$sql = "
     SELECT d.name AS label, COUNT(r.id) AS value
     FROM roles r
     JOIN departments d ON r.department_id = d.id
     GROUP BY d.id
     ORDER BY value DESC
     LIMIT 20
-");
-$rolesPerDept = $stmt->fetchAll();
+";
+$rolesPerDept = [];
+if ($result = $conn->query($sql)) {
+    while ($row = $result->fetch_assoc()) {
+        $rolesPerDept[] = $row;
+    }
+}
 
 // Users per role (top 10)
-$stmt = $pdo->query("
+$sql = "
     SELECT r.name AS label, COUNT(ur.user_id) AS value
     FROM roles r
     LEFT JOIN userroles ur ON r.id = ur.role_id
     GROUP BY r.id
     ORDER BY value DESC
     LIMIT 10
-");
-$usersPerRole = $stmt->fetchAll();
+";
+$usersPerRole = [];
+if ($result = $conn->query($sql)) {
+    while ($row = $result->fetch_assoc()) {
+        $usersPerRole[] = $row;
+    }
+}
 
 // Tasks by status
-$stmt = $pdo->query("SELECT status AS label, COUNT(*) AS value FROM tasks GROUP BY status");
-$tasksByStatus = $stmt->fetchAll();
+$sql = "SELECT status AS label, COUNT(*) AS value FROM tasks GROUP BY status";
+$tasksByStatus = [];
+if ($result = $conn->query($sql)) {
+    while ($row = $result->fetch_assoc()) {
+        $tasksByStatus[] = $row;
+    }
+}
 
 // Build dashboard data to pass to JS
 $dashboardData = [
@@ -61,7 +79,6 @@ $dashboardData = [
         'tasksByStatus' => $tasksByStatus,
     ],
 ];
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -91,7 +108,6 @@ $dashboardData = [
         </ul>
     </div>
 
-
     <!-- Floating Search Bar -->
     <div class="floating-search">
         <input type="text" placeholder="Search">
@@ -108,9 +124,9 @@ $dashboardData = [
         <a href="#">Profile</a>
         <a href="logout.php">Log out</a>
     </div>
+
     <!-- Main Content -->
     <div class="main">
-
         <header>
             <h1>Roles Appointment Dashboard</h1>
             <p>Summary statistics generated from the pbradatabases.</p>
@@ -143,32 +159,49 @@ $dashboardData = [
             </div>
         </section>
 
+        <section class="charts-controls">
+            <button id="toggleAllBtn" onclick="toggleAllCards()">Collapse All</button>
+        </section>
+
         <section class="charts-grid">
             <div class="chart-card">
-                <h4>Roles per Department</h4>
-                <canvas id="rolesPerDeptChart" height="200"></canvas>
+                <div class="card-header" onclick="toggleCard(this)">
+                    <h4>Roles per Department</h4>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="card-body">
+                    <canvas id="rolesPerDeptChart" height="200"></canvas>
+                </div>
             </div>
+
             <div class="chart-card">
-                <h4>Users per Role (Top 10)</h4>
-                <canvas id="usersPerRoleChart" height="200"></canvas>
+                <div class="card-header" onclick="toggleCard(this)">
+                    <h4>Users per Role (Top 10)</h4>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="card-body">
+                    <canvas id="usersPerRoleChart" height="200"></canvas>
+                </div>
             </div>
+
             <div class="chart-card">
-                <h4>Tasks by Status</h4>
-                <canvas id="tasksByStatusChart" height="200"></canvas>
+                <div class="card-header" onclick="toggleCard(this)">
+                    <h4>Tasks by Status</h4>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="card-body">
+                    <canvas id="tasksByStatusChart" height="200"></canvas>
+                </div>
             </div>
         </section>
     </div>
 
-
-
     <!-- Expose data to client script -->
     <script>
-        // window.DASHBOARD_DATA is used by script.js to render charts
         window.DASHBOARD_DATA = <?php echo json_encode($dashboardData, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
     </script>
 
     <script src="script.js"></script>
 </body>
-
 
 </html>
