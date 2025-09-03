@@ -1,0 +1,318 @@
+/* Top bar container */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(135deg, #174080 0%, #2a5ba0 100%);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    transition: top 0.3s;
+}
+
+/* Flex layout for topbar */
+.topbar-inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Left section (hamburger) */
+.topbar-left {
+    display: flex;
+    align-items: center;
+}
+
+/* === USER INFO === */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* user-menu container and dropdown */
+.user-menu {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+}
+
+.user-menu img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    transform: translateX(-10px);
+    transition: transform 0.15s ease;
+}
+
+/* dropdown */
+.user-dropdown {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    min-width: 160px;
+    background: #ffffff;
+    color: #333;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    display: none;
+    padding: 6px 0;
+    z-index: 1400;
+    list-style: none;
+    margin: 0;
+}
+
+.user-menu.open .user-dropdown {
+    display: block;
+}
+
+/* dropdown items */
+.user-dropdown li {
+    margin: 0;
+}
+
+.user-dropdown a {
+    display: block;
+    padding: 10px 14px;
+    color: #174080;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.user-dropdown a:hover {
+    background: #f1f5ff;
+}
+
+/* Hamburger container */
+.hamburger-container {
+    background-color: #174080;
+    border-radius: 0;
+    padding: 12px 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.hamburger-container:hover {
+    background-color: #1d53a6;
+}
+
+/* Hamburger icon */
+.hamburger {
+    font-size: 24px;
+    color: #fff;
+    line-height: 1;
+}
+
+/* Centered search bar */
+.topbar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.search-bar {
+    width: 50%;
+    max-width: 400px;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+/* Right section (optional future links) */
+.topbar-right {
+    min-width: 50px;
+}
+
+/* Sidebar (overlay style) */
+/* replaced left-based positioning with transform for smoother GPU-accelerated animation */
+.sidebar {
+    height: 100%;
+    width: 260px;
+    /* slightly wider for visual comfort */
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* keep origin at left:0 but hide with transform */
+    transform: translateX(-100%);
+    background-color: #174080;
+    overflow-x: hidden;
+    transition: transform 320ms cubic-bezier(.2, .9, .2, 1), box-shadow 220ms;
+    padding-top: 60px;
+    z-index: 1100;
+    color: #fff;
+    box-shadow: none;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+/* When active, slide in */
+.sidebar.active {
+    transform: translateX(0);
+    box-shadow: 8px 0 30px rgba(10, 25, 55, 0.45);
+}
+
+/* Overlay backdrop */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.32);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 260ms ease, visibility 260ms;
+    z-index: 1050;
+    pointer-events: none;
+    /* ignore clicks when hidden */
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    /* allow clicks when visible */
+}
+
+/* Sidebar link layout and entrance animation */
+/* keep transitions but no entrance delay by default (so closing is immediate) */
+.sidebar a {
+    padding: 14px 22px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #f1f1f1;
+    display: block;
+    transition: opacity 260ms ease, transform 320ms cubic-bezier(.2, .9, .2, 1);
+    opacity: 0;
+    transform: translateX(-12px);
+    margin: 6px 0;
+    will-change: opacity, transform;
+}
+
+/* When active, show links and apply staggered entrance delays */
+.sidebar.active a {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* staggered delays only while active */
+.sidebar.active a:nth-of-type(1) {
+    transition-delay: 60ms;
+}
+
+.sidebar.active a:nth-of-type(2) {
+    transition-delay: 110ms;
+}
+
+.sidebar.active a:nth-of-type(3) {
+    transition-delay: 160ms;
+}
+
+.sidebar.active a:nth-of-type(4) {
+    transition-delay: 210ms;
+}
+
+.sidebar.active a:nth-of-type(5) {
+    transition-delay: 260ms;
+}
+
+.sidebar.active a:nth-of-type(6) {
+    transition-delay: 310ms;
+}
+
+.sidebar.active a:nth-of-type(7) {
+    transition-delay: 360ms;
+}
+
+.sidebar.active a:nth-of-type(8) {
+    transition-delay: 410ms;
+}
+
+/* Slight hover highlight */
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    transform: translateX(6px);
+}
+
+/* Close button position stays visible during animation */
+.closebtn {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 30px;
+    color: #f1f1f1;
+    cursor: pointer;
+    z-index: 1200;
+    transition: color 150ms;
+}
+
+/* Search popup overlay (glass blur) */
+.search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    align-items: center;
+    justify-content: center;
+    z-index: 1300;
+    display: none;
+}
+
+.search-overlay.active {
+    display: flex;
+}
+
+/* Popup container */
+.search-popup {
+    width: 80%;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    /* vertical center */
+    justify-content: space-between;
+    /* input left, close right */
+}
+
+.search-popup input {
+    flex: 1;
+    padding: 14px 18px;
+    font-size: 20px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background: white;
+}
+
+/* Close button centered with input */
+.search-close {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    line-height: 1;
+    margin-left: 10px;
+    user-select: none;
+    transition: color 0.2s;
+}
+
+.search-close:hover {
+    color: #000;
+}
