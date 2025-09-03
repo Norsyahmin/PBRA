@@ -162,11 +162,11 @@ if (!$result) {
     <div id="eventFormModal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Add New Event</h3>
+                <span style="font-size: 24px; font-weight: bold; margin: 0;">Add New Event</span>
                 <span class="close-modal">&times;</span>
             </div>
             <div class="modal-body">
-                <form id="eventForm">
+                <form id="eventForm" novalidate>
                     <div class="form-group">
                         <label for="eventTitle">Event Title</label>
                         <input type="text" id="eventTitle" name="title" required>
@@ -185,7 +185,7 @@ if (!$result) {
                     </div>
                     <div class="form-group">
                         <label for="eventLocation">Location</label>
-                        <input type="text" id="eventLocation" name="location">
+                        <input type="text" id="eventLocation" name="location" required>
                     </div>
                     <div class="form-group">
                         <label for="eventDescription">Description</label>
@@ -203,11 +203,11 @@ if (!$result) {
     <div id="editEventFormModal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Edit Event</h3>
+                <span style="font-size: 24px; font-weight: bold; margin: 0;">Edit Event</span>
                 <span class="close-modal">&times;</span>
             </div>
             <div class="modal-body">
-                <form id="editEventForm">
+                <form id="editEventForm" novalidate>
                     <input type="hidden" id="editEventId">
                     <div class="form-group">
                         <label for="editEventTitle">Event Title</label>
@@ -227,7 +227,7 @@ if (!$result) {
                     </div>
                     <div class="form-group">
                         <label for="editEventLocation">Location</label>
-                        <input type="text" id="editEventLocation" name="location">
+                        <input type="text" id="editEventLocation" name="location" required>
                     </div>
                     <div class="form-group">
                         <label for="editEventDescription">Description</label>

@@ -171,6 +171,13 @@ function openEventForm() {
 
     // Show the modal
     modal.style.display = 'block';
+    
+    // Trigger validation after a short delay to ensure the modal is rendered
+    setTimeout(() => {
+        if (window.validateEventForm) {
+            window.validateEventForm();
+        }
+    }, 100);
 }
 
 // ==================== EVENT POPUP FUNCTIONALITY ====================
@@ -261,6 +268,13 @@ window.editEvent = function(eventId) {
 
     // Show the edit modal
     modal.style.display = 'block';
+    
+    // Trigger validation after a short delay to ensure the modal is rendered
+    setTimeout(() => {
+        if (window.validateEditEventForm) {
+            window.validateEditEventForm();
+        }
+    }, 100);
 };
 
 // Delete event function
@@ -514,16 +528,59 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set up form submission handlers
     const eventForm = document.getElementById('eventForm');
     if (eventForm) {
+        // Function to validate and update button state for event form
+        function validateEventForm() {
+            const eventTitle = document.getElementById('eventTitle').value.trim();
+            const eventDate = document.getElementById('eventDate').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+            const eventLocation = document.getElementById('eventLocation').value.trim();
+            const submitBtn = eventForm.querySelector('.submit-btn');
+            
+            const isValid = eventTitle && eventDate && startTime && endTime && eventLocation;
+            
+            if (isValid) {
+                submitBtn.style.backgroundColor = '#007bff'; // Blue for valid
+                submitBtn.style.cursor = 'pointer';
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.style.backgroundColor = '#ccc'; // Gray for invalid
+                submitBtn.style.cursor = 'not-allowed';
+                submitBtn.disabled = true;
+            }
+            
+            return isValid;
+        }
+        
+        // Make function globally accessible
+        window.validateEventForm = validateEventForm;
+        
+        // Add event listeners to all required fields
+        document.getElementById('eventTitle').addEventListener('input', validateEventForm);
+        document.getElementById('eventDate').addEventListener('change', validateEventForm);
+        document.getElementById('startTime').addEventListener('change', validateEventForm);
+        document.getElementById('endTime').addEventListener('change', validateEventForm);
+        document.getElementById('eventLocation').addEventListener('input', validateEventForm);
+        
+        // Initial validation check
+        validateEventForm();
+        
         eventForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
             // Get form values
-            const eventTitle = document.getElementById('eventTitle').value;
+            const eventTitle = document.getElementById('eventTitle').value.trim();
             const eventDate = document.getElementById('eventDate').value;
             const startTime = document.getElementById('startTime').value;
             const endTime = document.getElementById('endTime').value;
             const eventLocation = document.getElementById('eventLocation').value;
             const eventDescription = document.getElementById('eventDescription').value;
+
+            // Custom validation - check required fields
+            if (!validateEventForm()) {
+                // Simply return without doing anything - no modal, no submission
+                return;
+            }
 
             // Create new event object
             const newEvent = {
@@ -567,16 +624,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const editEventForm = document.getElementById('editEventForm');
     if (editEventForm) {
+        // Function to validate and update button state for edit form
+        function validateEditEventForm() {
+            const title = document.getElementById('editEventTitle').value.trim();
+            const date = document.getElementById('editEventDate').value;
+            const startTime = document.getElementById('editStartTime').value;
+            const endTime = document.getElementById('editEndTime').value;
+            const location = document.getElementById('editEventLocation').value.trim();
+            const submitBtn = editEventForm.querySelector('.submit-btn');
+            
+            const isValid = title && date && startTime && endTime && location;
+            
+            if (isValid) {
+                submitBtn.style.backgroundColor = '#007bff'; // Blue for valid
+                submitBtn.style.cursor = 'pointer';
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.style.backgroundColor = '#ccc'; // Gray for invalid
+                submitBtn.style.cursor = 'not-allowed';
+                submitBtn.disabled = true;
+            }
+            
+            return isValid;
+        }
+        
+        // Make function globally accessible
+        window.validateEditEventForm = validateEditEventForm;
+        
+        // Add event listeners to all required fields
+        document.getElementById('editEventTitle').addEventListener('input', validateEditEventForm);
+        document.getElementById('editEventDate').addEventListener('change', validateEditEventForm);
+        document.getElementById('editStartTime').addEventListener('change', validateEditEventForm);
+        document.getElementById('editEndTime').addEventListener('change', validateEditEventForm);
+        document.getElementById('editEventLocation').addEventListener('input', validateEditEventForm);
+        
         editEventForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
             const eventId = parseInt(document.getElementById('editEventId').value);
-            const title = document.getElementById('editEventTitle').value;
+            const title = document.getElementById('editEventTitle').value.trim();
             const date = document.getElementById('editEventDate').value;
             const startTime = document.getElementById('editStartTime').value;
             const endTime = document.getElementById('editEndTime').value;
             const location = document.getElementById('editEventLocation').value;
             const description = document.getElementById('editEventDescription').value;
+
+            // Custom validation - check required fields
+            if (!validateEditEventForm()) {
+                // Simply return without doing anything - no modal, no submission
+                return;
+            }
 
             // Get all events
             let savedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
