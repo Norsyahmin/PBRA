@@ -22,7 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Look up user and ensure there is a recovery email
-    $stmt = $conn->prepare("SELECT id, email, full_name, recovery_email FROM users WHERE email = ?");
+    // Use primary email lookup; remove stray comma in SELECT
+    $stmt = $conn->prepare("SELECT id, email, full_name FROM users WHERE email = ?");
     if (!$stmt) {
         $_SESSION['resend_otp_error'] = get_text('db_error', 'Database error. Please try again later.');
         header("Location: resend_otp.php?lang=" . urlencode($lang));

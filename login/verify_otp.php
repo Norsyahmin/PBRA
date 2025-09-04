@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // OTP correct, allow access
         unset($_SESSION['otp']);
         unset($_SESSION['otp_expiry']);
-        unset($_SESSION['otp_recovery_email']);
         header("Location: ../homepage/homepage.php"); // No language param needed as session holds it
         exit();
     } else {
@@ -75,9 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Changed form class to match CSS: otp-form -->
         <form method="post" class="otp-form">
             <div class="form-group">
-                <label for="otp"><?= get_text('enter_otp_label', 'Enter OTP sent to your recovery email:'); ?></label>
+                <label for="otp"><?= get_text('enter_otp_label', 'Enter OTP sent to your email:'); ?></label>
                 <input
-                    type="password"
+                    type="text"
                     id="otp"
                     name="otp"
                     value=""

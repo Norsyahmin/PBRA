@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once '../mypbra_connect.php'; // Ensure this path is correct!
-require_once '../mailer.php'; // Load the mailer configuration/instance
 require_once '../login/otp_notification.php'; // Include the file containing the showOtpNotification function
 
 // Get the PHPMailer instance from mailer.php
@@ -35,7 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($columnExists) {
         $stmt = $conn->prepare("SELECT id, email, password, full_name, profile_pic, is_verified, user_type, must_change_password FROM users WHERE email = ?");
     } else {
-        $stmt = $conn->prepare("SELECT id, email, password, full_name, profile_pic, user_type, FROM users WHERE email = ?");
+        // Column doesn't exist; select without is_verified/must_change_password
+        $stmt = $conn->prepare("SELECT id, email, password, full_name, profile_pic, user_type FROM users WHERE email = ?");
     }
 
     if (!$stmt) {
