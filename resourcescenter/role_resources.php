@@ -6,8 +6,6 @@ if (!isset($_SESSION['id'])) {
     echo "<h2>Not logged in.</h2>";
     exit();
 }
-$page_name = $page_name ?? 'Role Resources Center'; // or whatever you want
-$page_url = $page_url ?? $_SERVER['REQUEST_URI'];
 $user_id = $_SESSION['id'];
 $role_id = $_GET['role_id'] ?? $_POST['role_id'] ?? null;
 
@@ -87,10 +85,6 @@ $role_info = $conn->query("
             📌 <?= htmlspecialchars($role_info['role_name']) ?>
             (<?= htmlspecialchars($role_info['dept_name']) ?>)
         </h2>
-        <button type="button" id="favoriteButton" class="favorite-button" onclick="toggleFavorite()">
-            Add to Favorite
-        </button>
-
     </div>
 
     <div class="breadcrumb" style="padding: 10px 5% 0;">
@@ -356,44 +350,6 @@ $role_info = $conn->query("
                 item.style.display = (title.includes(term) || desc.includes(term)) ? '' : 'none';
             });
         });
-
-        //favorite
-        const pageName = "<?php echo $page_name; ?>";
-        const pageUrl = "<?php echo $page_url; ?>";
-        const button = document.getElementById('favoriteButton');
-
-        // Check if already favorited when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-            const exists = favorites.find(fav => fav.pageName === pageName);
-            if (exists) {
-                button.classList.add('favorited');
-                button.textContent = 'Favorited';
-            }
-        });
-
-        function toggleFavorite() {
-            let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-
-            const index = favorites.findIndex(fav => fav.pageName === pageName);
-
-            if (index === -1) {
-                // Not favorited yet, add it
-                favorites.push({
-                    pageName: pageName,
-                    pageUrl: pageUrl
-                });
-                button.classList.add('favorited');
-                button.textContent = 'Favorited';
-            } else {
-                // Already favorited, remove it
-                favorites.splice(index, 1);
-                button.classList.remove('favorited');
-                button.textContent = 'Add to Favorite';
-            }
-
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-        }
     </script>
 
 </body>

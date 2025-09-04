@@ -427,29 +427,4 @@ body {
   cursor: pointer;
 }
 
-.favorite-button {
-  transform: translateY(10px);
-  background: #ffffff;
-  border: 2px solid #174080;
-  color: #174080;
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.favorite-button:hover {
-  background: #4a89dc;
-  color: #fff;
-}
-
-.favorite-button.favorited {
-  background: #4a89dc;
-  color: white;
-  border-color: #4a89dc;
-}

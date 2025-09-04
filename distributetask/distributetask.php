@@ -10,19 +10,8 @@ if (!$conn) {
   die("Database connection failed: " . mysqli_connect_error());
 }
 
-$page_name = $page_name ?? 'Distribute Task'; // or whatever you want
-$page_url = $page_url ?? $_SERVER['REQUEST_URI'];
-
 $user_id = $_SESSION['id'];
 $users_result = $conn->query("SELECT id, full_name FROM users WHERE id != $user_id");
-
-$sql_fav = "SELECT * FROM user_favorites WHERE user_id = ? AND page_name = 'My Role'";
-$stmt_fav = $conn->prepare($sql_fav);
-$stmt_fav->bind_param("i", $user_id);
-$stmt_fav->execute();
-$result_fav = $stmt_fav->get_result();
-$is_favorite = $result_fav->num_rows > 0;
-$stmt_fav->close();
 ?>
 
 <!DOCTYPE html>
@@ -47,9 +36,6 @@ $stmt_fav->close();
 <body onload="fetchNotifications(); showSuccessMessage();">
   <div class="page-title">
     <h1 style="font-size: 30px;">DISTRIBUTE TASK</h1>
-    <button type="button" id="favoriteButton" class="favorite-button" onclick="toggleFavorite()">
-      Add to Favorite
-    </button>
   </div>
 
   <div class="breadcrumb">
@@ -180,18 +166,7 @@ $stmt_fav->close();
       document.getElementById("successPopup").style.display = "none";
     }
 
-    function toggleFavorite() {
-      const icon = document.getElementById("fav-icon");
-      const isFavorite = icon.classList.contains("fa-heart") ? 0 : 1;
-      icon.classList.toggle("fa-heart");
-      icon.classList.toggle("fa-heart-o");
 
-      $.post('update_favorite.php', {
-        favorite: isFavorite,
-        page_name: 'My Role',
-        user_id: <?php echo $_SESSION['id']; ?>
-      });
-    }
 
     // Breadcrumbs
     let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
@@ -235,46 +210,6 @@ $stmt_fav->close();
         breadcrumbList.appendChild(separator);
       }
     });
-
-
-
-    //favorite
-    const pageName = "<?php echo $page_name; ?>";
-    const pageUrl = "<?php echo $page_url; ?>";
-    const button = document.getElementById('favoriteButton');
-
-    // Check if already favorited when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-      const exists = favorites.find(fav => fav.pageName === pageName);
-      if (exists) {
-        button.classList.add('favorited');
-        button.textContent = 'Favorited';
-      }
-    });
-
-    function toggleFavorite() {
-      let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-
-      const index = favorites.findIndex(fav => fav.pageName === pageName);
-
-      if (index === -1) {
-        // Not favorited yet, add it
-        favorites.push({
-          pageName: pageName,
-          pageUrl: pageUrl
-        });
-        button.classList.add('favorited');
-        button.textContent = 'Favorited';
-      } else {
-        // Already favorited, remove it
-        favorites.splice(index, 1);
-        button.classList.remove('favorited');
-        button.textContent = 'Add to Favorite';
-      }
-
-      localStorage.setItem('favorites', JSON.stringify(favorites));
-    }
   </script>
 
 </body>

@@ -8,10 +8,6 @@ if (!isset($_SESSION['id'])) {
 include '../mypbra_connect.php';
 include 'update_expired_task.php';
 
-
-$page_name = $page_name ?? 'My Role'; // or whatever you want
-$page_url = $page_url ?? $_SERVER['REQUEST_URI'];
-
 $user_id = isset($_GET['id']) && !empty($_GET['id']) ? intval($_GET['id']) : $_SESSION['id'];
 $is_own_profile = ($_SESSION['id'] == $user_id);
 $current_datetime = date("Y-m-d H:i:s");
@@ -85,9 +81,6 @@ $conn->close();
 
     <div class="page-title">
         <h1>MY ROLES</h1>
-        <button type="button" id="favoriteButton" class="favorite-button" onclick="toggleFavorite()">
-            Add to Favorite
-        </button>
     </div>
 
 
@@ -391,44 +384,6 @@ $conn->close();
                 breadcrumbList.appendChild(separator);
             }
         });
-
-        //favorite
-        const pageName = "<?php echo $page_name; ?>";
-        const pageUrl = "<?php echo $page_url; ?>";
-        const button = document.getElementById('favoriteButton');
-
-        // Check if already favorited when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-            const exists = favorites.find(fav => fav.pageName === pageName);
-            if (exists) {
-                button.classList.add('favorited');
-                button.textContent = 'Favorited';
-            }
-        });
-
-        function toggleFavorite() {
-            let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-
-            const index = favorites.findIndex(fav => fav.pageName === pageName);
-
-            if (index === -1) {
-                // Not favorited yet, add it
-                favorites.push({
-                    pageName: pageName,
-                    pageUrl: pageUrl
-                });
-                button.classList.add('favorited');
-                button.textContent = 'Favorited';
-            } else {
-                // Already favorited, remove it
-                favorites.splice(index, 1);
-                button.classList.remove('favorited');
-                button.textContent = 'Add to Favorite';
-            }
-
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-        }
     </script>
 
 </body>

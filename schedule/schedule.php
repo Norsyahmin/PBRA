@@ -8,9 +8,6 @@ if (!isset($_SESSION['id'])) {
 // Include the database connection
 include '../mypbra_connect.php';
 
-$page_name = $page_name ?? 'Schedule';
-$page_url = $page_url ?? $_SERVER['REQUEST_URI'];
-
 $user_id = $_SESSION['id'];
 
 // Fetch image path from the database
