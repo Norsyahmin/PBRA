@@ -1,9 +1,11 @@
 <?php
+// Start session 
 session_start();
 if (!isset($_SESSION['id'])) {
     header("Location: ../login.php");
     exit();
 }
+// Database connection
 require_once '../mypbra_connect.php';
 // Include the verification email function
 require_once '../account_activation/send_verification_email.php';
@@ -245,47 +247,6 @@ function get_field_value($field_name, $default = '')
             </div>
         </div>
     </div>
-    <script>
-        // Roles data for JS filtering
-        const rolesData = <?= json_encode($roles); ?>;
-        // Pre-fill role if coming back from confirmation
-        const selectedDepartment = "<?= get_field_value('department'); ?>";
-        const selectedRole = "<?= get_field_value('role'); ?>";
-
-        // Breadcrumbs (copied from report.php)
-        let breadcrumbs = JSON.parse(sessionStorage.getItem('breadcrumbs')) || [];
-        let currentPageUrl = window.location.pathname;
-        let currentPageName = document.title.trim();
-        let pageExists = breadcrumbs.some(b => b.url === currentPageUrl);
-        if (!pageExists) {
-            breadcrumbs.push({
-                name: currentPageName,
-                url: currentPageUrl
-            });
-            sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
-        }
-        let breadcrumbList = document.getElementById('breadcrumb-list');
-        breadcrumbList.innerHTML = '';
-        breadcrumbs.forEach((breadcrumb, index) => {
-            let item = document.createElement('li');
-            let link = document.createElement('a');
-            link.href = breadcrumb.url;
-            link.textContent = breadcrumb.name;
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                breadcrumbs = breadcrumbs.slice(0, index + 1);
-                sessionStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs));
-                window.location.href = breadcrumb.url;
-            });
-            item.appendChild(link);
-            breadcrumbList.appendChild(item);
-            if (index < breadcrumbs.length - 1) {
-                let separator = document.createElement('span');
-                separator.textContent = ' > ';
-                breadcrumbList.appendChild(separator);
-            }
-        });
-    </script>
     <script src="register.js"></script>
     <?php include '../footer/footer.php'; ?>
 </body>
