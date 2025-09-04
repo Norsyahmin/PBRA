@@ -1,8 +1,9 @@
 // --- Scroll-to-Top Button Component Logic ---
-const scrollTopManager = (function () {
-    const scrollTopBtn = document.getElementById("scrollTopBtn");
+window.scrollTopManager = (function () {
+    let scrollTopBtn = null;
 
     function showHideButton() {
+        if (!scrollTopBtn) return;
         if (window.pageYOffset > 200) {
             scrollTopBtn.style.display = "block";
         } else {
@@ -17,8 +18,22 @@ const scrollTopManager = (function () {
         });
     }
 
-    // Listen for scroll events to show/hide the button
-    window.addEventListener("scroll", showHideButton);
+    function init() {
+        scrollTopBtn = document.getElementById("scrollTopBtn");
+        if (!scrollTopBtn) {
+            // No button in DOM; nothing to do.
+            return;
+        }
+        // Ensure initial visibility is correct
+        showHideButton();
+        window.addEventListener("scroll", showHideButton);
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
 
     return {
         scrollToTop: scrollToTop,

@@ -508,6 +508,8 @@
             }
         });
     </script>
+    <?php include '../dashboard_template/footer/footer.php'; ?>
+    <?php include '../dashboard_template/scrolltop/scrolltop.php'; ?>
 </body>
 
 </html>
