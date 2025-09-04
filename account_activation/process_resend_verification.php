@@ -12,7 +12,7 @@ if (empty($email)) {
 }
 
 // Check if user exists and is not verified
-$stmt = $conn->prepare("SELECT id, email, recovery_email, is_verified FROM users WHERE email = ?");
+$stmt = $conn->prepare("SELECT id, email, is_verified FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -21,7 +21,6 @@ if ($row = $result->fetch_assoc()) {
     $user_id = $row['id'];
     $is_verified = $row['is_verified'];
     $primary_email = $row['email'];
-    $recovery_email = $row['recovery_email'];
 
     if ($is_verified == 1) {
         $_SESSION['resend_error'] = 'This account is already verified. Please log in.';
@@ -29,9 +28,9 @@ if ($row = $result->fetch_assoc()) {
         exit;
     }
 
-    // Send verification email to recovery email
-    if (send_verification_email($user_id, $primary_email, $recovery_email, $conn)) {
-        $_SESSION['resend_success'] = "A new verification email has been sent to your recovery email ($recovery_email). Please check your inbox and click on the verification link.";
+    // Send verification email to primary email (send_verification_email will use primary email as destination)
+    if (send_verification_email($user_id, $primary_email, $primary_email, $conn)) {
+        $_SESSION['resend_success'] = "A new verification email has been sent to $primary_email. Please check your inbox and click on the verification link.";
     } else {
         $_SESSION['resend_error'] = 'Failed to send verification email. Please try again later.';
     }

@@ -42,11 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $result->fetch_assoc();
     $stmt->close();
 
-    if (empty($user['recovery_email'])) {
-        $_SESSION['resend_otp_error'] = get_text('no_recovery_email', 'No recovery email is set for this account. Please contact support.');
-        header("Location: resend_otp.php?lang=" . urlencode($lang));
-        exit();
-    }
+    // Primary email exists (we searched by it). OTP will be sent to primary email.
 
     // Send OTP using the centralized function
     require_once '../login/otp_notification.php';
@@ -54,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mail = require '../mailer.php';
 
     if (showOtpNotification($user, $mail)) {
-        $_SESSION['resend_otp_success'] = get_text('otp_resent_success', 'OTP has been resent to your recovery email. Please check your inbox.');
+        $_SESSION['resend_otp_success'] = get_text('otp_resent_success', 'OTP has been resent to your email. Please check your inbox.');
     } else {
         $_SESSION['resend_otp_error'] = get_text('otp_send_failed', 'Failed to send OTP. Please try again later or contact support.');
     }

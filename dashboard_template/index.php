@@ -20,7 +20,7 @@
             facilisis tincidunt, justo erat tincidunt nulla, nec ultricies libero nulla
             nec lorem. Curabitur nec lorem vel sapien fermentum dictum. Donec vel
             tincidunt lorem. Suspendisse potenti.</p>
-        <p style="height: 2000px;">Keep scrolling...</p>
+        <p style="height: 1080px;">Keep scrolling...</p>
     </div>
 
     <?php include '../dashboard_template/scrolltop/scrolltop.php'; ?>

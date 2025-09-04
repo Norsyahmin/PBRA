@@ -29,8 +29,9 @@ function send_verification_email($user_id, $email, $recovery_email, $conn)
     $del_stmt->close();
 
     // Insert new token - store both primary and recovery email
+    // For backwards compatibility we will set recovery_email to the primary email.
     $ins_stmt = $conn->prepare("INSERT INTO email_verifications (user_id, email, recovery_email, token_hash, expires_at) VALUES (?, ?, ?, ?, ?)");
-    $ins_stmt->bind_param("issss", $user_id, $email, $recovery_email, $token_hash, $expiry_time);
+    $ins_stmt->bind_param("issss", $user_id, $email, $email, $token_hash, $expiry_time);
 
     if ($ins_stmt->execute()) {
         // Token inserted, proceed to send email
@@ -43,7 +44,8 @@ function send_verification_email($user_id, $email, $recovery_email, $conn)
         $mail->isHTML(true);
         $mail->clearAddresses();
         $mail->setFrom('noreply@pb.edu.bn', 'PBRA System');
-        $mail->addAddress($recovery_email); // Send to recovery email
+        // Send verification to primary email
+        $mail->addAddress($email);
         $mail->Subject = "Verify Your PbRA Account";
         $mail->Body = "Dear {$safe_name},<br><br>"
             . "Thank you for registering with PbRA. Please verify your account by clicking on the link below:<br><br>"
