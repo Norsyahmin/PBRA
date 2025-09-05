@@ -40,6 +40,10 @@ sudo mkdir -p /var/www/laravel/
 
 tEfeAWAtErhe
 
+php artisan config:clear
+php artisan route:clear
+php artisan cache:clear
+php artisan view:clear
 
 ftt1869@dop-as2:~$ sudo mysql_secure_installation
 
