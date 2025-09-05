@@ -306,7 +306,6 @@ function get_field_value($field_name, $default = '')
     <?php include '../footer/footer.php'; ?>
     <?php include '../dashboard_template/scrolltop/scrolltop.php'; ?>
     <script src="../dashboard_template/scrolltop/scrolltop.js"></script>
-    <?php include '../dashboard_template/scrolltop/scrolltop.php'; ?>
 </body>
 
 </html>
