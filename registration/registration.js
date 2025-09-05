@@ -22,30 +22,31 @@ function generatePassword() {
     for (var i = 0; i < 12; i++) {
         pass += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    document.getElementById('password').value = pass;
-    document.getElementById('confirm_password').value = pass;
+    var pwdEl = document.getElementById('password');
+    var cpwdEl = document.getElementById('confirm_password');
+    if (pwdEl) pwdEl.value = pass;
+    if (cpwdEl) cpwdEl.value = pass;
 }
 
 function toggleBothPasswords() {
     var pwd = document.getElementById('password');
     var cpwd = document.getElementById('confirm_password');
-    pwd.type = pwd.type === 'password' ? 'text' : 'password';
-    cpwd.type = cpwd.type === 'password' ? 'text' : 'password';
+    if (pwd) pwd.type = pwd.type === 'password' ? 'text' : 'password';
+    if (cpwd) cpwd.type = cpwd.type === 'password' ? 'text' : 'password';
 }
 
 function copyPassword() {
     var pwd = document.getElementById('password');
+    if (!pwd) return;
     pwd.select();
     document.execCommand('copy');
-
-    // Add a visual feedback
     alert('Password copied to clipboard!');
-
 }
 
 function toggleCustomOffice() {
     var officeSelect = document.getElementById('office_select');
     var customOffice = document.getElementById('custom_office');
+    if (!officeSelect || !customOffice) return;
     if (officeSelect.value === 'other') {
         customOffice.style.display = 'block';
     } else {
@@ -53,66 +54,23 @@ function toggleCustomOffice() {
     }
 }
 
-function showSummary() {
-    var form = document.getElementById('regForm');
-    var summary = '';
-    summary += '<div class="summary-row"><span class="summary-label">Full Name:</span> ' + form.full_name.value + '</div>';
-    summary += '<div class="summary-row"><span class="summary-label">Email:</span> ' + form.email.value + '</div>';
-    summary += '<div class="summary-row"><span class="summary-label">Recovery Email:</span> ' + form.recovery_email.value + '</div>';
-    summary += '<div class="summary-row"><span class="summary-label">Department:</span> ' + form.department.options[form.department.selectedIndex].text + '</div>';
-    summary += '<div class="summary-row"><span class="summary-label">Role:</span> ' + form.role_select.options[form.role_select.selectedIndex].text + '</div>';
-    var officeText = form.office_select.options[form.office_select.selectedIndex].text;
-    if (form.office_select.value === 'other') {
-        officeText = form.custom_office.value;
-    }
-    summary += '<div class="summary-row"><span class="summary-label">Office:</span> ' + officeText + '</div>';
-    summary += '<div class="summary-row"><span class="summary-label">User Type:</span> ' + form.user_type.options[form.user_type.selectedIndex].text + '</div>';
-    summary += '<div class="summary-row"><span class="summary-label">Start Date:</span> ' + form.start_date.value + '</div>';
-    summary += '<div class="summary-row"><span class="summary-label">Work Experience:</span> ' + form.work_experience.value + '</div>';
-    summary += '<div class="summary-row"><span class="summary-label">Education:</span> ' + form.education.value + '</div>';
-    document.getElementById('summaryContent').innerHTML = summary;
-    document.getElementById('summaryModal').style.display = 'block';
+function getFieldValue(field) {
+    var el = document.getElementById(field) || document.querySelector('[name="' + field + '"]');
+    return el ? el.value.trim() : '';
 }
 
-function closeSummary() {
-    document.getElementById('summaryModal').style.display = 'none';
+function formatDateForDisplay(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
 }
 
-function submitForm() {
-    document.getElementById('regForm').submit();
-}
-
-// Close modal if clicked outside
-window.onclick = function (event) {
-    var modal = document.getElementById('summaryModal');
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-// prepareSubmission copies visible select values into hidden inputs expected by server
-function prepareSubmission() {
-    var roleSel = document.getElementById('role_select');
-    var hiddenRole = document.getElementById('hidden_role');
-    if (roleSel && hiddenRole) {
-        hiddenRole.value = roleSel.value || '';
-    }
-
-    var officeSel = document.getElementById('office_select');
-    var customOffice = document.getElementById('custom_office');
-    var hiddenOffice = document.getElementById('hidden_office');
-    if (officeSel && hiddenOffice) {
-        if (officeSel.value === 'other' && customOffice) {
-            hiddenOffice.value = customOffice.value || '';
-        } else {
-            hiddenOffice.value = officeSel.value || '';
-        }
-    }
-    // allow the form to submit
-    return true;
-}
-
-// Email '@' validation warning (show only on blur)
+/* Validation helpers */
 function validateEmailField(fieldId, warningId, valueId) {
     var input = document.getElementById(fieldId);
     var warning = document.getElementById(warningId);
@@ -128,32 +86,22 @@ function validateEmailField(fieldId, warningId, valueId) {
     }
 }
 
-document.getElementById('email').addEventListener('blur', function () {
-    validateEmailField('email', 'emailWarning', 'emailValue');
-});
-document.getElementById('email').addEventListener('input', function () {
-    document.getElementById('emailWarning').style.display = 'none';
-});
-
-document.getElementById('recovery_email').addEventListener('blur', function () {
-    validateEmailField('recovery_email', 'recoveryEmailWarning', 'recoveryEmailValue');
-});
-document.getElementById('recovery_email').addEventListener('input', function () {
-    document.getElementById('recoveryEmailWarning').style.display = 'none';
-});
-
-// Helper to get field value by id or name
-function getFieldValue(field) {
-    var el = document.getElementById(field) || document.querySelector('[name="' + field + '"]');
-    return el ? el.value.trim() : '';
+function showRequiredWarning(fieldId, warningId) {
+    var input = document.getElementById(fieldId);
+    var warning = document.getElementById(warningId);
+    if (!input || !warning) return;
+    if (!input.value.trim()) {
+        warning.style.display = 'block';
+    } else {
+        warning.style.display = 'none';
+    }
 }
 
-// Check if all required fields are filled
+/* Required fields check and proceed button state */
 function allRequiredFilled() {
     var requiredFields = [
         'full_name',
         'email',
-        'recovery_email',
         'password',
         'confirm_password',
         'department',
@@ -166,18 +114,125 @@ function allRequiredFilled() {
     });
 }
 
-// Enable/disable Proceed button
 function updateProceedBtn() {
     var proceedBtn = document.getElementById('proceedBtn');
-    if (proceedBtn) proceedBtn.disabled = !allRequiredFilled();
+    if (!proceedBtn) return;
+    proceedBtn.disabled = !allRequiredFilled();
 }
 
-// Attach listeners to required fields
+/* Summary / Modal logic (single validated implementation) */
+function showSummary() {
+    // Check all required fields and show warnings for empty ones
+    var requiredFields = [
+        { id: 'full_name', warning: null },
+        { id: 'email', warning: 'emailWarning' },
+        { id: 'password', warning: 'passwordWarning' },
+        { id: 'confirm_password', warning: null },
+        { id: 'department', warning: 'departmentWarning' },
+        { id: 'role_select', warning: 'roleWarning' },
+        { id: 'office_select', warning: 'officeWarning' },
+        { id: 'start_date', warning: 'startDateWarning' }
+    ];
+
+    var hasEmptyFields = false;
+    requiredFields.forEach(function (f) {
+        if (!getFieldValue(f.id)) {
+            hasEmptyFields = true;
+            if (f.warning) {
+                var w = document.getElementById(f.warning);
+                if (w) w.style.display = 'block';
+            }
+        }
+    });
+
+    var email = getFieldValue('email');
+    if (email && email.indexOf('@') === -1) {
+        hasEmptyFields = true;
+        validateEmailField('email', 'emailWarning', 'emailValue');
+    }
+
+    if (hasEmptyFields) {
+        // ensure the proceed button stays disabled
+        updateProceedBtn();
+        return;
+    }
+
+    // Build summary HTML
+    var summaryHTML = '';
+    summaryHTML += '<h4>Personal Information</h4>';
+    summaryHTML += '<p><strong>Full Name:</strong> ' + getFieldValue('full_name') + '</p>';
+    summaryHTML += '<p><strong>Email:</strong> ' + getFieldValue('email') + '</p>';
+
+    summaryHTML += '<h4>Work Information</h4>';
+    var departmentEl = document.getElementById('department');
+    var departmentName = departmentEl ? departmentEl.options[departmentEl.selectedIndex].text : '';
+    summaryHTML += '<p><strong>Department:</strong> ' + departmentName + '</p>';
+
+    var roleEl = document.getElementById('role_select');
+    var roleName = roleEl ? roleEl.options[roleEl.selectedIndex].text : '';
+    summaryHTML += '<p><strong>Role:</strong> ' + roleName + '</p>';
+
+    var officeEl = document.getElementById('office_select');
+    var office = '';
+    if (officeEl) {
+        if (officeEl.value === 'other') {
+            office = getFieldValue('custom_office');
+        } else {
+            office = officeEl.options[officeEl.selectedIndex].text;
+        }
+    }
+    summaryHTML += '<p><strong>Office:</strong> ' + office + '</p>';
+
+    var userTypeEl = document.querySelector('select[name="user_type"]');
+    var userType = userTypeEl ? userTypeEl.options[userTypeEl.selectedIndex].text : '';
+    summaryHTML += '<p><strong>User Type:</strong> ' + userType + '</p>';
+
+    var startDate = getFieldValue('start_date');
+    summaryHTML += '<p><strong>Start Date:</strong> ' + formatDateForDisplay(startDate) + '</p>';
+
+    summaryHTML += '<h4>Additional Information</h4>';
+    var workExp = getFieldValue('work_experience');
+    summaryHTML += '<p><strong>Work Experience:</strong> ' + (workExp ? workExp : '<em>Not provided</em>') + '</p>';
+    var education = getFieldValue('education');
+    summaryHTML += '<p><strong>Education:</strong> ' + (education ? education : '<em>Not provided</em>') + '</p>';
+
+    var modal = document.getElementById('summaryModal');
+    var summaryContent = document.getElementById('summaryContent');
+    if (summaryContent) summaryContent.innerHTML = summaryHTML;
+    if (modal) modal.style.display = 'block';
+}
+
+function closeSummary() {
+    var modal = document.getElementById('summaryModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function submitForm() {
+    // final check before submit
+    if (!allRequiredFilled()) return;
+    var form = document.getElementById('regForm');
+    if (form) form.submit();
+}
+
+/* Close modal when clicking outside */
+window.addEventListener('click', function (event) {
+    var modal = document.getElementById('summaryModal');
+    if (modal && event.target == modal) {
+        modal.style.display = "none";
+    }
+});
+
+/* Initialization: attach listeners after DOM ready */
 window.addEventListener('DOMContentLoaded', function () {
+    // Initial UI setup
+    filterRoles();
+    toggleCustomOffice();
+    updateProceedBtn();
+
+    // Attach change listeners to keep proceed button state updated
     var requiredFields = [
         'full_name',
         'email',
-        'recovery_email',
         'password',
         'confirm_password',
         'department',
@@ -190,231 +245,71 @@ window.addEventListener('DOMContentLoaded', function () {
         if (el) {
             el.addEventListener('input', updateProceedBtn);
             el.addEventListener('change', updateProceedBtn);
-        }
-    });
-    updateProceedBtn();
-});
-
-// Ensure custom_office visibility matches initial selection on page load
-window.addEventListener('load', function () {
-    var officeSel = document.getElementById('office_select');
-    var customOffice = document.getElementById('custom_office');
-    if (officeSel && customOffice) {
-        if (officeSel.value === 'other') customOffice.style.display = 'block';
-        else customOffice.style.display = 'none';
-    }
-});
-
-// Show warning only on blur if field is empty
-function showRequiredWarning(fieldId, warningId, message) {
-    var input = document.getElementById(fieldId);
-    var warning = document.getElementById(warningId);
-    if (input && warning) {
-        if (!input.value.trim()) {
-            warning.style.display = 'block';
-        } else {
-            warning.style.display = 'none';
-        }
-    }
-}
-
-document.getElementById('password').addEventListener('blur', function () {
-    showRequiredWarning('password', 'passwordWarning', 'Password is required.');
-});
-document.getElementById('password').addEventListener('input', function () {
-    document.getElementById('passwordWarning').style.display = 'none';
-});
-
-document.getElementById('department').addEventListener('blur', function () {
-    showRequiredWarning('department', 'departmentWarning', 'Department is required.');
-});
-document.getElementById('department').addEventListener('change', function () {
-    document.getElementById('departmentWarning').style.display = 'none';
-});
-
-document.getElementById('role_select').addEventListener('blur', function () {
-    showRequiredWarning('role_select', 'roleWarning', 'Role is required.');
-});
-document.getElementById('role_select').addEventListener('change', function () {
-    document.getElementById('roleWarning').style.display = 'none';
-});
-
-document.getElementById('office_select').addEventListener('blur', function () {
-    showRequiredWarning('office_select', 'officeWarning', 'Office is required.');
-});
-document.getElementById('office_select').addEventListener('change', function () {
-    document.getElementById('officeWarning').style.display = 'none';
-});
-
-document.getElementById('start_date').addEventListener('blur', function () {
-    showRequiredWarning('start_date', 'startDateWarning', 'Start date is required.');
-});
-document.getElementById('start_date').addEventListener('input', function () {
-    document.getElementById('startDateWarning').style.display = 'none';
-});
-
-// Helper function to format date from YYYY-MM-DD to DD-MMM-YYYY
-function formatDateForDisplay(dateString) {
-    if (!dateString) return '';
-
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return dateString; // Return original if invalid
-
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-
-    return `${day}-${month}-${year}`;
-}
-
-// Modified showSummary function to check required fields before proceeding
-function showSummary() {
-    // Check all required fields and show warnings for empty ones
-    var requiredFields = [{
-        id: 'full_name',
-        warning: null,
-        message: 'Full Name is required.'
-    },
-    {
-        id: 'email',
-        warning: 'emailWarning',
-        message: 'Email is required.'
-    },
-    {
-        id: 'recovery_email',
-        warning: 'recoveryEmailWarning',
-        message: 'Recovery Email is required.'
-    },
-    {
-        id: 'password',
-        warning: 'passwordWarning',
-        message: 'Password is required.'
-    },
-    {
-        id: 'confirm_password',
-        warning: null,
-        message: 'Confirm Password is required.'
-    },
-    {
-        id: 'department',
-        warning: 'departmentWarning',
-        message: 'Department is required.'
-    },
-    {
-        id: 'role_select',
-        warning: 'roleWarning',
-        message: 'Role is required.'
-    },
-    {
-        id: 'office_select',
-        warning: 'officeWarning',
-        message: 'Office is required.'
-    },
-    {
-        id: 'start_date',
-        warning: 'startDateWarning',
-        message: 'Start Date is required.'
-    }
-    ];
-
-    var hasEmptyFields = false;
-
-    // Check each field and show warnings for empty ones
-    requiredFields.forEach(function (field) {
-        var value = getFieldValue(field.id);
-        if (!value) {
-            hasEmptyFields = true;
-            // If field has associated warning element, show it
-            if (field.warning) {
-                var warningEl = document.getElementById(field.warning);
-                if (warningEl) {
-                    warningEl.style.display = 'block';
-                }
-            }
+            // show/hide warnings on blur where appropriate
+            el.addEventListener('blur', function () {
+                if (field === 'email') validateEmailField('email', 'emailWarning', 'emailValue');
+                if (field === 'password') showRequiredWarning('password', 'passwordWarning');
+                if (field === 'department') showRequiredWarning('department', 'departmentWarning');
+                if (field === 'role_select') showRequiredWarning('role_select', 'roleWarning');
+                if (field === 'office_select') showRequiredWarning('office_select', 'officeWarning');
+                if (field === 'start_date') showRequiredWarning('start_date', 'startDateWarning');
+            });
         }
     });
 
-    // Additional validation for email format
-    var email = getFieldValue('email');
-    var recoveryEmail = getFieldValue('recovery_email');
-
-    if (email && email.indexOf('@') === -1) {
-        hasEmptyFields = true;
-        validateEmailField('email', 'emailWarning', 'emailValue');
+    // Additional specific handlers
+    var emailEl = document.getElementById('email');
+    if (emailEl) {
+        emailEl.addEventListener('input', function () {
+            var w = document.getElementById('emailWarning');
+            if (w) w.style.display = 'none';
+        });
     }
 
-    if (recoveryEmail && recoveryEmail.indexOf('@') === -1) {
-        hasEmptyFields = true;
-        validateEmailField('recovery_email', 'recoveryEmailWarning', 'recoveryEmailValue');
+    var passwordEl = document.getElementById('password');
+    if (passwordEl) {
+        passwordEl.addEventListener('input', function () {
+            var w = document.getElementById('passwordWarning');
+            if (w) w.style.display = 'none';
+        });
     }
 
-    // Only proceed to show the summary if all fields are valid
-    if (!hasEmptyFields) {
-        // Prepare summary HTML with complete information
-        var summaryHTML = '';
-
-        // Personal Information
-        summaryHTML += '<h4>Personal Information</h4>';
-        summaryHTML += '<p><strong>Full Name:</strong> ' + getFieldValue('full_name') + '</p>';
-        summaryHTML += '<p><strong>Email:</strong> ' + getFieldValue('email') + '</p>';
-        summaryHTML += '<p><strong>Recovery Email:</strong> ' + getFieldValue('recovery_email') + '</p>';
-
-        // Work Information
-        summaryHTML += '<h4>Work Information</h4>';
-
-        // Department (get text, not value)
-        var departmentEl = document.getElementById('department');
-        var departmentName = departmentEl.options[departmentEl.selectedIndex].text;
-        summaryHTML += '<p><strong>Department:</strong> ' + departmentName + '</p>';
-
-        // Role (get text, not value)
-        var roleEl = document.getElementById('role_select');
-        var roleName = roleEl.options[roleEl.selectedIndex].text;
-        summaryHTML += '<p><strong>Role:</strong> ' + roleName + '</p>';
-
-        // Office (handle custom office)
-        var officeEl = document.getElementById('office_select');
-        var office = '';
-        if (officeEl.value === 'other') {
-            office = getFieldValue('custom_office');
-        } else {
-            office = officeEl.options[officeEl.selectedIndex].text;
-        }
-        summaryHTML += '<p><strong>Office:</strong> ' + office + '</p>';
-
-        // User type
-        var userTypeEl = document.querySelector('select[name="user_type"]');
-        var userType = userTypeEl.options[userTypeEl.selectedIndex].text;
-        summaryHTML += '<p><strong>User Type:</strong> ' + userType + '</p>';
-
-        // Format the start date
-        var startDate = getFieldValue('start_date');
-        var formattedStartDate = formatDateForDisplay(startDate);
-        summaryHTML += '<p><strong>Start Date:</strong> ' + formattedStartDate + '</p>';
-
-        // Additional Information
-        summaryHTML += '<h4>Additional Information</h4>';
-
-        // Work experience and education (if provided)
-        var workExp = getFieldValue('work_experience');
-        if (workExp) {
-            summaryHTML += '<p><strong>Work Experience:</strong> ' + workExp + '</p>';
-        } else {
-            summaryHTML += '<p><strong>Work Experience:</strong> <em>Not provided</em></p>';
-        }
-
-        var education = getFieldValue('education');
-        if (education) {
-            summaryHTML += '<p><strong>Education:</strong> ' + education + '</p>';
-        } else {
-            summaryHTML += '<p><strong>Education:</strong> <em>Not provided</em></p>';
-        }
-
-        // Show the summary modal
-        var modal = document.getElementById('summaryModal');
-        var summaryContent = document.getElementById('summaryContent');
-        summaryContent.innerHTML = summaryHTML;
-        modal.style.display = 'block';
+    var deptEl = document.getElementById('department');
+    if (deptEl) {
+        deptEl.addEventListener('change', function () {
+            filterRoles();
+            toggleCustomOffice(); // in case office selection depends on department in future
+        });
     }
-}
+
+    var officeEl = document.getElementById('office_select');
+    if (officeEl) {
+        officeEl.addEventListener('change', function () {
+            toggleCustomOffice();
+            var w = document.getElementById('officeWarning');
+            if (w) w.style.display = 'none';
+        });
+    }
+
+    // Attach proceed button click reliably
+    var proceedBtn = document.getElementById('proceedBtn');
+    if (proceedBtn) {
+        proceedBtn.addEventListener('click', function (e) {
+            // If disabled, do nothing
+            if (proceedBtn.disabled) return;
+            showSummary();
+        });
+    }
+
+    // Attach role select warning hide
+    var roleSel = document.getElementById('role_select');
+    if (roleSel) {
+        roleSel.addEventListener('change', function () {
+            var w = document.getElementById('roleWarning');
+            if (w) w.style.display = 'none';
+        });
+    }
+
+    // Ensure custom_office visibility matches initial selection
+    toggleCustomOffice();
+});

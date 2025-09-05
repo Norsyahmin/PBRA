@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <?php include '../dashboard/navbar/navbar.php'; ?>
+    <?php include '../dashboard_template/navbar/navbar.php'; ?>
 
     <!-- Main content -->
     <div id="content" class="content">
@@ -23,12 +23,12 @@
         <p style="height: 2000px;">Keep scrolling...</p>
     </div>
 
-    <?php include '../dashboard/scrolltop/scrolltop.php'; ?>
+    <?php include '../dashboard_template/scrolltop/scrolltop.php'; ?>
     <?php include '../footer/footer.php'; ?>
 
     <!-- Link to external JavaScript files -->
-    <script src="../dashboard/navbar/navbar.js"></script>
-    <script src="../dashboard/scrolltop/scrolltop.js"></script>
+    <!-- navbar.js is already loaded by navbar.php (deferred). Keep only additional scripts here. -->
+    <script src="../dashboard_template/scrolltop/scrolltop.js"></script>
 </body>
 
 </html>

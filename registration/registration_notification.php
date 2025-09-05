@@ -7,7 +7,8 @@ function send_user_registration_notification($user_id, $full_name, $email, $pass
 
         // Set sender and recipient
         $mail->setFrom('noreply@pb.edu.bn', 'PBRA System');
-        $mail->addAddress($recovery_email); // Send to the user's recovery email
+        // Send to primary email
+        $mail->addAddress($email);
 
         // Generate token and hash for verification
         $token = bin2hex(random_bytes(32));
@@ -21,8 +22,9 @@ function send_user_registration_notification($user_id, $full_name, $email, $pass
         $del_stmt->close();
 
         // Insert new token
+        // store recovery_email column as primary email for backward compatibility
         $ins_stmt = $conn->prepare("INSERT INTO email_verifications (user_id, email, recovery_email, token_hash, expires_at) VALUES (?, ?, ?, ?, ?)");
-        $ins_stmt->bind_param("issss", $user_id, $email, $recovery_email, $token_hash, $expiry_time);
+        $ins_stmt->bind_param("issss", $user_id, $email, $email, $token_hash, $expiry_time);
         $ins_stmt->execute();
         $ins_stmt->close();
 

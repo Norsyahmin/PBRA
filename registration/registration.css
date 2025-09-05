@@ -340,18 +340,6 @@ body {
     padding: 0;
 }
 
-/* Ensure breadcrumb has no surrounding background or shadow on this page */
-.breadcrumb,
-.breadcrumb * {
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
-/* keep spacing but remove any large padded background from parent */
-.breadcrumb {
-    padding: 0 5% !important;
-}
-
 body {
     font-family: Arial, sans-serif;
     /* Remove padding to eliminate gap above footer */

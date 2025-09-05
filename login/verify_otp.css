@@ -105,7 +105,7 @@ h2 span {
 }
 
 .otp-form input[type="email"],
-.otp-form input[type="password"] {
+.otp-form input[type="text"] {
     width: 100%;
     padding: 14px 18px;
     border: 1px solid var(--border-color);
@@ -117,7 +117,7 @@ h2 span {
 }
 
 .otp-form input[type="email"]:focus,
-.otp-form input[type="password"]:focus {
+.otp-form input[type="text"]:focus {
     border-color: var(--secondary-color);
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
     outline: none;
